@@ -1,0 +1,65 @@
+{% extends "index.html" %}
+{% block content %}
+
+
+
+<!-- REGIONS -->
+
+<div class="span2.5">
+  <form method="POST" action="/country_choice" id="country_id">
+  {{ form_country.hidden_tag() }}
+  {{ form_country.countrys.label }} {{ form_country.countrys(onchange="change_country();") }}
+  </form>
+</div>
+
+<div class="span2.5">
+  <form method="POST" action="/scenario_choice" id="scenario_id">
+  {{ form_scenario.hidden_tag() }}
+  {{ form_scenario.scenarios.label }} {{ form_scenario.scenarios(onchange="change_scenario();") }}
+  </form>
+</div>
+
+<div class="span2.5">
+  <form method="POST" action="/indicator_choice" id="indicator_id">
+  {{ form_indicator.hidden_tag() }}
+  {{ form_indicator.indicators.label }} {{ form_indicator.indicators(onchange="change_indicator();") }}
+  </form>
+</div>
+
+<div class="row">
+  <div class="span3">
+    <form method="POST" action="/periodchoice">
+        {{ form_period.hidden_tag() }}
+        {{ form_period.reference_period.label }} {{ form_period.reference_period(size=20) }}
+  </div>
+    <div class="span3">
+      {{ form_period.projection_period.label }} {{ form_period.projection_period(size=20) }}
+      <button type="submit" class="btn">Select periods</button>
+    </form>
+  </div>
+</div>
+
+<div class="span2.5">
+  
+</div>
+
+
+<div class="span7">
+    <IMG SRC={{ EWEMBI_plot }} ALT=CORDEX_BC_plot WIDTH=400 HEIGHT=300>
+    <IMG SRC={{ CORDEX_BC_plot }} ALT=CORDEX_BC_plot WIDTH=400 HEIGHT=300>
+</div>
+     
+
+
+
+
+
+
+
+
+{% endblock %}
+
+
+
+
+

@@ -1,0 +1,362 @@
+{% extends "layout.html" %}
+{% block content %}
+
+
+
+<!-- BEGIN COMPONENT Simple Table - Taco HTML Edit -->
+<style type="text/css">
+table#myTable
+{
+	width: 40%;
+	margin-left: 100px;
+	border: 0px solid #6c7aa9;
+	border-collapse: separate;
+	border-spacing: 0px;
+	*border-collapse: expression('separate', cellSpacing = '0px'); /*For IE*/
+}
+table#myTable tbody tr
+{
+	background-color: #ffffff;
+	color: #000000;
+}
+table#myTable tbody tr.tswOddRow
+{
+	background-color: #edf3ff;
+}
+table#myTable td
+{
+	border: 1px solid #cccccc;
+	padding: 2px;
+	
+}
+</style>
+
+<style> 
+p
+{
+    width:600px; 
+    word-wrap:break-word;
+    margin-left: 100px
+}
+</style>
+<style> 
+h2
+{
+    width:600px; 
+    word-wrap:break-word;
+    margin-left: 40px
+}
+</style>
+<style> 
+h3
+{
+    width:600px; 
+    word-wrap:break-word;
+    margin-left: 60px
+}
+</style>
+<style> 
+h4
+{
+    width:600px; 
+    word-wrap:break-word;
+    margin-left: 80px
+}
+</style>
+
+
+
+
+<!-- END COMPONENT Simple Table - Taco HTML Edit -->
+
+<!-- End HEAD content -->
+
+
+
+<div id="content">
+
+<h1 class="title">Nothing yet - A guideline </h1>
+
+
+<form method="POST" action="/update_database"><button type="submit" class="btn">Update Database</button></form>
+
+<!-- 
+
+
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#sec-1">Introduction </a>
+<ul>
+<li><a href="#sec-1.1">Warming levels in the WB III </a></li>
+<li><a href="#sec-1.2">Methodology </a>
+</ul>
+
+<li><a href="#sec-2">FAQs </a>
+<ul>
+<li><a href="#sec-1.2.1">Model Bias Correction using HadCrut4 </a></li>
+<li><a href="#sec-1.2.2">Deriving the warming level </a></li>
+<li><a href="#sec-1.2.3">Warming attribution </a></li>
+<li><a href="#sec-1.2.4">Exceedance times </a></li>
+<li><a href="#sec-1.2.5">Regional climate models </a></li>
+<li><a href="#sec-1.2.6">Isimip </a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-1" class="outline-2">
+<h2 id="sec-1"><span class="section-number-2"> Introduction </h2>
+<div class="outline-text-2" id="text-1">
+
+<p>Attribution of impacts to different warming levels is a non-trivial
+task, even if studies are conducted specifically for that puporse as
+e.g. ISIMIP. However, it becomes even more complicated, if this
+attribution has to be based on a literature assessment. Many studies
+only provide scenario information not specifying global warming levels that might differ substantially due to large variations in climate sensitivity between different GCMs. Additionally, not all policy-relevant warming levels are covered by SRES or RCP scenarios and often enough the results are based on a single transient scenario only.
+</p>
+<p>
+Still, to differentiate between different warming levels is one of the key objectives of the many climate impact studies (as the WB Turn down the heat reports) and the Warming Attribution Calculator (WACalc) is designed to help you whith this task
+</p>
+<p>
+Comprising a database of many CMIP3 and CMIP5 models as well as SRES and RCP scenarios, the WACalc provides the means to get the warming levels for analysis time periods given, as well as the time periods associated with the warming levels of interest for given scenario and model ensemble.
+</p>
+
+</div>
+<hr width="75%">
+
+<div id="outline-container-1.1" class="outline-3">
+<h3 id="sec-1.1"><span class="section-number-3"></span> Warming levels in the WB III </h3>
+<div class="outline-text-3" id="text-1.1">
+
+
+<p>
+The warming levels in the TDTH3 report are defined as follows:
+</p>
+
+<table id="myTable">
+	<tbody>
+		<tr>
+			<td>Observed </td>
+			<td>0.5 - 0.8</td>
+		</tr>
+		<tr>
+			<td>1°C</td>
+			<td>0.8 - 1.25</td>
+		</tr>
+		<tr>
+			<td>1.5°C</td>
+			<td>1.25 - 1.75</td>
+		</tr>
+		<tr>
+			<td>2°C</td>
+			<td>1.75 - 2.25</td>
+		</tr>
+		<tr>
+			<td>3°C</td>
+			<td>2.25 - 3.5</td>
+		</tr>
+		<tr>
+			<td>4°C</td>
+			<td>&gt;3.5</td>
+		</tr>
+	</tbody>
+</table>
+
+
+<p>All values are given in °C relative to pre-industrial levels (1850-1900) based on the HadCrut4 data set as in the IPCC AR5.
+</p>
+</div>
+
+</div>
+<hr width="75%">
+<div id="outline-container-1.2" class="outline-3">
+<h3 id="sec-1.2"><span class="section-number-3"></span> Methodology </h3>
+<div class="outline-text-3" id="text-1.2">
+
+
+</div>
+
+
+<div id="outline-container-1.2.1" class="outline-4">
+<h4 id="sec-1.2.1"><span class="section-number-4"></span> Model Bias Correction using HadCrut4 </h4>
+<div class="outline-text-4" id="text-1.2.1">
+
+<p>Impacts are given relative to a baseline period. WACalc accounts
+for a possible warming bias in the model ensemble and will correct
+accordingly.
+</p>
+<p>
+The warming level is derived as the sum of the projected model
+ensemble warming in global mean temperature (GMT) relative to the base period plus warming level of the
+base period relative to preindustrial levels (1850-1900) based on the
+HadCrut4 dataset.
+</p>
+
+</div>
+<hr width="50%">
+</div>
+
+<div id="outline-container-1.2.2" class="outline-4">
+<h4 id="sec-1.2.2"><span class="section-number-4"></span> Deriving the warming level </h4>
+<div class="outline-text-4" id="text-1.2.2">
+
+
+<p>
+WACalc derives warming levels based on linear
+averaging over the model ensemble. Depending on the ensemble of choice, a
+mean GMT time series is generated for which then either warming levels
+or exceedance times are derived.
+</p>
+<p>
+Please note that this approach actually assumes linear scaling of
+the impacts with temperature in the vicinity of the warming levels,
+which is an approximation that might not always be appropriate. However,
+this first-order approach is sufficient for the purpose of WACalc, since uncertainties are generally large and many impact studies do not differentiate between the different scenarios underlying the projections, but give numbers only for ensemble averages.
+</p>
+</div>
+
+</div>
+<hr width="50%">
+<div id="outline-container-1.2.3" class="outline-4">
+<h4 id="sec-1.2.3"><span class="section-number-4"></span> Warming attribution </h4>
+<div class="outline-text-4" id="text-1.2.3">
+
+
+<p>
+The warming attribution option derives the warming levels for the
+model ensemble and final period of choice based on the methodology
+described above. Additionally, it indicates the attribution according
+to the warming levels defined in the TDTH3 report.
+</p>
+</div>
+
+</div>
+<hr width="50%">
+<div id="outline-container-1.2.4" class="outline-4">
+<h4 id="sec-1.2.4"><span class="section-number-4"></span> Exceedance times </h4>
+<div class="outline-text-4" id="text-1.2.4">
+
+
+<p>
+The exceedance times are derived as follows: The running mean of the
+mean GMT time series based on the model ensemble of choice is derived (see
+above). The window length can be user defined (default 31
+years).
+</p>
+<p>
+The option returns the year, when this running mean time
+series crosses the warming level threshold and the corresponding
+window around it (again 31 years in the default case).
+</p>
+<p>
+Please note that here the warming level of 4°C is derived
+for the absolute value of 4°C, which is more rigorous as the &gt;3.5°C in
+the TDTH3. However, if a warming of 4°C is not reached by the model
+ensemble, but 3.5°C are exceeded, the maximum warming level for the
+model ensemble of choice can still be derived using the warming
+attribution option.
+</p>
+<p>
+For warming levels that are exceeded by more than one scenario, please
+always analyse the impacts based on the scenario with the smallest
+overall warming, since non-linearities in the impacts are expected to
+be more pronounced for scenarios with stronger warming.
+</p>
+<p>
+The RCP2.6 is a peak-and-decline scenario with negative emissions
+during the second half of the 21st century. GMT is projected to
+stabilize (and slightly decrease) under this scenario. Please always
+read off the impacts at the end of the 21st century.
+</p>
+
+
+</div>
+
+</div>
+<hr width="75%">
+
+
+
+<div id="outline-container-2" class="outline-2">
+<h2 id="sec-2"><span class="section-number-2"></span> FAQs </h2>
+<div class="outline-text-2" id="text-1">
+
+
+</div>
+
+<div id="outline-container-1.2.5" class="outline-4">
+<h4 id="sec-1.2.5"><span class="section-number-4"></span> Climate model unknown or not in dataset </h4>
+</div>
+<div class="outline-text-4" id="text-1.2.5">
+<p>
+This is an undesirable case and our suggestion would be to use the ensemble average (all models) for the given scenario and highlight accordingly. 
+</p>
+</div>
+
+</div>
+
+
+<hr width="50%">
+<div id="outline-container-1.2.5" class="outline-4">
+<h4 id="sec-1.2.5"><span class="section-number-4"></span> Regional climate models </h4>
+</div>
+<div class="outline-text-4" id="text-1.2.5">
+<p>
+For impacts based on regional climate models, GMT time series of the driving GCM should be
+used (e.g.  HadCM3 for PRECIS).
+</p>
+</div>
+
+</div>
+<hr width="50%">
+<div id="outline-container-1.2.6" class="outline-4">
+<h4 id="sec-1.2.6"><span class="section-number-4"></span> Isimip </h4>
+</div>
+<div class="outline-text-4" id="text-1.2.6">
+
+
+<p>
+The GCMs used in the Isimip are HadGEM2-ES, IPSL-CM5A-LR, MIROC-ESM-CHEm, GFDL-ESM2M and NorESM1-M.
+</p>
+</div>
+<hr width="50%">
+<div id="outline-container-1.2.7" class="outline-4">
+<h4 id="sec-1.2.7"><span class="section-number-4"></span> No Base Period given </h4>
+<div class="outline-text-4" id="text-1.2.7">
+
+
+<p>
+If the study of interest does not provide any information on the base period used, it certainly not good scientific practice. However, if you still want to use it, use 1980-2010 as the reference period, since it's likely that the authors might have chosen any interval between 1980-2010. It's clearly dodgy to do this, but so is to publish results without specifying the reference period.
+</p>
+<p>
+ Differences in the actual warming level introduced by different base periods are generally less than .1 Deg C, so it might not be a big issue, if the resulting warming level does not sit ''on the edge'' between two warming level bins. If it does, please highlight it in the table.
+</p>
+</div>
+
+<hr width="50%">
+<div id="outline-container-1.2.8" class="outline-4">
+<h4 id="sec-1.2.8"><span class="section-number-4"></span> Results averaged over different scenarios </h4>
+<div class="outline-text-4" id="text-1.2.8">
+
+
+<p>
+	You could argue that authors, who actually average their results over different scenarios, haven't understood why they used them in the first place. But if this is all you have, you somehow have to deal with it. Here's our suggestion: Derive the warming level for the lowest and highest scenario, and merge the cells in the warming attribution table accordingly to fill in the resulting range. So you would e.g. end up with something like this: for a warming between 1.5 and 4. Deg C, you get a reduction between 5 and 90%... 
+
+
+</p>
+</div>
+ -->
+
+
+</div>
+</div>
+</div>
+</div>
+
+
+{% endblock %}
