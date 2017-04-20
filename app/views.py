@@ -57,7 +57,8 @@ def index():
   session["indicator"]   = 'tas'
   session["country_avail"]   = settings.countrys
   session['country']   = settings.countrys[0]
-
+  session["region_avail"]   = settings.regions
+  session['region']   = settings.regions[0]
   # session["period_avail"]   = settings.periods
   # session["period"]   = settings.periods[0]
   print session
@@ -82,44 +83,57 @@ def choices():
   form_country = forms.countryForm(request.form)
   form_country.countrys.choices = zip(session['country_avail'],session['country_avail'])
 
+  form_region = forms.regionForm(request.form)
+  form_region.regions.choices = zip(session['region_avail'],session['region_avail'])
+
   refP = "-".join(str(t) for t in session["reference_period"])
   proP = "-".join(str(t) for t in session["projection_period"])
 
   form_period = forms.PeriodField(request.form, reference_period=refP, projection_period=proP)
+  periods={'ref':session["reference_period"],'projection':session["projection_period"]}
 
-  print str(session["indicator"]),session["scenario"],'CORDEX_BC'
 
-  COU[country].selection([session["indicator"],session["scenario"],'CORDEX_BC','ensemble_mean'])
 
-  COU[country].period_averages(periods={'ref':session["reference_period"],'projection':session["projection_period"]},
-    filters=[session["indicator"],session["scenario"],'CORDEX_BC'])
-  COU[country].period_averages(periods={'ref':session["reference_period"],'projection':session["projection_period"]},
-    filters=[session["indicator"],'EWEMBI'])
 
-  print COU[country].selection([session["indicator"],session["scenario"],'CORDEX_BC','ensemble_mean'])[0].period.keys()
-
+  cordex=COU[country].selection([session["indicator"],session["scenario"],'CORDEX_BC','ensemble_mean'])[0]
   CORDEX_BC_plot='static/images/'+country+'/'+session["indicator"]+'_'+session["scenario"]+'_CORDEX_BC_'+proP+'-'+refP+'.png'
   if os.path.isfile(CORDEX_BC_plot)==False:
-    COU[country].selection([session["indicator"],session["scenario"],'CORDEX_BC','ensemble_mean'])[0].display_map(
-    period='projection-ref',
-    out_file=CORDEX_BC_plot,
-    polygons=COU[country]._adm_polygons)
+    COU[country].period_averages(periods=periods,filters=[session["indicator"],session["scenario"],'CORDEX_BC'])
+    COU[country].model_agreement()
+    cordex.display_map(period='projection-ref',out_file=CORDEX_BC_plot,polygons=COU[country]._adm_polygons,title='projections')
 
+  ewembi=COU[country].selection([session["indicator"],'EWEMBI'])[0]
   EWEMBI_plot='static/images/'+country+'/'+session["indicator"]+'_EWEMBI_'+refP+'.png'
   if os.path.isfile(EWEMBI_plot)==False:
-    COU[country].selection([session["indicator"],'EWEMBI'])[0].display_map(
-    period='ref',
-    out_file=EWEMBI_plot,
-    polygons=COU[country]._adm_polygons)
+    COU[country].period_averages(periods=periods,filters=[session["indicator"],'EWEMBI'])
+    ewembi.display_map(period='ref',out_file=EWEMBI_plot,polygons=COU[country]._adm_polygons,title='observations')
 
+  transient_plot='static/images/'+country+'/'+session["indicator"]+'_'+session['region']+'_transient.png'
+  if os.path.isfile(transient_plot)==False:
+    fig,ax=plt.subplots(nrows=1,ncols=1,figsize=(5,4))
+    ewembi.plot_transient(mask_style='lat_weighted',region=session['region'],running_mean=60,ax=ax,title='',ylabel=None,label='observation')
+    cordex.plot_transient(mask_style='lat_weighted',region=session['region'],running_mean=60,ax=ax,title='',ylabel=None,label='projection')
+    ax.set_title('transient plot')
+    plt.savefig(transient_plot)
+
+  annual_cycle_plot='static/images/'+country+'/'+session["indicator"]+'_'+session['region']+'_annual_cycle_'+proP+'-'+refP+'.png'
+  if os.path.isfile(annual_cycle_plot)==False:
+    fig,ax=plt.subplots(nrows=1,ncols=1,figsize=(5,4))
+    ewembi.plot_annual_cycle(period=session["reference_period"],mask_style='lat_weighted',region=session['region'],ax=ax,title='',ylabel=None,label='observation')
+    cordex.plot_annual_cycle(period=session["projection_period"],mask_style='lat_weighted',region=session['region'],ax=ax,title='',ylabel=None,label='projection')
+    ax.set_title('annual cycle plot')
+    plt.savefig(annual_cycle_plot)
 
   context = { 
     'form_country':form_country,
+    'form_region':form_region,
     'form_period':form_period,
     'form_scenario':form_scenario,
     'form_indicator':form_indicator,
     'EWEMBI_plot':EWEMBI_plot,
-    'CORDEX_BC_plot':CORDEX_BC_plot
+    'CORDEX_BC_plot':CORDEX_BC_plot,
+    'annual_cycle_plot':annual_cycle_plot,
+    'transient_plot':transient_plot
   }
   print EWEMBI_plot
 
@@ -166,6 +180,15 @@ def period_choice():
   # put chosen at beginning of list
   index=session['period_avail'].index(session['period'])
   session['period_avail'][index],session['period_avail'][0]=session['period_avail'][0],session['period_avail'][index]
+  return redirect(url_for('choices'))
+
+@app.route('/region_choice',  methods=('POST', ))
+def region_choice():
+  form_region = forms.regionForm(request.form)
+  session['region']=form_region.regions.data
+  # put chosen at beginning of list
+  index=session['region_avail'].index(session['region'])
+  session['region_avail'][index],session['region_avail'][0]=session['region_avail'][0],session['region_avail'][index]
   return redirect(url_for('choices'))
 
 @app.route('/country_choice',  methods=('POST', ))

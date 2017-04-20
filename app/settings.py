@@ -44,10 +44,11 @@ os.chdir('/Users/peterpfleiderer/Documents/Projects')
 COU={}
 
 COU['BEN']=country_analysis('BEN','/Users/peterpfleiderer/Documents/Projects/country_analysis/')
-COU['BEN'].load_from_tar('/Users/peterpfleiderer/Documents/Projects/country_analysis/BEN.tar.gz')
+COU['BEN'].load_data()
 
 indicators  = list(set([data.var_name for data in COU['BEN']._DATA]))
-
+print COU['BEN']._masks.keys()
+regions		= COU['BEN']._masks['360x720_lat_89.75_-89.75_lon_-179.75_179.75']['lat_weighted'].keys()
 
 os.chdir('/Users/peterpfleiderer/Documents/Projects/projection_sharing/app/')
 

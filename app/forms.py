@@ -35,6 +35,10 @@ class countryForm(Form):
   countrys = SelectField(u'Available countrys', choices=[],
             validators=[Required("Please select at least one region.")])
 
+class regionForm(Form):
+  regions = SelectField(u'Available regions', choices=[],
+            validators=[Required("Please select at least one region.")])
+
 class PeriodField(Form):
   regex = "[1-2][0-9]{3}-[1-2][0-9]{3}"
 
