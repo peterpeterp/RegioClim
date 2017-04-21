@@ -230,7 +230,6 @@ def country_choice():
   index=session['country_avail'].index(session['country'])
   session['country_avail'][index],session['country_avail'][0]=session['country_avail'][0],session['country_avail'][index]
 
-  session["indicator_avail"]   = list(set([data.var_name for data in COU[session['country']]._DATA]))
   session["indicator"]   = session["indicator_avail"][0]
   session["region_avail"]   = regions[session['country']]
   session['region']   = session["region_avail"][0]
