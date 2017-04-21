@@ -27,6 +27,7 @@ import numpy as np
 import pandas as pd
 
 
+
 import matplotlib
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt
@@ -37,19 +38,10 @@ projection_period = [2030,2050]
 scenarios	= ['rcp45']
 
 
-os.chdir('/Users/peterpfleiderer/Documents/Projects')
 
-COU={}
 
-COU['SEN']=country_analysis('SEN','/Users/peterpfleiderer/Documents/Projects/country_analysis/SEN/')
-COU['SEN'].load_data()
+countrys=['BEN','SEN']
 
-COU['BEN']=country_analysis('BEN','/Users/peterpfleiderer/Documents/Projects/country_analysis/BEN/')
-COU['BEN'].load_data()
-
-countrys=COU.keys()
-
-os.chdir('/Users/peterpfleiderer/Documents/Projects/projection_sharing/app/')
 
 indicator_dict={
 	'tas':{'long_name':'mean temperature','unit':'$^\circ C$'},
@@ -65,7 +57,10 @@ for key in indicator_dict.keys():
 
 scenario='rcp45'
 
-
+regions={
+	'SEN':['Kaolack', 'Fatick', 'Kolda', 'Tambacounda', 'Dakar', 'Saint-Louis', 'Matam', 'Kedougou', 'Louga', 'Sedhiou', 'Thies', 'SEN', 'Diourbel', 'Kaffrine', 'Ziguinchor'],
+	'BEN':['Borgou', 'Collines', 'BEN', 'Mono', 'Kouffo', 'Atlantique', 'Donga', 'Plateau', 'Atakora', 'Alibori', 'Littoral', 'Oueme', 'Zou']
+}
 
 
 

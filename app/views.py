@@ -44,8 +44,8 @@ def flash_errors(form):
                 error
             ))
 
-COU=settings.COU
 indicator_dict=settings.indicator_dict
+regions=settings.regions
 
 @app.route('/')
 def index():
@@ -59,7 +59,7 @@ def index():
   session["scenario"]   = settings.scenarios[0]
   session["indicator_avail"]   = settings.indicators
   session["indicator"]   = session["indicator_avail"][0]
-  session["region_avail"]   = COU[session['country']]._masks['360x720_lat_89.75_-89.75_lon_-179.75_179.75']['lat_weighted'].keys()
+  session["region_avail"]   = regions[session['country']]
   session['region']   = session["region_avail"][0]
 
   session["period_avail"]   = settings.periods
@@ -233,7 +233,7 @@ def country_choice():
 
   session["indicator_avail"]   = list(set([data.var_name for data in COU[session['country']]._DATA]))
   session["indicator"]   = session["indicator_avail"][0]
-  session["region_avail"]   = COU[session['country']]._masks['360x720_lat_89.75_-89.75_lon_-179.75_179.75']['lat_weighted'].keys()
+  session["region_avail"]   = regions[session['country']]
   session['region']   = session["region_avail"][0]
 
   return redirect(url_for('choices'))
