@@ -33,10 +33,15 @@ except:pass
 from country_analysis_obj import country_analysis,plot_map,new_data_object
 os.chdir('/Users/peterpfleiderer/Documents/Projects/projection_sharing/app/')
 
+import matplotlib
+matplotlib.use('Agg')
+import matplotlib.pyplot as plt
 
-reference_period  = [1980,2000]
+
+reference_period  = [1986,2006]
 projection_period = [2030,2050]
 scenarios	= ['rcp45']
+
 
 os.chdir('/Users/peterpfleiderer/Documents/Projects')
 
@@ -64,16 +69,14 @@ indicator_dict={
 for key in indicator_dict.keys():
 	indicator_dict[key]['ylabel']=indicator_dict[key]['long_name']+' ['+indicator_dict[key]['unit']+']'
 
+scenario='rcp45'
 
 
 
 
 
-
-
-
-
-
+periods	= ['2020-2040','2040-2060']
+indicators = ['tas','pr','RX1','year_RX5','TXx','year_CDD']
 
 
 

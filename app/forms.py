@@ -39,9 +39,13 @@ class regionForm(Form):
   regions = SelectField(u'Available regions', choices=[],
             validators=[Required("Please select at least one region.")])
 
-class PeriodField(Form):
-  regex = "[1-2][0-9]{3}-[1-2][0-9]{3}"
+class periodForm(Form):
+  periods = SelectField(u'Available periods', choices=[],
+            validators=[Required("Please select at least one period.")])
 
-  reference_period    = TextField(u'Refernce  Period', validators=[Regexp(regex, message="Please use YYYY-YYYY format.")])
-  projection_period   = TextField(u'Projection Period', validators=[Regexp(regex, message="Please use YYYY-YYYY format.")])
+# class PeriodField(Form):
+#   regex = "[1-2][0-9]{3}-[1-2][0-9]{3}"
+
+#   reference_period    = TextField(u'Refernce  Period', validators=[Regexp(regex, message="Please use YYYY-YYYY format.")])
+#   projection_period   = TextField(u'Projection Period', validators=[Regexp(regex, message="Please use YYYY-YYYY format.")])
 

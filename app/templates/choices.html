@@ -26,13 +26,11 @@
   {{ form_indicator.indicators.label }} {{ form_indicator.indicators(onchange="change_indicator();") }}
   </form>
 
-    <form method="POST" action="/periodchoice">
-        {{ form_period.hidden_tag() }}
-        {{ form_period.reference_period.label }} {{ form_period.reference_period(size=20) }}
+  <form method="POST" action="/period_choice" id="period_id">
+  {{ form_period.hidden_tag() }}
+  {{ form_period.periods.label }} {{ form_period.periods(onchange="change_period();") }}
+  </form>
 
-      {{ form_period.projection_period.label }} {{ form_period.projection_period(size=20) }}
-      <button type="submit" class="btn">Select periods</button>
-    </form>
 </div>
 
 
