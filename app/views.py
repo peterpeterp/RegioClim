@@ -45,22 +45,23 @@ def flash_errors(form):
             ))
 
 COU=settings.COU
+indicator_dict=settings.indicator_dict
 
 @app.route('/')
 def index():
+  session["country_avail"]   = settings.countrys
+  session['country']   = settings.countrys[0]
 
   session["reference_period"]   = settings.reference_period
   session["projection_period"]  = settings.projection_period
+
   session["scenario_avail"]   = settings.scenarios
   session["scenario"]   = settings.scenarios[0]
-  session["indicator_avail"]   = settings.indicators
-  session["indicator"]   = 'tas'
-  session["country_avail"]   = settings.countrys
-  session['country']   = settings.countrys[0]
-  session["region_avail"]   = settings.regions
-  session['region']   = settings.regions[0]
-  # session["period_avail"]   = settings.periods
-  # session["period"]   = settings.periods[0]
+  session["indicator_avail"]   = list(set([data.var_name for data in COU[session['country']]._DATA]))
+  session["indicator"]   = session["indicator_avail"][0]
+  session["region_avail"]   = COU[session['country']]._masks['360x720_lat_89.75_-89.75_lon_-179.75_179.75']['lat_weighted'].keys()
+  session['region']   = session["region_avail"][0]
+
   print session
 
 
@@ -70,9 +71,7 @@ def index():
 def choices():
   print session
   country=session['country']
-
-
-
+  indicator=session['indicator']
 
   form_scenario = forms.scenarioForm(request.form)
   form_scenario.scenarios.choices = zip(session['scenario_avail'],session['scenario_avail'])
@@ -95,34 +94,42 @@ def choices():
 
 
 
-  cordex=COU[country].selection([session["indicator"],session["scenario"],'CORDEX_BC','ensemble_mean'])[0]
-  CORDEX_BC_plot='static/images/'+country+'/'+session["indicator"]+'_'+session["scenario"]+'_CORDEX_BC_'+proP+'-'+refP+'.png'
+  cordex=COU[country].selection([indicator,session["scenario"],'CORDEX_BC','ensemble_mean'])[0]
+  CORDEX_BC_plot='static/images/'+country+'/'+indicator+'_'+session["scenario"]+'_CORDEX_BC_'+proP+'-'+refP+'.png'
   if os.path.isfile(CORDEX_BC_plot)==False:
-    COU[country].period_averages(periods=periods,filters=[session["indicator"],session["scenario"],'CORDEX_BC'])
+    COU[country].period_averages(periods=periods,filters=[indicator,session["scenario"],'CORDEX_BC'])
     COU[country].model_agreement()
-    cordex.display_map(period='projection-ref',out_file=CORDEX_BC_plot,polygons=COU[country]._adm_polygons,title='projections')
+    cordex.display_map(period='diff_projection-ref',out_file=CORDEX_BC_plot,polygons=COU[country]._adm_polygons,title='projections',color_label=indicator_dict[indicator]['ylabel'])
 
-  ewembi=COU[country].selection([session["indicator"],'EWEMBI'])[0]
-  EWEMBI_plot='static/images/'+country+'/'+session["indicator"]+'_EWEMBI_'+refP+'.png'
+  ewembi=COU[country].selection([indicator,'EWEMBI'])[0]
+  EWEMBI_plot='static/images/'+country+'/'+indicator+'_EWEMBI_'+refP+'.png'
   if os.path.isfile(EWEMBI_plot)==False:
-    COU[country].period_averages(periods=periods,filters=[session["indicator"],'EWEMBI'])
-    ewembi.display_map(period='ref',out_file=EWEMBI_plot,polygons=COU[country]._adm_polygons,title='observations')
+    COU[country].period_averages(periods=periods,filters=[indicator,'EWEMBI'])
+    ewembi.display_map(period='ref',out_file=EWEMBI_plot,polygons=COU[country]._adm_polygons,title='observations',color_label=indicator_dict[indicator]['ylabel'])
 
-  transient_plot='static/images/'+country+'/'+session["indicator"]+'_'+session['region']+'_transient.png'
+  transient_plot='static/images/'+country+'/'+indicator+'_'+session['region']+'_transient.png'
   if os.path.isfile(transient_plot)==False:
     fig,ax=plt.subplots(nrows=1,ncols=1,figsize=(5,4))
-    ewembi.plot_transient(mask_style='lat_weighted',region=session['region'],running_mean=60,ax=ax,title='',ylabel=None,label='observation')
-    cordex.plot_transient(mask_style='lat_weighted',region=session['region'],running_mean=60,ax=ax,title='',ylabel=None,label='projection')
+    print ewembi.average['lat_weighted'].keys()
+    ewembi.plot_transient(mask_style='lat_weighted',region=session['region'],running_mean_years=5,ax=ax,title='',ylabel=None,label='observation')
+    cordex.plot_transient(mask_style='lat_weighted',region=session['region'],running_mean_years=5,ax=ax,title='',ylabel=None,label='projection')
+    ax.set_ylabel(indicator_dict[indicator]['ylabel'])
     ax.set_title('transient plot')
+    plt.legend(loc='best')
     plt.savefig(transient_plot)
 
-  annual_cycle_plot='static/images/'+country+'/'+session["indicator"]+'_'+session['region']+'_annual_cycle_'+proP+'-'+refP+'.png'
-  if os.path.isfile(annual_cycle_plot)==False:
-    fig,ax=plt.subplots(nrows=1,ncols=1,figsize=(5,4))
-    ewembi.plot_annual_cycle(period=session["reference_period"],mask_style='lat_weighted',region=session['region'],ax=ax,title='',ylabel=None,label='observation')
-    cordex.plot_annual_cycle(period=session["projection_period"],mask_style='lat_weighted',region=session['region'],ax=ax,title='',ylabel=None,label='projection')
-    ax.set_title('annual cycle plot')
-    plt.savefig(annual_cycle_plot)
+  if cordex.time_step=='monthly':
+    annual_cycle_plot='static/images/'+country+'/'+indicator+'_'+session['region']+'_annual_cycle_'+proP+'-'+refP+'.png'
+    if os.path.isfile(annual_cycle_plot)==False:
+      fig,ax=plt.subplots(nrows=1,ncols=1,figsize=(5,4))
+      ewembi.plot_annual_cycle(period=session["reference_period"],mask_style='lat_weighted',region=session['region'],ax=ax,title='',ylabel=None,label='observation')
+      cordex.plot_annual_cycle(period=session["projection_period"],mask_style='lat_weighted',region=session['region'],ax=ax,title='',ylabel=None,label='projection')
+      ax.set_title('annual cycle plot')
+      ax.set_ylabel(indicator_dict[indicator]['ylabel'])
+      plt.legend(loc='best')
+      plt.savefig(annual_cycle_plot)
+  else:
+    annual_cycle_plot='bla'
 
   context = { 
     'form_country':form_country,
@@ -137,9 +144,47 @@ def choices():
   }
   print EWEMBI_plot
 
-  session['update']=['keywords','image']
-
   return render_template('choices.html',**context)
+
+@app.route('/details')
+def details():
+  country=session['country']
+
+  refP = "-".join(str(t) for t in session["reference_period"])
+  proP = "-".join(str(t) for t in session["projection_period"])
+
+  form_period = forms.PeriodField(request.form, reference_period=refP, projection_period=proP)
+  periods={'ref':session["reference_period"],'projection':session["projection_period"]}
+
+  CORDEX_BC_plot_detail='static/images/'+country+'/'+session["indicator"]+'_'+session["scenario"]+'_CORDEX_BC_'+proP+'-'+refP+'_detials.png'
+  if os.path.isfile(CORDEX_BC_plot_detail)==False:
+    COU[country].period_averages(periods=periods,filters=[session["indicator"],session["scenario"],'CORDEX_BC'])
+    COU[country].model_agreement()
+    fig,axes=plt.subplots(nrows=1,ncols=5,figsize=(6,4))
+    axes=axes.flatten()
+    selection=COU[country].selection([session["indicator"],session["scenario"],'CORDEX_BC'])
+    for model,i in zip(selection,range(len(selection))):
+      print model.period.keys()
+      im=model.display_map(period='diff_projection-ref',ax=axes[i],title=model.model,color_bar=False)
+    cbar_ax=fig.add_axes([0.3,0.2,0.4,0.6])
+    cbar_ax.axis('off')
+    cb=fig.colorbar(im,orientation='horizontal',label='')
+    plt.savefig(CORDEX_BC_plot_detail)
+
+  context = { 
+    'CORDEX_BC_plot_detail':CORDEX_BC_plot_detail
+  }
+
+  return render_template('details.html',**context)
+
+
+@app.route('/go_to_choices',  methods=("POST", ))
+def go_to_choices():
+  return redirect(url_for("choices"))
+
+@app.route('/go_to_details',  methods=("POST", ))
+def go_to_details():
+  return redirect(url_for("details"))
 
 @app.route('/periodchoice',  methods=("POST", ))
 def add_periodchoice():
@@ -199,7 +244,11 @@ def country_choice():
   # put chosen at beginning of list
   index=session['country_avail'].index(session['country'])
   session['country_avail'][index],session['country_avail'][0]=session['country_avail'][0],session['country_avail'][index]
-  session["indicator_avail"] = list(set([data.var_name for data in COU[session['country']]._DATA]))
+
+  session["indicator_avail"]   = list(set([data.var_name for data in COU[session['country']]._DATA]))
+  session["indicator"]   = session["indicator_avail"][0]
+  session["region_avail"]   = COU[session['country']]._masks['360x720_lat_89.75_-89.75_lon_-179.75_179.75']['lat_weighted'].keys()
+  session['region']   = session["region_avail"][0]
 
   return redirect(url_for('choices'))
 
