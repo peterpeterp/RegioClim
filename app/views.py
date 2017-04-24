@@ -77,7 +77,7 @@ def choices():
   form_scenario.scenarios.choices = zip(session['scenario_avail'],session['scenario_avail'])
 
   form_indicator = forms.indicatorForm(request.form)
-  form_indicator.indicators.choices = zip(session['indicator_avail'],session['indicator_avail'])
+  form_indicator.indicators.choices = zip(session['indicator_avail'],[indicator_dict[ind] for ind in session['indicator_avail']])
 
   form_country = forms.countryForm(request.form)
   form_country.countrys.choices = zip(session['country_avail'],session['country_avail'])
