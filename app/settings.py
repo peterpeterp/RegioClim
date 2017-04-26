@@ -47,7 +47,7 @@ indicator_dict={
 for key in indicator_dict.keys():
 	indicator_dict[key]['ylabel']=indicator_dict[key]['long_name']+' ['+indicator_dict[key]['unit']+']'
 
-scenario='rcp45'
+scenarios=['rcp45']
 
 regions={
 	'SEN':['Kaolack', 'Fatick', 'Kolda', 'Tambacounda', 'Dakar', 'Saint-Louis', 'Matam', 'Kedougou', 'Louga', 'Sedhiou', 'Thies', 'SEN', 'Diourbel', 'Kaffrine', 'Ziguinchor'],
