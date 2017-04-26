@@ -4,7 +4,7 @@
 
 
 
-<div class="span3">
+<div row>
     <form method="POST" action="/go_to_choices">
       <button type="submit" class="btn">Back</button>
     </form>
@@ -13,10 +13,20 @@
 
 
 
-<div class="9">
-    <IMG SRC={{ CORDEX_BC_plot_detail }} ALT=CORDEX_BC_plot WIDTH=700 HEIGHT=500>
+<div row>
+	<div row>
+		Model Agreement
+	</div>
+<IMG SRC={{ CORDEX_BC_plot_detail }} ALT=CORDEX_BC_plot WIDTH=700 HEIGHT=500>
 </div>
 
+<div row>
+	<div row>
+		Model Performance over reference period:
+		(difference between observations and bias corrected model output over the reference period)
+	</div>
+    <IMG SRC={{ bias_corretion_check }} ALT=CORDEX_BC_plot WIDTH=700 HEIGHT=500>
+</div>
 
 
 

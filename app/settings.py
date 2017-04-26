@@ -27,29 +27,21 @@ import numpy as np
 import pandas as pd
 
 
-
 import matplotlib
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 
 
-reference_period  = [1986,2006]
-projection_period = [2030,2050]
-scenarios	= ['rcp45']
-
-
-
-
 countrys=['BEN','SEN']
 
-
+indicators = ['tas','pr','RX1','year_RX5','TXx','year_CDD']
 indicator_dict={
-	'tas':{'long_name':'mean temperature','unit':'$^\circ C$'},
-	'pr':{'long_name':'precipitation','unit':'mm'},
-	'RX1':{'long_name':'maximal daily precipitation','unit':'mm'},
-	'year_RX5':{'long_name':'cumulative 5 day precipitation','unit':'mm'},
-	'TXx':{'long_name':'daily maximal temperature','unit':'$^\circ C$'},
-	'year_CDD':{'long_name':'maximal dry spell length','unit':'days'},
+	'tas':{'long_name':'mean temperature','unit':'$^\circ C$','seasons':['year','dry','wet']},
+	'pr':{'long_name':'precipitation','unit':'mm','seasons':['year','dry','wet']},
+	'RX1':{'long_name':'maximal daily precipitation','unit':'mm','seasons':['year','dry','wet']},
+	'TXx':{'long_name':'daily maximal temperature','unit':'$^\circ C$','seasons':['year','dry','wet']},
+	'year_RX5':{'long_name':'cumulative 5 day precipitation','unit':'mm','seasons':['year']},
+	'year_CDD':{'long_name':'maximal dry spell length','unit':'days','seasons':['year']},
 }
 
 for key in indicator_dict.keys():
@@ -63,10 +55,16 @@ regions={
 }
 
 
+reference_period  = [1986,2006]
+projection_period = [2030,2050]
+periods	= ['2020-2040','2040-2060','2','1.5']
 
-periods	= ['2020-2040','2040-2060']
-indicators = ['tas','pr','RX1','year_RX5','TXx','year_CDD']
-
+period_dict	= {
+	'2020-2040':'2020-2040',
+	'2040-2060':'2040-2060',
+	'2':'2 deg global warming',
+	'1.5':'1.5 deg global warming',
+}
 
 
 

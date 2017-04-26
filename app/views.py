@@ -44,6 +44,7 @@ def flash_errors(form):
             ))
 
 indicator_dict=settings.indicator_dict
+period_dict=settings.period_dict
 regions=settings.regions
 
 @app.route('/')
@@ -64,6 +65,8 @@ def index():
   session["period_avail"]   = settings.periods
   session["period"]   = settings.periods[0]
 
+  session["season_avail"]   = indicator_dict[session['indicator']]['seasons']
+  session["season"]   = 'year'
   print session
 
 
@@ -81,7 +84,7 @@ def choices():
   form_scenario.scenarios.choices = zip(session['scenario_avail'],session['scenario_avail'])
 
   form_indicator = forms.indicatorForm(request.form)
-  form_indicator.indicators.choices = zip(session['indicator_avail'],session['indicator_avail'])
+  form_indicator.indicators.choices = zip(session['indicator_avail'],[indicator_dict[ind]['long_name'] for ind in  session['indicator_avail']])
 
   form_country = forms.countryForm(request.form)
   form_country.countrys.choices = zip(session['country_avail'],session['country_avail'])
@@ -89,33 +92,33 @@ def choices():
   form_region = forms.regionForm(request.form)
   form_region.regions.choices = zip(session['region_avail'],session['region_avail'])
 
-  # refP = "-".join(str(t) for t in session["reference_period"])
-  # proP = "-".join(str(t) for t in session["projection_period"])
-
-  # form_period = forms.PeriodField(request.form, reference_period=refP, projection_period=proP)
-  # periods={'ref':session["reference_period"],'projection':session["projection_period"]}
-
   form_period = forms.periodForm(request.form)
-  form_period.periods.choices = zip(session['period_avail'],session['period_avail'])
+  form_period.periods.choices = zip(session['period_avail'],[period_dict[per] for per in session['period_avail']])
+
+  form_season = forms.seasonForm(request.form)
+  form_season.seasons.choices = zip(session['season_avail'],session['season_avail'])
 
   refP = "-".join(str(t) for t in session["reference_period"])
   proP = session['period']
   periods={'ref':session["reference_period"],'projection':session["projection_period"]}
 
 
-  CORDEX_BC_plot='static/images/'+country+'/'+indicator+'_'+session["scenario"]+'_CORDEX_BC_'+proP+'-'+refP+'.png'
-  
-  EWEMBI_plot='static/images/'+country+'/'+indicator+'_EWEMBI_'+refP+'.png'
+  CORDEX_BC_plot='static/images/'+country+'/'+indicator+'_'+session["scenario"]+'_CORDEX_BC_'+proP+'-'+refP+'_'+session['season']+'.png'
 
-  transient_plot='static/images/'+country+'/'+indicator+'_'+session['region']+'_transient.png'
+  EWEMBI_plot='static/images/'+country+'/'+indicator+'_EWEMBI_'+refP+'_'+session['season']+'.png'
+
+  transient_plot='static/images/'+country+'/'+indicator+'_'+session['region']+'_'+session['season']+'_transient.png'
 
   annual_cycle_plot='static/images/'+country+'/'+indicator+'_'+session['region']+'_annual_cycle_'+proP+'-'+refP+'.png'
 
+  print CORDEX_BC_plot
+  print EWEMBI_plot
 
   context = { 
     'form_country':form_country,
     'form_region':form_region,
     'form_period':form_period,
+    'form_season':form_season,
     'form_scenario':form_scenario,
     'form_indicator':form_indicator,
     'EWEMBI_plot':EWEMBI_plot,
@@ -143,12 +146,12 @@ def details():
   refP = "-".join(str(t) for t in session["reference_period"])
   proP = session['period']
   periods={'ref':session["reference_period"],'projection':session["projection_period"]}
-
-  CORDEX_BC_plot_detail='static/images/'+country+'/'+session["indicator"]+'_'+session["scenario"]+'_CORDEX_BC_'+proP+'-'+refP+'_detials.png'
-
+  CORDEX_BC_plot_detail='static/images/'+country+'/'+session["indicator"]+'_'+session["scenario"]+'_CORDEX_BC_'+proP+'-'+refP+'_'+session['season']+'_detials.png'
+  bias_corretion_check='static/images/'+country+'/'+session["indicator"]+'_BC_check_'+session['season']+'.png'
 
   context = { 
-    'CORDEX_BC_plot_detail':CORDEX_BC_plot_detail
+    'CORDEX_BC_plot_detail':CORDEX_BC_plot_detail,
+    'bias_corretion_check':bias_corretion_check
   }
 
   return render_template('details.html',**context)
@@ -185,6 +188,15 @@ def scenario_choice():
   session['scenario_avail'][index],session['scenario_avail'][0]=session['scenario_avail'][0],session['scenario_avail'][index]
   return redirect(url_for('choices'))
 
+@app.route('/season_choice',  methods=('POST', ))
+def season_choice():
+  form_season = forms.seasonForm(request.form)
+  session['season']=form_season.seasons.data
+  # put chosen at beginning of list
+  index=session['season_avail'].index(session['season'])
+  session['season_avail'][index],session['season_avail'][0]=session['season_avail'][0],session['season_avail'][index]
+  return redirect(url_for('choices'))
+
 @app.route('/indicator_choice',  methods=('POST', ))
 def indicator_choice():
   form_indicator = forms.indicatorForm(request.form)
@@ -192,6 +204,8 @@ def indicator_choice():
   # put chosen at beginning of list
   index=session['indicator_avail'].index(session['indicator'])
   session['indicator_avail'][index],session['indicator_avail'][0]=session['indicator_avail'][0],session['indicator_avail'][index]
+  session["season_avail"]   = indicator_dict[session['indicator']]['seasons']
+  session["season"]   = session["season_avail"][0]
   return redirect(url_for('choices'))
 
 # @app.route('/period_choice',  methods=('POST', ))

@@ -43,6 +43,10 @@ class periodForm(Form):
   periods = SelectField(u'Available periods', choices=[],
             validators=[Required("Please select at least one period.")])
 
+class seasonForm(Form):
+  seasons = SelectField(u'Available seasons', choices=[],
+            validators=[Required("Please select at least one season.")])
+
 # class PeriodField(Form):
 #   regex = "[1-2][0-9]{3}-[1-2][0-9]{3}"
 
