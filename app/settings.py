@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 # Copyright (C) 2014 Matthias Mengel and Carl-Friedrich Schleussner
 #
 # This file is part of wacalc.
@@ -35,17 +37,39 @@ import matplotlib.pyplot as plt
 countrys=['BEN','SEN']
 
 indicators = ['tas','pr','RX1','year_RX5','TXx','year_CDD']
-indicator_dict={
-	'tas':{'long_name':'mean temperature','unit':'$^\circ C$','seasons':['year','dry','wet']},
-	'pr':{'long_name':'precipitation','unit':'mm','seasons':['year','dry','wet']},
-	'RX1':{'long_name':'maximal daily precipitation','unit':'mm','seasons':['year','dry','wet']},
-	'TXx':{'long_name':'daily maximal temperature','unit':'$^\circ C$','seasons':['year','dry','wet']},
-	'year_RX5':{'long_name':'cumulative 5 day precipitation','unit':'mm','seasons':['year']},
-	'year_CDD':{'long_name':'maximal dry spell length','unit':'days','seasons':['year']},
+
+ind_dict={
+	'tas':{'unit':'$^\circ C$','seasons':['year','dry','wet']},
+	'pr':{'unit':'mm','seasons':['year','dry','wet']},
+	'RX1':{'unit':'mm','seasons':['year','dry','wet']},
+	'TXx':{'unit':'$^\circ C$','seasons':['year','dry','wet']},
+	'year_RX5':{'unit':'mm','seasons':['year']},
+	'year_CDD':{'unit':'days','seasons':['year']},	
 }
 
-for key in indicator_dict.keys():
-	indicator_dict[key]['ylabel']=indicator_dict[key]['long_name']+' ['+indicator_dict[key]['unit']+']'
+lang_dict={'fr':{
+	'tas':'température moyenne',
+	'pr':'précipitation cumulée',
+	'RX1':'précipitation quotidienne maximale',
+	'TXx':'température quotidienne maximale',
+	'year_RX5':'précipitation maximale cumulées en 5 jours',
+	'year_CDD':'duré maximal de période aride',
+	'year':'annuel',
+	'dry':'saison sèche',
+	'wet':'saison humide'
+	},
+	'en':{
+	'tas':'mean temperature',
+	'pr':'precipitation',
+	'RX1':'maximal daily precipitation',
+	'TXx':'daily maximal temperature',
+	'year_RX5':'maximal cumulative 5 day precipitation',
+	'year_CDD':'maximal dry spell length',	
+	'year':'annual',
+	'dry':'dry season',
+	'wet':'wet season'
+	}
+}
 
 scenarios=['rcp45']
 
@@ -57,7 +81,8 @@ regions={
 
 reference_period  = [1986,2006]
 projection_period = [2030,2050]
-periods	= ['2020-2040','2040-2060','2','1.5']
+periods_beginner	= ['2020-2040','2040-2060']
+periods_advanced	= ['2020-2040','2040-2060','2','1.5']
 
 period_dict	= {
 	'2020-2040':'2020-2040',

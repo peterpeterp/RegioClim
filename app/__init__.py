@@ -1,4 +1,11 @@
+# -*- coding: utf-8 -*-
+
 from flask import Flask
+
+import sys
+if sys.version_info.major < 3:
+    reload(sys)
+sys.setdefaultencoding('utf8')
 
 app = Flask(__name__)
 app.config.from_object('config')

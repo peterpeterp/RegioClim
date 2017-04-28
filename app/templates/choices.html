@@ -3,8 +3,6 @@
 
 
 
-<!-- REGIONS -->
-
 <div class="span3">
   <form method="POST" action="/country_choice" id="country_id">
   {{ form_country.hidden_tag() }}
@@ -16,10 +14,12 @@
   {{ form_region.regions.label }} {{ form_region.regions(onchange="change_region();") }}
   </form>
 
+{% if user_type=='advanced' %}
   <form method="POST" action="/scenario_choice" id="scenario_id">
   {{ form_scenario.hidden_tag() }}
   {{ form_scenario.scenarios.label }} {{ form_scenario.scenarios(onchange="change_scenario();") }}
   </form>
+{% endif %}
 
   <form method="POST" action="/indicator_choice" id="indicator_id">
   {{ form_indicator.hidden_tag() }}

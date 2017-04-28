@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 # Copyright (C) 2014 Matthias Mengel and Carl-Friedrich Schleussner
 #
 # This file is part of wacalc.

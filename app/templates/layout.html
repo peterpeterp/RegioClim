@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
+  <meta charset="utf-8"/>
 
   <link href="//code.jquery.com/ui/1.10.2/themes/smoothness/jquery-ui.css" rel="Stylesheet"></link>
   <script src="//code.jquery.com/jquery-2.2.0.min.js"></script>
@@ -33,11 +34,15 @@
     document.getElementById("season_id").submit();
    }
 
+  function change_country_nav() {
+    document.getElementById("country_nav").submit();
+   }
+
   </script>
 
 
     <meta charset="utf-8">
-    <title>Impact Literature Stocktake</title>
+    <title>Climate Projections test</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="">
     <meta name="author" content="">
@@ -49,6 +54,21 @@
         padding-top: 60px; /* 60px to make the container go all the way to the bottom of the topbar */
       }
     </style>
+
+    <style type="text/css">
+    #nav_bar_button {
+      background-color: Transparent;
+      border: Transparent;
+      color: white;
+    }
+    #nav_bar_button:hover {
+      border: none;
+      background: green;
+    }
+
+    </style>
+
+
     <link href="static/assets/css/bootstrap-responsive.css" rel="stylesheet">
 
     <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
@@ -67,6 +87,7 @@
 
   <body>
 
+
     <div class="navbar navbar-inverse navbar-fixed-top">
       <div class="navbar-inner">
         <div class="container">
@@ -75,20 +96,32 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
+
           <a class="brand" href="/home">Still testing</a>
 
           <div class="nav-collapse collapse">
-            <ul class="nav">
+            <ul class="nav navbar-nav">
               <li><a href="documentation">Documentation</a></li>
               <li><a href="about">About</a></li>
-              <!--<li><a href="contact">Contact</a></li>-->
+              <li><a href="contact">Contact</a></li>
             </ul>
-          </div><!--/.nav-collapse -->
+            <ul class="nav navbar-nav navbar-right">
+              <li>                 
+                <form method="POST" action="/user_type_choice">
+                <button type="submit" id="nav_bar_button"><font color="{{advanced_col}}">Advanced</font></button>
+                </form>
+              </li>
+              <li> 
+                <form method="POST" action="/language_choice">
+                <button type="submit" id="nav_bar_button"><font color="white">{{language}}</font></button>
+                </form>
+              </li>
+            </ul>
 
+          </div>
         </div>
       </div>
     </div>
-
     <div class="container">
 
 
