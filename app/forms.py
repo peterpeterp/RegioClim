@@ -24,22 +24,28 @@ from flask.ext.wtf import Form, validators
 from wtforms.validators import ValidationError, Required, Regexp
 
 
-
-class scenarioForm(Form):
-  scenarios = SelectField(u'Available Scenatios', choices=[],
-            validators=[Required("Please select at least one region.")])
-
-class indicatorForm(Form):
-  indicators = SelectField(u'Available Indicators', choices=[],
-            validators=[Required("Please select at least one region.")])
-
 class countryForm(Form):
-  countrys = SelectField(u'Available countrys', choices=[],
+  countrys = SelectField(' ', choices=[],
             validators=[Required("Please select at least one region.")])
 
 class regionForm(Form):
-  regions = SelectField(u'Available regions', choices=[],
+  regions = SelectField(u'Administrative region:<br>(only relevant for transient and annual cycle)', choices=[],
             validators=[Required("Please select at least one region.")])
+
+class indicatorForm(Form):
+  indicators = SelectField(u'Climate Indicator', choices=[],
+            validators=[Required("Please select at least one region.")])
+
+class scenarioForm(Form):
+  scenarios = SelectField(u'Available Scenarios', choices=[],
+            validators=[Required("Please select at least one region.")])
+
+class datasetForm(Form):
+  datasets = SelectField(u'Available Datasets', choices=[],
+            validators=[Required("Please select at least one region.")])
+
+
+
 
 class periodForm(Form):
   periods = SelectField(u'Available periods', choices=[],

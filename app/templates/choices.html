@@ -3,56 +3,84 @@
 
 
 
-<div class="span3">
+<div class="span2.5">
   <form method="POST" action="/country_choice" id="country_id">
-  {{ form_country.hidden_tag() }}
-  {{ form_country.countrys.label }} {{ form_country.countrys(onchange="change_country();") }}
+  {{ form_country.countrys.label }}<br> {{ form_country.countrys(onchange="change_country();") }}
   </form>
 
   <form method="POST" action="/region_choice" id="region_id">
-  {{ form_region.hidden_tag() }}
-  {{ form_region.regions.label }} {{ form_region.regions(onchange="change_region();") }}
+  {{ form_region.regions.label }}<br> {{ form_region.regions(onchange="change_region();") }}
   </form>
 
 {% if user_type=='advanced' %}
   <form method="POST" action="/scenario_choice" id="scenario_id">
-  {{ form_scenario.hidden_tag() }}
-  {{ form_scenario.scenarios.label }} {{ form_scenario.scenarios(onchange="change_scenario();") }}
+  {{ form_scenario.scenarios.label }}<br> {{ form_scenario.scenarios(onchange="change_scenario();") }}
+  </form>
+
+  <form method="POST" action="/dataset_choice" id="dataset_id">
+  {{ form_dataset.datasets.label }}<br> {{ form_dataset.datasets(onchange="change_dataset();") }}
   </form>
 {% endif %}
 
   <form method="POST" action="/indicator_choice" id="indicator_id">
-  {{ form_indicator.hidden_tag() }}
-  {{ form_indicator.indicators.label }} {{ form_indicator.indicators(onchange="change_indicator();") }}
+  {{ form_indicator.indicators.label }}<br> {{ form_indicator.indicators(onchange="change_indicator();") }}
   </form>
 
   <form method="POST" action="/period_choice" id="period_id">
-  {{ form_period.hidden_tag() }}
-  {{ form_period.periods.label }} {{ form_period.periods(onchange="change_period();") }}
+  {{ form_period.periods.label }}<br> {{ form_period.periods(onchange="change_period();") }}
   </form>
 
   <form method="POST" action="/season_choice" id="season_id">
-  {{ form_season.hidden_tag() }}
-  {{ form_season.seasons.label }} {{ form_season.seasons(onchange="change_season();") }}
+  {{ form_season.seasons.label }}<br> {{ form_season.seasons(onchange="change_season();") }}
   </form>
+
+  <div row>
+    <form method="POST" action="/go_to_model_agreement">
+      <button type="submit" class="btn">Model Agreement</button>
+    </form>
+    <form method="POST" action="/go_to_bias_correction">
+      <button type="submit" class="btn">Bias Correction</button>
+    </form>
+  </div>
 
 </div>
 
 
 
 
-<div class="9">
-    <IMG SRC={{ EWEMBI_plot }} ALT=CORDEX_BC_plot WIDTH=400 HEIGHT=300>
-    <IMG SRC={{ CORDEX_BC_plot }} ALT=CORDEX_BC_plot WIDTH=400 HEIGHT=300>
+<div class="span9">
 
-    <div row>
-      <form method="POST" action="/go_to_details">
-        <button type="submit" class="btn">Show more details</button>
-      </form>
+  <div row>
+    <div class="span4">{{ EWEMBI_plot_title }}</div>
+    <div class="span4">{{ Projection_plot_title }}</div>
+  </div>
+
+  <div row>
+    <div class="span4">
+      <IMG SRC={{ EWEMBI_plot }} ALT=' ' WIDTH=350></IMG>
+      <a class="label label-primary" href={{ EWEMBI_plot }} target="_blank"  style="margin-right: 5px;">Download plot </a>
     </div>
+    <div class="span4">
+      <IMG SRC={{ Projection_plot }} ALT=' ' WIDTH=350></IMG>
+      <a class="label label-primary" href={{ Projection_plot }} target="_blank"  style="margin-right: 5px;">Download plot </a>
+    </div>
+  </div>
 
-    <IMG SRC={{ transient_plot }} ALT=CORDEX_BC_plot WIDTH=400 HEIGHT=300>
-    <IMG SRC={{ annual_cycle_plot }} ALT='not available' WIDTH=400 HEIGHT=300>
+  <div row>
+    <div class="span4"><p style="margin-top: 20px;">{{ transient_plot_title }}</p></div>
+    <div class="span4"><p style="margin-top: 20px;">{{ annual_cycle_plot_title }}</p></div>
+  </div>
+
+  <div row>
+    <div class="span4">
+      <IMG SRC={{ transient_plot }} ALT=' ' WIDTH=350></IMG>
+      <a class="label label-primary" href={{ transient_plot }} target="_blank"  style="margin-right: 5px;">Download plot </a>
+    </div>
+    <div class="span4">
+      <IMG SRC={{ annual_cycle_plot }} ALT=' ' WIDTH=350></IMG>
+      <a class="label label-primary" href={{ annual_cycle_plot }} target="_blank"  style="margin-right: 5px;">Download plot </a>
+    </div>
+  </div>
 </div>
 
 

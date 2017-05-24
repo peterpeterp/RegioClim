@@ -36,42 +36,78 @@ import matplotlib.pyplot as plt
 
 countrys=['BEN','SEN']
 
-indicators = ['tas','pr','RX1','year_RX5','TXx','year_CDD']
+datasets=['CORDEX_BC','CMIP5_BC']
+
+season_dict={
+	'SEN':['Jun-Sep','year'],
+	'BEN':['Apr-Jul','year']
+}
 
 ind_dict={
-	'tas':{'unit':'$^\circ C$','seasons':['year','dry','wet']},
-	'pr':{'unit':'mm','seasons':['year','dry','wet']},
-	'RX1':{'unit':'mm','seasons':['year','dry','wet']},
-	'TXx':{'unit':'$^\circ C$','seasons':['year','dry','wet']},
-	'year_RX5':{'unit':'mm','seasons':['year']},
-	'year_CDD':{'unit':'days','seasons':['year']},	
+	'tas':{'unit':'$^\circ C$','time_step':'monthly'},
+	'pr':{'unit':'mm','time_step':'monthly'},
+	'RX1':{'unit':'mm','time_step':'monthly'},
+	'TXx':{'unit':'$^\circ C$','time_step':'monthly'},
+	'RX5':{'unit':'mm','time_step':'monthly'},
 }
 
 lang_dict={'fr':{
 	'tas':'température moyenne',
-	'pr':'précipitation cumulée',
+	'pr':'précipitation',
 	'RX1':'précipitation quotidienne maximale',
 	'TXx':'température quotidienne maximale',
-	'year_RX5':'précipitation maximale cumulées en 5 jours',
+	'RX5':'précipitation maximale cumulées en 5 jours',
 	'year_CDD':'duré maximal de période aride',
 	'year':'annuel',
-	'dry':'saison sèche',
-	'wet':'saison humide'
+	'Apr-Jul':'Apr-Jul',
+	'Jun-Sep':'Jun-Sep'
 	},
 	'en':{
 	'tas':'mean temperature',
 	'pr':'precipitation',
 	'RX1':'maximal daily precipitation',
 	'TXx':'daily maximal temperature',
-	'year_RX5':'maximal cumulative 5 day precipitation',
+	'RX5':'maximal cumulative 5 day precipitation',
 	'year_CDD':'maximal dry spell length',	
 	'year':'annual',
-	'dry':'dry season',
-	'wet':'wet season'
+	'Apr-Jul':'Apr-Jul',
+	'Jun-Sep':'Jun-Sep'
 	}
 }
 
-scenarios=['rcp45']
+form_labels={'fr':{
+	'country':u'Pays analysé:',
+	'region':u'Région administrative:',
+	'scenario':u"Scénario d'émission:",
+	'indicator':u'Indicateur climatique:',
+	'period':u'Période de projection:',
+	'season':u'Saison:',
+	},'en':{
+	'country':u'Studied country:',
+	'region':u'Administrative region:',
+	'scenario':u'Emission scenraio:',
+	'indicator':u'Climate indicator:',
+	'period':u'Projection period:',
+	'season':u'Season:',	
+	}
+	
+}
+
+plot_titles={'fr':{
+	'EWEMBI_plot':u"Observations EWEMBI pour la période de réference 1986-2006",
+	'CORDEX_plot':u"Projections de modèles cliamtiques",
+	'transient_plot':u"",
+	'annual_cycle_plot':u""
+	},'fr':{
+	'EWEMBI_plot':u"EWEMBI observations over the reference period 1986-2006",
+	'CORDEX_plot':u"Change projected by regional climate modeles ",
+	'transient_plot':u"",
+	'annual_cycle_plot':u""
+	}	
+}
+
+
+scenarios=['rcp4p5']
 
 regions={
 	'SEN':['Kaolack', 'Fatick', 'Kolda', 'Tambacounda', 'Dakar', 'Saint-Louis', 'Matam', 'Kedougou', 'Louga', 'Sedhiou', 'Thies', 'SEN', 'Diourbel', 'Kaffrine', 'Ziguinchor'],
