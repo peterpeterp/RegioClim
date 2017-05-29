@@ -138,19 +138,21 @@ def choices():
     if user_type=='beginner':  advanced_col='gray'
 
     if lang=='fr':
+      language=languages['en']
       EWEMBI_plot_title=u"Observations pour la période de réference 1986-2006"
       Projection_plot_title=u"Changement projeté pour la période "+proP+" par rapport à la période de réfernce 1986-2006"
       transient_plot_title='Moyenne régionale pour les observations et projections'
       annual_cycle_plot_title='Cycle annuel pour les observations durant la période de réference 1986-2006 et les projections pour la période '+proP
 
     if lang=='en':
+      language=languages['fr']
       EWEMBI_plot_title=u"Observations over the reference period 1986-2006"
       Projection_plot_title=u"Change projected for the period "+proP+" with respect to the reference period 1986-2006"
       transient_plot_title='Regional average for observations and projections'     
       annual_cycle_plot_title='Annual cycle for observations over the reference period 1986-2006 and projections over the period '+proP
 
     context = { 
-      'language':languages[lang],
+      'language':language,
       'advanced_col':advanced_col,
       'user_type':user_type,
       'language_flag':languages[session['language']],
@@ -290,6 +292,8 @@ def indicator_choice():
   # put chosen at beginning of list
   index=session['indicator_avail'].index(session['indicator'])
   session['indicator_avail'][index],session['indicator_avail'][0]=session['indicator_avail'][0],session['indicator_avail'][index]
+  if ind_dict[session['indicator']]['time_step']=='yearly':  session["season_avail"]=['year']
+  if ind_dict[session['indicator']]['time_step']=='monthly':  session["season_avail"]=season_dict[session['country']]
   session["season"]   = session["season_avail"][0]
   return redirect(url_for('choices'))
 

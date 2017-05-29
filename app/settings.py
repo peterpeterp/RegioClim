@@ -48,7 +48,7 @@ ind_dict={
 	'pr':{'unit':'mm','time_step':'monthly'},
 	'RX1':{'unit':'mm','time_step':'monthly'},
 	'TXx':{'unit':'$^\circ C$','time_step':'monthly'},
-	'RX5':{'unit':'mm','time_step':'monthly'},
+	'year_RX5':{'unit':'mm','time_step':'yearly'},
 }
 
 lang_dict={'fr':{
@@ -56,7 +56,7 @@ lang_dict={'fr':{
 	'pr':'précipitation',
 	'RX1':'précipitation quotidienne maximale',
 	'TXx':'température quotidienne maximale',
-	'RX5':'précipitation maximale cumulées en 5 jours',
+	'year_RX5':'précipitation maximale cumulées en 5 jours',
 	'year_CDD':'duré maximal de période aride',
 	'year':'annuel',
 	'Apr-Jul':'Apr-Jul',
@@ -67,7 +67,7 @@ lang_dict={'fr':{
 	'pr':'precipitation',
 	'RX1':'maximal daily precipitation',
 	'TXx':'daily maximal temperature',
-	'RX5':'maximal cumulative 5 day precipitation',
+	'year_RX5':'maximal cumulative 5 day precipitation',
 	'year_CDD':'maximal dry spell length',	
 	'year':'annual',
 	'Apr-Jul':'Apr-Jul',
