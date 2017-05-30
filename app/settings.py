@@ -39,8 +39,8 @@ countrys=['BEN','SEN']
 datasets=['CORDEX_BC','CMIP5_BC']
 
 season_dict={
-	'SEN':['Jun-Sep','year'],
-	'BEN':['Apr-Jul','year']
+	'SEN':['year','Jun-Sep'],
+	'BEN':['year','Apr-Jul']
 }
 
 ind_dict={

@@ -82,7 +82,7 @@ def index():
   session["period"]   = settings.periods_beginner[0]
 
   session["season_avail"]   = season_dict[session['country']]
-  session["season"]   = 'year'
+  session["season"]   = session["season_avail"][0]
 
   print session
   return redirect(url_for("choices"))
@@ -294,7 +294,7 @@ def indicator_choice():
   session['indicator_avail'][index],session['indicator_avail'][0]=session['indicator_avail'][0],session['indicator_avail'][index]
   if ind_dict[session['indicator']]['time_step']=='yearly':  session["season_avail"]=['year']
   if ind_dict[session['indicator']]['time_step']=='monthly':  session["season_avail"]=season_dict[session['country']]
-  session["season"]   = session["season_avail"][0]
+  if session["season"] not in session["season_avail"]: session["season"] = session["season_avail"][0]
   return redirect(url_for('choices'))
 
 
