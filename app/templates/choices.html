@@ -26,9 +26,16 @@
   {{ form_indicator.indicators.label }}<br> {{ form_indicator.indicators(onchange="change_indicator();") }}
   </form>
 
-  <form method="POST" action="/period_choice" id="period_id">
-  {{ form_period.periods.label }}<br> {{ form_period.periods(onchange="change_period();") }}
-  </form>
+  <div class="span2">
+    <form method="POST" action="/periodchoice">
+        {{ form_period.hidden_tag() }}
+        {{ form_period.ref_period.label }} {{ form_period.ref_period(size=10) }}
+        {{ form_period.proj_period.label }} {{ form_period.proj_period(size=10 ) }}
+    
+      <button type="submit" class="btn">Select periods       </button>
+    </form>
+  </div>
+  
 
   <form method="POST" action="/season_choice" id="season_id">
   {{ form_season.seasons.label }}<br> {{ form_season.seasons(onchange="change_season();") }}

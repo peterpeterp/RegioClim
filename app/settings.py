@@ -48,7 +48,10 @@ sys.path.append(basepath+'/projection_sharing/')
 
 countrys=['BEN','SEN']
 COUs={'BEN':country_analysis.country_analysis('BEN',basepath+'/country_analysis/data/BEN/',seasons={'year':range(1,13)}),
-		'SEN':country_analysis.country_analysis('SEN',basepath+'/country_analysis/data/SEN/',seasons={'year':range(1,13)})}
+		#'SEN':country_analysis.country_analysis('SEN',basepath+'/country_analysis/data/SEN/',seasons={'year':range(1,13)})
+		}
+
+print COUs
 
 for COU in COUs.values():
 	COU.load_data()
@@ -134,8 +137,8 @@ regions={
 }
 
 
-reference_period  = [1986,2006]
-projection_period = [2030,2050]
+ref_period  = [1986,2005]
+proj_period = [2031,2050]
 periods_beginner	= ['2020-2040','2040-2060']
 periods_advanced	= ['2020-2040','2040-2060','2','1.5']
 

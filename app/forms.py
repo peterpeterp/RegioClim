@@ -44,20 +44,17 @@ class datasetForm(Form):
   datasets = SelectField(u'Available Datasets', choices=[],
             validators=[Required("Please select at least one region.")])
 
-
-
-
-class periodForm(Form):
-  periods = SelectField(u'Available periods', choices=[],
-            validators=[Required("Please select at least one period.")])
-
 class seasonForm(Form):
   seasons = SelectField(u'Available seasons', choices=[],
             validators=[Required("Please select at least one season.")])
 
-# class PeriodField(Form):
-#   regex = "[1-2][0-9]{3}-[1-2][0-9]{3}"
+# class periodForm(Form):
+#   periods = SelectField(u'Available periods', choices=[],
+#             validators=[Required("Please select at least one period.")])
 
-#   reference_period    = TextField(u'Refernce  Period', validators=[Regexp(regex, message="Please use YYYY-YYYY format.")])
-#   projection_period   = TextField(u'Projection Period', validators=[Regexp(regex, message="Please use YYYY-YYYY format.")])
+class PeriodField(Form):
+  regex = "[1-2][0-9]{3}-[1-2][0-9]{3}"
+
+  ref_period    = TextField(u'Refernce  Period', validators=[Regexp(regex, message="Please use YYYY-YYYY format.")])
+  proj_period   = TextField(u'Projection Period', validators=[Regexp(regex, message="Please use YYYY-YYYY format.")])
 

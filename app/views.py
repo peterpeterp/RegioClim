@@ -66,8 +66,8 @@ def index():
   session["country_avail"]   = settings.countrys
   session['country']   = settings.countrys[0]
 
-  session["reference_period"]   = settings.reference_period
-  session["projection_period"]  = settings.projection_period
+  session["ref_period"]   = settings.ref_period
+  session["proj_period"]  = settings.proj_period
 
   session["scenario_avail"]   = settings.scenarios
   session["scenario"]   = settings.scenarios[0]
@@ -80,9 +80,6 @@ def index():
   session["region_avail"]   = regions[session['country']]
   session['region']   = session["region_avail"][0]
 
-  session["period_avail"]   = settings.periods_beginner
-  session["period"]   = settings.periods_beginner[0]
-
   session["season_avail"]   = season_dict[session['country']]
   session["season"]   = session["season_avail"][0]
 
@@ -93,54 +90,67 @@ def index():
 def choices():
   if True: 
     print session
-    country=session['country']
-    indicator=session['indicator']
-    print indicator
-    lang=session['language']
-    user_type=session['user_type']
+    s=session
+    lang=s['language']
 
     form_country = forms.countryForm(request.form)
-    form_country.countrys.choices = zip(session['country_avail'],session['country_avail'])
+    form_country.countrys.choices = zip(s['country_avail'],s['country_avail'])
     form_country.countrys.label = form_labels[lang]['country']
 
     form_region = forms.regionForm(request.form)
-    form_region.regions.choices = zip(session['region_avail'],session['region_avail'])
+    form_region.regions.choices = zip(s['region_avail'],s['region_avail'])
     form_region.regions.label = form_labels[lang]['region']
 
     form_scenario = forms.scenarioForm(request.form)
-    form_scenario.scenarios.choices = zip(session['scenario_avail'],session['scenario_avail'])
+    form_scenario.scenarios.choices = zip(s['scenario_avail'],s['scenario_avail'])
     form_scenario.scenarios.label = form_labels[lang]['scenario']
 
     form_dataset = forms.datasetForm(request.form)
-    form_dataset.datasets.choices = zip(session['dataset_avail'],session['dataset_avail'])
+    form_dataset.datasets.choices = zip(s['dataset_avail'],s['dataset_avail'])
     form_dataset.datasets.label = 'Dataset'
 
     form_indicator = forms.indicatorForm(request.form)
-    form_indicator.indicators.choices = zip(session['indicator_avail'],[lang_dict[lang][ind] for ind in session['indicator_avail']])
+    form_indicator.indicators.choices = zip(s['indicator_avail'],[lang_dict[lang][ind] for ind in s['indicator_avail']])
     form_indicator.indicators.label = form_labels[lang]['indicator']
 
-    form_period = forms.periodForm(request.form)
-    form_period.periods.choices = zip(session['period_avail'],[period_dict[per] for per in session['period_avail']])
-    form_period.periods.label = form_labels[lang]['period']
+    form_period = forms.PeriodField(request.form)
+    ref_P = "-".join(str(t) for t in session["ref_period"])
+    proj_P = "-".join(str(t) for t in session["proj_period"])
+  
+    form_period = forms.PeriodField(request.form, proj_period=proj_P, ref_period=ref_P)
 
     form_season = forms.seasonForm(request.form)
-    form_season.seasons.choices = zip(session['season_avail'],[lang_dict[lang][sea] for sea in session['season_avail']])
+    form_season.seasons.choices = zip(s['season_avail'],[lang_dict[lang][sea] for sea in s['season_avail']])
     form_season.seasons.label = form_labels[lang]['season']
 
-    refP = "-".join(str(t) for t in session["reference_period"])
-    proP = session['period']
-    periods={'ref':session["reference_period"],'projection':session["period"]}
+    refP = "-".join(str(t) for t in s["ref_period"])
+    proP = "-".join(str(t) for t in s["proj_period"])
+    periods={refP:s["ref_period"],proP:s["proj_period"]}
 
-    Projection_plot='static/images/'+country+'/'+indicator+'_'+session["scenario"]+'_'+session["dataset"]+'_'+proP+'-ref_'+session['season']+'.png'
-    EWEMBI_plot='static/images/'+country+'/'+indicator+'_EWEMBI_ref_'+session['season']+'.png'
-    transient_plot='static/images/'+country+'/'+indicator+'_'+session["dataset"]+'_'+session['region']+'_'+session['season']+'_transient.png'
-    annual_cycle_plot='static/images/'+country+'/'+indicator+'_'+session["dataset"]+'_'+session['region']+'_annual_cycle_'+proP+'-ref.png'
+    print periods
 
-    print COUs[country].selection([indicator,session['dataset'],'ensemble_mean'])
-    COUs[country].selection([indicator,session['dataset'],'ensemble_mean'])[0].display_map(out_file=settings.basepath+'test.png')
+    EWEMBI_plot='static/images/'+s['country']+'/'+s['indicator']+'_EWEMBI_ref_'+s['season']+'.png'
+    transient_plot='static/images/'+s['country']+'/'+s['indicator']+'_'+s["dataset"]+'_'+s['region']+'_'+s['season']+'_transient.png'
+    annual_cycle_plot='static/images/'+s['country']+'/'+s['indicator']+'_'+s["dataset"]+'_'+s['region']+'_annual_cycle_'+proP+'-ref.png'
 
-    if user_type=='advanced': advanced_col='white'
-    if user_type=='beginner':  advanced_col='gray'
+    COU=COUs[s['country']]
+    ens_selection=COU.selection([s['indicator'],s['dataset']])
+    ens_mean=COU.selection([s['indicator'],s['dataset'],'ensemble_mean'])[0]
+
+
+    Projection_plot='projection_sharing/app/static/images/'+s['country']+'_'+s['indicator']+'_'+s["scenario"]+'_'+s["dataset"]+'_'+proP+'-'+refP+'_'+s['season']+'_'+s['region']+'.png'
+    COU.period_statistics(periods=periods,selection=ens_selection,ref_name=refP)
+    COU.period_model_agreement()
+    print ens_mean.period
+    ens_mean.display_map(out_file=Projection_plot,
+      highlight_region=s['region'],
+      period='diff_'+proP+'-'+refP,
+      color_label='bla',
+      title='blala'
+      )
+
+    if s['user_type']=='advanced': advanced_col='white'
+    if s['user_type']=='beginner':  advanced_col='gray'
 
     if lang=='fr':
       language=languages['en']
@@ -159,8 +169,8 @@ def choices():
     context = { 
       'language':language,
       'advanced_col':advanced_col,
-      'user_type':user_type,
-      'language_flag':languages[session['language']],
+      'user_type':s['user_type'],
+      'language_flag':languages[s['language']],
       'form_country':form_country,
       'form_country':form_country,
       'form_region':form_region,
@@ -171,7 +181,7 @@ def choices():
       'form_indicator':form_indicator,
       'EWEMBI_plot':EWEMBI_plot,
       'EWEMBI_plot_title':EWEMBI_plot_title,
-      'Projection_plot':Projection_plot,
+      'Projection_plot':Projection_plot.replace('projection_sharing/app/',''),
       'Projection_plot_title':Projection_plot_title,
       'annual_cycle_plot':annual_cycle_plot,
       'annual_cycle_plot_title':annual_cycle_plot_title,
@@ -191,9 +201,9 @@ def model_agreement():
     form_period = forms.periodForm(request.form)
     form_period.periods.choices = zip(session['period_avail'],session['period_avail'])
 
-    refP = "-".join(str(t) for t in session["reference_period"])
+    refP = "-".join(str(t) for t in session["ref_period"])
     proP = session['period']
-    periods={'ref':session["reference_period"],'projection':session["projection_period"]}
+    periods={'ref':session["ref_period"],'projection':session["proj_period"]}
     CORDEX_BC_plot_detail='static/images/'+country+'/'+session["indicator"]+'_'+session["scenario"]+'_'+session['dataset']+'_'+session['season']+'_details.png'
 
     context = { 
@@ -209,12 +219,12 @@ def bias_correction():
   try:
     country=session['country']
 
-    form_period = forms.periodForm(request.form)
+    form_period = forms.PeriodField(request.form)
     form_period.periods.choices = zip(session['period_avail'],session['period_avail'])
 
-    refP = "-".join(str(t) for t in session["reference_period"])
+    refP = "-".join(str(t) for t in session["ref_period"])
     proP = session['period']
-    periods={'ref':session["reference_period"],'projection':session["projection_period"]}
+    periods={'ref':session["ref_period"],'projection':session["proj_period"]}
     bias_corretion_check='static/images/'+country+'/'+session["indicator"]+'_BC_check_'+session['season']+'.png'
 
     context = { 
@@ -303,8 +313,8 @@ def indicator_choice():
   return redirect(url_for('choices'))
 
 
-@app.route('/period_choice',  methods=('POST', ))
-def period_choice():
+@app.route('/period_choice__',  methods=('POST', ))
+def period_choice__():
   form_period = forms.periodForm(request.form)
   session['period']=form_period.periods.data
   # put chosen at beginning of list
@@ -312,10 +322,26 @@ def period_choice():
   session['period_avail'][index],session['period_avail'][0]=session['period_avail'][0],session['period_avail'][index]
   return redirect(url_for('choices'))
 
+@app.route('/periodchoice',  methods=("POST", ))
+def add_periodchoice():
+  form_period = forms.PeriodField(request.form)
+
+  if form_period.validate_on_submit():
+    session["ref_period"]   = [int(t) for t in form_period.ref_period.data.split("-")]
+    session["proj_period"]  = [int(t) for t in form_period.proj_period.data.split("-")]
+
+  else:
+    flash_errors(form_period)
+
+  return redirect(url_for("choices"))
+
 @app.route('/region_choice',  methods=('POST', ))
 def region_choice():
   form_region = forms.regionForm(request.form)
   session['region']=form_region.regions.data
+  COU=COUs[session['country']]
+  area=COU.get_region_area(session['region'])
+  print area
   # put chosen at beginning of list
   index=session['region_avail'].index(session['region'])
   session['region_avail'][index],session['region_avail'][0]=session['region_avail'][0],session['region_avail'][index]
