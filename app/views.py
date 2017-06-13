@@ -54,6 +54,8 @@ regions=settings.regions
 form_labels=settings.form_labels
 season_dict=settings.season_dict
 
+COUs=settings.COUs
+
 languages={'en':'English','fr':'Français'}
 
 @app.route('/')
@@ -133,6 +135,9 @@ def choices():
     EWEMBI_plot='static/images/'+country+'/'+indicator+'_EWEMBI_ref_'+session['season']+'.png'
     transient_plot='static/images/'+country+'/'+indicator+'_'+session["dataset"]+'_'+session['region']+'_'+session['season']+'_transient.png'
     annual_cycle_plot='static/images/'+country+'/'+indicator+'_'+session["dataset"]+'_'+session['region']+'_annual_cycle_'+proP+'-ref.png'
+
+    print COUs[country].selection([indicator,session['dataset'],'ensemble_mean'])
+    COUs[country].selection([indicator,session['dataset'],'ensemble_mean'])[0].display_map(out_file=settings.basepath+'test.png')
 
     if user_type=='advanced': advanced_col='white'
     if user_type=='beginner':  advanced_col='gray'
