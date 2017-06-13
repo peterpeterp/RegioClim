@@ -12,6 +12,10 @@
   {{ form_region.regions.label }}<br> {{ form_region.regions(onchange="change_region();") }}
   </form>
 
+{% if small_region_warning==True %}
+  warning warning
+{% endif %}
+
 {% if user_type=='advanced' %}
   <form method="POST" action="/scenario_choice" id="scenario_id">
   {{ form_scenario.scenarios.label }}<br> {{ form_scenario.scenarios(onchange="change_scenario();") }}

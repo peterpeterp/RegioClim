@@ -77,8 +77,11 @@ def index():
 
   session["indicator_avail"]   = settings.ind_dict.keys()
   session["indicator"]   = session["indicator_avail"][0]
+
   session["region_avail"]   = regions[session['country']]
   session['region']   = session["region_avail"][0]
+
+  session['small_region_warning']=False
 
   session["season_avail"]   = season_dict[session['country']]
   session["season"]   = session["season_avail"][0]
@@ -92,6 +95,9 @@ def choices():
     print session
     s=session
     lang=s['language']
+
+    region=s['region']
+    if region.split('(')[-1]=='full country)': region=s['country']
 
     form_country = forms.countryForm(request.form)
     form_country.countrys.choices = zip(s['country_avail'],s['country_avail'])
@@ -123,27 +129,28 @@ def choices():
     form_season.seasons.choices = zip(s['season_avail'],[lang_dict[lang][sea] for sea in s['season_avail']])
     form_season.seasons.label = form_labels[lang]['season']
 
-    refP = "-".join(str(t) for t in s["ref_period"])
-    proP = "-".join(str(t) for t in s["proj_period"])
+    refP = "to".join(str(t) for t in s["ref_period"])
+    proP = "to".join(str(t) for t in s["proj_period"])
     periods={refP:s["ref_period"],proP:s["proj_period"]}
 
     print periods
 
     EWEMBI_plot='static/images/'+s['country']+'/'+s['indicator']+'_EWEMBI_ref_'+s['season']+'.png'
-    transient_plot='static/images/'+s['country']+'/'+s['indicator']+'_'+s["dataset"]+'_'+s['region']+'_'+s['season']+'_transient.png'
-    annual_cycle_plot='static/images/'+s['country']+'/'+s['indicator']+'_'+s["dataset"]+'_'+s['region']+'_annual_cycle_'+proP+'-ref.png'
+    transient_plot='static/images/'+s['country']+'/'+s['indicator']+'_'+s["dataset"]+'_'+region+'_'+s['season']+'_transient.png'
+    annual_cycle_plot='static/images/'+s['country']+'/'+s['indicator']+'_'+s["dataset"]+'_'+region+'_annual_cycle_'+proP+'-ref.png'
 
     COU=COUs[s['country']]
     ens_selection=COU.selection([s['indicator'],s['dataset']])
     ens_mean=COU.selection([s['indicator'],s['dataset'],'ensemble_mean'])[0]
 
 
-    Projection_plot='projection_sharing/app/static/images/'+s['country']+'_'+s['indicator']+'_'+s["scenario"]+'_'+s["dataset"]+'_'+proP+'-'+refP+'_'+s['season']+'_'+s['region']+'.png'
+    Projection_plot='projection_sharing/app/static/images/'+s['country']+'_'+s['indicator']+'_'+s["scenario"]+'_'+s["dataset"]+'_'+proP+'-'+refP+'_'+s['season']+'_'+region+'.png'
     COU.period_statistics(periods=periods,selection=ens_selection,ref_name=refP)
-    COU.period_model_agreement()
+    COU.period_model_agreement(ref_name=refP)
     print ens_mean.period
+    print ens_mean.agreement
     ens_mean.display_map(out_file=Projection_plot,
-      highlight_region=s['region'],
+      highlight_region=region,
       period='diff_'+proP+'-'+refP,
       color_label='bla',
       title='blala'
@@ -186,7 +193,8 @@ def choices():
       'annual_cycle_plot':annual_cycle_plot,
       'annual_cycle_plot_title':annual_cycle_plot_title,
       'transient_plot':transient_plot,
-      'transient_plot_title':transient_plot_title
+      'transient_plot_title':transient_plot_title,
+      'small_region_warning':s['small_region_warning']
     }
     return render_template('choices.html',**context)
 
@@ -339,9 +347,14 @@ def add_periodchoice():
 def region_choice():
   form_region = forms.regionForm(request.form)
   session['region']=form_region.regions.data
-  COU=COUs[session['country']]
-  area=COU.get_region_area(session['region'])
-  print area
+  if session['region'].split('(')[-1]!='full country)':
+    COU=COUs[session['country']]
+    area=COU.get_region_area(session['region'])['latxlon']*4
+    print area
+    if area<4:
+      session['small_region_warning']=True
+    else:
+      session['small_region_warning']=False
   # put chosen at beginning of list
   index=session['region_avail'].index(session['region'])
   session['region_avail'][index],session['region_avail'][0]=session['region_avail'][0],session['region_avail'][index]
