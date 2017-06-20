@@ -142,6 +142,8 @@ def choices():
 
     COU=COUs[s['country']]
 
+    indicator_label=lang_dict[lang][s['indicator']]+' ['+ind_dict[s['indicator']]['unit']+']'
+
     # EWEMBI map
     ewembi=COU.selection([s['indicator'],'EWEMBI'])
     EWEMBI_plot='app/static/images/'+s['country']+'/'+s['indicator']+'_EWEMBI_ref_'+s['season']+'.png'
@@ -151,7 +153,7 @@ def choices():
         highlight_region=region,
         period=refP,
         season=s['season'],
-        color_label='bla',
+        color_label=indicator_label,
         title='blala'
         )
 
@@ -166,28 +168,51 @@ def choices():
         highlight_region=region,
         period='diff_'+proP+'-'+refP,
         season=s['season'],
-        color_label='bla',
+        color_label=indicator_label,
         title='blala'
         )
 
     # transient
     transient_plot='app/static/images/'+s['country']+'/'+s['indicator']+'_'+s["dataset"]+'_'+region+'_'+s['season']+'_transient.png'
     if os.path.isfile(transient_plot)==False:
-      COU.create_mask_admin(ewembi[0].raw_file,s['indicator'],regions=[s['region']])
-      COU.area_average('lat_weighted',overwrite=True,selection=ens_selection+ewembi,regions=[s['region']])
+
+      if region != s['country']:COU.create_mask_admin(ewembi[0].raw_file,s['indicator'],regions=[region])
+      COU.area_average('lat_weighted',overwrite=True,selection=ens_selection+ewembi,regions=[region])
       fig,ax=plt.subplots(nrows=1,ncols=1,figsize=(4,3))
       message=ens_mean.plot_transients(season=s['season'],region=region,running_mean_years=20,ax=ax,title='',ylabel=None,label='model data',color='red')
       message=ewembi[0].plot_transients(season=s['season'],region=region,running_mean_years=20,ax=ax,title='',ylabel=None,label='observations (EWEMBI)',color='green')
       if message==1:
-        #ax.set_ylabel(indicator_dict[indicator]['ylabel'])
+        ax.set_ylabel(indicator_label)
         plt.legend(loc='best')
         fig.tight_layout()
         plt.savefig(transient_plot)   
 
 
-
+    # annual cycle
     annual_cycle_plot='app/static/images/'+s['country']+'/'+s['indicator']+'_'+s["dataset"]+'_'+region+'_annual_cycle_'+proP+'-ref.png'
+    if os.path.isfile(annual_cycle_plot)==False:
+      print region
+      if region != s['country']:COU.create_mask_admin(ewembi[0].raw_file,s['indicator'],regions=[region])
+      COU.area_average('lat_weighted',overwrite=False,selection=ens_selection+ewembi,regions=[region])
+      COU.unit_conversions()
 
+      COU.annual_cycle(periods={refP:s['ref_period']},selection=ewembi,regions=[region])
+      COU.annual_cycle(periods=periods,selection=ens_selection,ref_name=refP,regions=[region])
+      COU.annual_cycle_ensemble_mean(regions=[region])
+
+      if ewembi[0].time_format!='yearly':
+          fig,ax=plt.subplots(nrows=2,ncols=1,sharex=True,figsize=(4,3))
+          ewembi[0].plot_annual_cycle(period=refP,region=region,ax=ax[0],title='',ylabel='  ',label='observation',color='green',xlabel=False)
+          ax[0].legend(loc='best')
+          ens_mean.plot_annual_cycle(period='diff_'+proP+'-'+refP,region=region,ax=ax[1],title='',ylabel='  ',label='projected change',color='red')
+          ax[1].plot([0,1],[0,0],color='k')
+          ax[1].legend(loc='best')
+          ylab_ax=fig.add_axes([0.0,0.0,1,1])
+          ylab_ax.axis([0, 1, 0, 1])
+          ylab_ax.axis('off')
+          ylab_ax.text(0.05,0.5,indicator_label,rotation=90,verticalalignment='center')
+          fig.subplots_adjust(left=0.175, bottom=0.125, right=0.95, top=0.95, wspace=0, hspace=0.1)
+          plt.savefig(annual_cycle_plot)
 
 
     if s['user_type']=='advanced': advanced_col='white'

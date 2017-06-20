@@ -115,7 +115,7 @@ form_labels={'fr':{
 	
 }
 
-plot_titles={'fr':{
+plot_titles={'en':{
 	'EWEMBI_plot':u"Observations EWEMBI pour la période de réference 1986-2006",
 	'CORDEX_plot':u"Projections de modèles cliamtiques",
 	'transient_plot':u"",

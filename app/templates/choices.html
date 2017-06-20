@@ -42,6 +42,16 @@
   <form method="POST" action="/dataset_choice" id="dataset_id">
   {{ form_dataset.datasets.label }}<br> {{ form_dataset.datasets(onchange="change_dataset();") }}
   </form>
+
+  <div row>
+    <form method="POST" action="/go_to_model_agreement">
+      <button type="submit" class="btn">Model Agreement</button>
+    </form>
+    <form method="POST" action="/go_to_bias_correction">
+      <button type="submit" class="btn">Bias Correction</button>
+    </form>
+  </div>
+
 {% endif %}
 
 
@@ -61,14 +71,7 @@
   {{ form_season.seasons.label }}<br> {{ form_season.seasons(onchange="change_season();") }}
   </form>
 
-  <div row>
-    <form method="POST" action="/go_to_model_agreement">
-      <button type="submit" class="btn">Model Agreement</button>
-    </form>
-    <form method="POST" action="/go_to_bias_correction">
-      <button type="submit" class="btn">Bias Correction</button>
-    </form>
-  </div>
+
 
 </div>
 
