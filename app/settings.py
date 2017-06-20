@@ -47,19 +47,21 @@ import country_analysis; reload(country_analysis)
 sys.path.append(basepath+'/projection_sharing/')
 
 countrys=['BEN','SEN']
-COUs={'BEN':country_analysis.country_analysis('BEN',basepath+'/country_analysis/data/BEN/',seasons={'year':range(1,13)}),
+COUs={'BEN':country_analysis.country_analysis('BEN',basepath+'country_analysis/data/BEN/',seasons={'year':range(1,13)}),
 		#'SEN':country_analysis.country_analysis('SEN',basepath+'/country_analysis/data/SEN/',seasons={'year':range(1,13)})
 		}
 
-print basepath+'/country_analysis/data/BEN/'
-print COUS['BEN']._DATA
 
-print COUs
 
 for COU in COUs.values():
-	COU.load_data()
+	COU.load_data(quiet=False)
 	COU.unit_conversions()
 
+
+print basepath+'country_analysis/data/BEN/'
+print COUs['BEN']._DATA
+
+print COUs
 
 datasets=['CORDEX_BC','CMIP5_BC']
 
