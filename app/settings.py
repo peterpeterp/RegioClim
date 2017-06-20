@@ -33,7 +33,7 @@ import matplotlib
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 from matplotlib import rc
-rc('text', usetex=True)
+#rc('text', usetex=True)
 
 basepath='/Users/peterpfleiderer/Documents/Projects/'
 try: 
