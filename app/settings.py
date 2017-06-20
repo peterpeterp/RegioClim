@@ -52,7 +52,6 @@ COUs={'BEN':country_analysis.country_analysis('BEN',basepath+'country_analysis/d
 		}
 
 
-
 for COU in COUs.values():
 	COU.load_data(quiet=False)
 	COU.unit_conversions()
@@ -172,7 +171,7 @@ text_dict={'en':{
 
 
 
-
+print 'done with settings'
 
 
 
