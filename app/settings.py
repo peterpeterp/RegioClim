@@ -33,29 +33,29 @@ import matplotlib
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 from matplotlib import rc
-#rc('text', usetex=True)
+rc('text', usetex=True)
 
-# basepath='/Users/peterpfleiderer/Documents/Projects/'
-# try: 
-# 	os.chdir(basepath)
-# except:
-# 	basepath='/home/RCM_projection/'
+basepath='/Users/peterpfleiderer/Documents/Projects/'
+try: 
+	os.chdir(basepath)
+except:
+	basepath='/home/RCM_projection/'
 
-# sys.path.append(basepath+'country_analysis/country_analysis_scripts/')
-# print glob.glob('*')
-# import country_analysis; reload(country_analysis)
-# sys.path.append(basepath+'/projection_sharing/')
-# os.chdir(basepath+'/projection_sharing/')
+sys.path.append(basepath+'country_analysis/country_analysis_scripts/')
+print glob.glob('*')
+import country_analysis; reload(country_analysis)
+sys.path.append(basepath+'/projection_sharing/')
+os.chdir(basepath+'/projection_sharing/')
 
-# countrys=['BEN','SEN']
-# COUs={'BEN':country_analysis.country_analysis('BEN',basepath+'country_analysis/data/BEN/',seasons={'year':range(1,13)}),
-# 		#'SEN':country_analysis.country_analysis('SEN',basepath+'/country_analysis/data/SEN/',seasons={'year':range(1,13)})
-# 		}
+countrys=['BEN','SEN']
+COUs={'BEN':country_analysis.country_analysis('BEN',basepath+'country_analysis/data/BEN/',seasons={'year':range(1,13)}),
+		#'SEN':country_analysis.country_analysis('SEN',basepath+'/country_analysis/data/SEN/',seasons={'year':range(1,13)})
+		}
 
 
-# for COU in COUs.values():
-# 	COU.load_data(quiet=False)
-# 	COU.unit_conversions()
+for COU in COUs.values():
+	COU.load_data(quiet=False)
+	COU.unit_conversions()
 
 
 datasets=['CORDEX_BC','CMIP5_BC']
@@ -66,10 +66,10 @@ season_dict={
 }
 
 ind_dict={
-	#'tas':{'unit':'$^\circ C$','time_step':'monthly'},
+	'tas':{'unit':'$^\circ C$','time_step':'monthly'},
 	'pr':{'unit':'mm','time_step':'monthly'},
 	'RX1':{'unit':'mm','time_step':'monthly'},
-	#'TXx':{'unit':'$^\circ C$','time_step':'monthly'},
+	'TXx':{'unit':'$^\circ C$','time_step':'monthly'},
 	'year_RX5':{'unit':'mm','time_step':'yearly'},
 }
 
