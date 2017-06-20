@@ -70,48 +70,43 @@
   <p class=small>{{ time_scale_txt }}</p>
   {{ form_season.seasons.label }}<br> {{ form_season.seasons(onchange="change_season();") }}
   </form>
-
-
-
 </div>
 
+<div id="LeftPanel" style="width: 5%; height: 100%; float: left;">
+  <p class=white>bla</p>
+</div>
 
-
-
-<div class="span9">
-
-  <div row>
-    <div class="span4">{{ EWEMBI_plot_title }}</div>
-    <div class="span4">{{ Projection_plot_title }}</div>
-  </div>
-
-  <div row>
-    <div class="span4">
+<div id="LeftPanel" style="width: 35%; height: 100%; float: left;">
+    <h3>{{ EWEMBI_plot_title }}</h3>
+    <p class=small>{{ EWEMBI_plot_title_txt }}</p>
       <IMG SRC={{ EWEMBI_plot }} ALT=' ' WIDTH=350></IMG>
       <a class="label label-primary" href={{ EWEMBI_plot }} target="_blank"  style="margin-right: 5px;">Download plot </a>
-    </div>
-    <div class="span4">
-      <IMG SRC={{ Projection_plot }} ALT=' ' WIDTH=350></IMG>
-      <a class="label label-primary" href={{ Projection_plot }} target="_blank"  style="margin-right: 5px;">Download plot </a>
-    </div>
-  </div>
 
-  <div row>
-    <div class="span4"><p style="margin-top: 20px;">{{ transient_plot_title }}</p></div>
-    <div class="span4"><p style="margin-top: 20px;">{{ annual_cycle_plot_title }}</p></div>
-  </div>
 
-  <div row>
-    <div class="span4">
+    <h3>{{ EWEMBI_plot }}</h3>
+    <p class=small>{{ EWEMBI_plot_txt }}</p>
       <IMG SRC={{ transient_plot }} ALT=' ' WIDTH=350></IMG>
       <a class="label label-primary" href={{ transient_plot }} target="_blank"  style="margin-right: 5px;">Download plot </a>
-    </div>
-    <div class="span4">
-      <IMG SRC={{ annual_cycle_plot }} ALT=' ' WIDTH=350></IMG>
-      <a class="label label-primary" href={{ annual_cycle_plot }} target="_blank"  style="margin-right: 5px;">Download plot </a>
-    </div>
-  </div>
 </div>
+
+<div id="LeftPanel" style="width: 5%; height: 100%; float: left;">
+  <p class=white>bla</p>
+</div>
+
+<div id="LeftPanel" style="width: 35%; height: 100%; float: left;">
+    <h3>{{ EWEMBI_plot_title }}</h3>
+    <p class=small>{{ EWEMBI_plot_title_txt }}</p>
+      <IMG SRC={{ Projection_plot }} ALT=' ' WIDTH=350></IMG>
+      <a class="label label-primary" href={{ EWEMBI_plot }} target="_blank"  style="margin-right: 5px;">Download plot </a>
+
+
+    <h3>{{ EWEMBI_plot }}</h3>
+    <p class=small>{{ EWEMBI_plot_txt }}</p>
+      <IMG SRC={{ annual_cycle_plot }} ALT=' ' WIDTH=350></IMG>
+      <a class="label label-primary" href={{ transient_plot }} target="_blank"  style="margin-right: 5px;">Download plot </a>
+</div>
+
+
 
 
 

@@ -42,27 +42,30 @@ except:
 	basepath='/home/RCM_projection/'
 
 sys.path.append(basepath+'country_analysis/country_analysis_scripts/')
-print glob.glob('*')
 import country_analysis; reload(country_analysis)
 sys.path.append(basepath+'/projection_sharing/')
 os.chdir(basepath+'/projection_sharing/')
 
+seasons={'year':range(1,13)}
+for i in range(1,13):
+	seasons[str(i)]=[i]
+
 countrys=['BEN','SEN']
-COUs={'BEN':country_analysis.country_analysis('BEN',basepath+'country_analysis/data/BEN/',seasons={'year':range(1,13)}),
+COUs={'BEN':country_analysis.country_analysis('BEN',basepath+'country_analysis/data/BEN/',seasons=seasons),
 		#'SEN':country_analysis.country_analysis('SEN',basepath+'/country_analysis/data/SEN/',seasons={'year':range(1,13)})
 		}
 
 
 for COU in COUs.values():
-	COU.load_data(quiet=False)
+	COU.load_data(quiet=True)
 	COU.unit_conversions()
 
 
 datasets=['CORDEX_BC','CMIP5_BC']
 
 season_dict={
-	'SEN':['year','Jun-Sep'],
-	'BEN':['year','Apr-Jul']
+	'SEN':seasons.keys(),
+	'BEN':seasons.keys()
 }
 
 ind_dict={
@@ -81,19 +84,38 @@ lang_dict={'fr':{
 	'year_RX5':'précipitation maximale cumulées en 5 jours',
 	'year_CDD':'duré maximal de période aride',
 	'year':'annuel',
-	'Apr-Jul':'Apr-Jul',
-	'Jun-Sep':'Jun-Sep'
+	'1':'January',
+	'2':'Febuary',
+	'3':'March',
+	'4':'April',
+	'5':'Mai',
+	'6':'June',
+	'7':'July',
+	'8':'August',
+	'9':'September',
+	'10':'October',
+	'11':'November',
+	'12':'December',
 	},
 	'en':{
-	'tas':'mean temperature',
-	'pr':'precipitation',
-	'RX1':'maximal daily precipitation',
-	'TXx':'daily maximal temperature',
-	'year_RX5':'maximal cumulative 5 day precipitation',
-	'year_CDD':'maximal dry spell length',	
+	'tas':'Temperature',
+	'pr':'Precipitation',
+	'RX1':'Wet Extremes (RX1day)',
+	'TXx':'Hot Extremes (TXx)',
+	'year_RX5':'5day Wet Extremes (RX5day)',
 	'year':'annual',
-	'Apr-Jul':'Apr-Jul',
-	'Jun-Sep':'Jun-Sep'
+	'1':'January',
+	'2':'Febuary',
+	'3':'March',
+	'4':'April',
+	'5':'Mai',
+	'6':'June',
+	'7':'July',
+	'8':'August',
+	'9':'September',
+	'10':'October',
+	'11':'November',
+	'12':'December',
 	}
 }
 
@@ -159,7 +181,10 @@ text_dict={'en':{
 	'indicator_h':'Climate Indicator',
 	'indicator_txt':'Climate indicators based on daily temperature and precipitation. For the moment no drought indicator is included. Please consider monthly precipitation for drought assements and keep in mind that potential evapotranspiration might increase in a warmer world.',
 	'time_scale_h':'Time Scale',
-	'time_scale_txt':'Projected trends might depend on the season. As for different regions the monsoon onset and end differes, use monthly data to estimate seasonal effects.',
+	'time_scale_txt':'Projected trends might depend on the season. As for different regions the monsoon onset and end differes, use monthly data to estimate seasonal changes.',
+
+	'obs_map_txt':'INDICATOR averaged over the reference period REFERNCE_PERIOD SEASONAL. Observations are taken from EWEMBI',
+	'proj_map_txt':'Projected change in INDICATOR for PROJECTION_PERIOD compared to the reference period REFERNCE_PERIOD SEASONAL. In red (blue) areas an increase (decrease) is projected. Here the ensemble mean is displayed, grid-cells for which a model-disagreement is found are colored in gray.',
 
 },'fr':{
 	'warning':'Warning!',
@@ -170,6 +195,25 @@ text_dict={'en':{
 }
 }
 
+
+def create_plot_texts(s,lang):
+	plot_text_dict={'en':{
+		'EWEMBI_plot_title':'Climatology',
+		'EWEMBI_plot_title_txt':lang_dict[s['indicator']]+'averaged over the reference period REFERNCE_PERIOD SEASONAL. Observations are taken from EWEMBI',
+
+		'proj_map':'Projected Change',
+		'proj_map_txt':'Projected change in INDICATOR for PROJECTION_PERIOD compared to the reference period REFERNCE_PERIOD SEASONAL. In red (blue) areas an increase (decrease) is projected. Here the ensemble mean is displayed, grid-cells for which a model-disagreement is found are colored in gray.',
+
+	},'fr':{
+		'EWEMBI_plot_title':'Climatology',
+		'EWEMBI_plot_title_txt':'INDICATOR averaged over the reference period REFERNCE_PERIOD SEASONAL. Observations are taken from EWEMBI',
+
+		'proj_map':'Projected Change',
+		'proj_map_txt':'Projected change in INDICATOR for PROJECTION_PERIOD compared to the reference period REFERNCE_PERIOD SEASONAL. In red (blue) areas an increase (decrease) is projected. Here the ensemble mean is displayed, grid-cells for which a model-disagreement is found are colored in gray.',
+
+	}
+	}
+	return plot_text_dict
 
 
 print 'done with settings'

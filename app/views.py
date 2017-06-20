@@ -56,18 +56,16 @@ regions=settings.regions
 form_labels=settings.form_labels
 season_dict=settings.season_dict
 text_dict=settings.text_dict
+plot_text_dict=settings.plot_text_dict
 
-print 'hey'
 
 COUs=settings.COUs
 
 languages={'en':'English','fr':'Français'}
 
-print 'hu'
 
 @app.route('/')
 def index():
-  print 'ho'
   session['user_type']='beginner'
   session['language']='en'
 
@@ -92,6 +90,8 @@ def index():
   session['small_region_warning']=False
 
   session["season_avail"]   = season_dict[session['country']]
+  index=session['season_avail'].index('year')
+  session['season_avail'][index],session['season_avail'][0]=session['season_avail'][0],session['season_avail'][index]
   session["season"]   = session["season_avail"][0]
 
   print session
@@ -146,7 +146,7 @@ def choices():
 
     # EWEMBI map
     ewembi=COU.selection([s['indicator'],'EWEMBI'])
-    EWEMBI_plot='app/static/images/'+s['country']+'/'+s['indicator']+'_EWEMBI_ref_'+s['season']+'.png'
+    EWEMBI_plot='app/static/images/'+s['country']+'/'+s['indicator']+'_EWEMBI_ref_'+s['season']+'_'+region+'.png'
     if os.path.isfile(EWEMBI_plot)==False:
       COU.period_statistics(periods={refP:s['ref_period']},selection=ewembi,ref_name=refP)
       ewembi[0].display_map(out_file=EWEMBI_plot,
@@ -154,13 +154,13 @@ def choices():
         period=refP,
         season=s['season'],
         color_label=indicator_label,
-        title='blala'
+        title=refP.replace('to','-')+' '+lang_dict[lang][s['season']]
         )
 
     # projection
     ens_selection=COU.selection([s['indicator'],s['dataset']])
     ens_mean=COU.selection([s['indicator'],s['dataset'],'ensemble_mean'])[0]
-    Projection_plot='app/static/images/'+s['country']+'_'+s['indicator']+'_'+s["scenario"]+'_'+s["dataset"]+'_'+proP+'-'+refP+'_'+s['season']+'_'+region+'.png'
+    Projection_plot='app/static/images/'+s['country']+'/'+s['indicator']+'_'+s["scenario"]+'_'+s["dataset"]+'_'+proP+'-'+refP+'_'+s['season']+'_'+region+'.png'
     if os.path.isfile(Projection_plot)==False:
       COU.period_statistics(periods=periods,selection=ens_selection,ref_name=refP)
       COU.period_model_agreement(ref_name=refP)
@@ -169,7 +169,7 @@ def choices():
         period='diff_'+proP+'-'+refP,
         season=s['season'],
         color_label=indicator_label,
-        title='blala'
+        title=proP.replace('to','-')+' vs '+refP.replace('to','-')+' '+lang_dict[lang][s['season']]
         )
 
     # transient
@@ -184,6 +184,7 @@ def choices():
       if message==1:
         ax.set_ylabel(indicator_label)
         plt.legend(loc='best')
+        plt.title(region+' '+lang_dict[lang][s['season']])
         fig.tight_layout()
         plt.savefig(transient_plot)   
 
@@ -202,8 +203,11 @@ def choices():
 
       if ewembi[0].time_format!='yearly':
           fig,ax=plt.subplots(nrows=2,ncols=1,sharex=True,figsize=(4,3))
-          ewembi[0].plot_annual_cycle(period=refP,region=region,ax=ax[0],title='',ylabel='  ',label='observation',color='green',xlabel=False)
+          ewembi[0].plot_annual_cycle(period=refP,region=region,ax=ax[0],title='',ylabel='  ',label='observations (EWEMBI)',color='green',xlabel=False)
+          ens_mean.plot_annual_cycle(period=refP,region=region,ax=ax[0],title='',ylabel='  ',label='model data',color='red',xlabel=False)
           ax[0].legend(loc='best')
+          ax[0].set_title(region+' '+proP.replace('to','-')+' vs '+refP.replace('to','-')+' '+lang_dict[lang][s['season']])
+
           ens_mean.plot_annual_cycle(period='diff_'+proP+'-'+refP,region=region,ax=ax[1],title='',ylabel='  ',label='projected change',color='red')
           ax[1].plot([0,1],[0,0],color='k')
           ax[1].legend(loc='best')
@@ -211,7 +215,7 @@ def choices():
           ylab_ax.axis([0, 1, 0, 1])
           ylab_ax.axis('off')
           ylab_ax.text(0.05,0.5,indicator_label,rotation=90,verticalalignment='center')
-          fig.subplots_adjust(left=0.175, bottom=0.125, right=0.95, top=0.95, wspace=0, hspace=0.1)
+          fig.subplots_adjust(left=0.175, bottom=0.125, right=0.95, top=0.90, wspace=0, hspace=0.1)
           plt.savefig(annual_cycle_plot)
 
 
@@ -232,9 +236,15 @@ def choices():
       transient_plot_title='Regional average for observations and projections'     
       annual_cycle_plot_title='Annual cycle for observations over the reference period 1986-2006 and projections over the period '+proP
 
+      '''
+      would be nice to make a function creating all these texts
+      '''
+
+
     plot_dict={
       'EWEMBI_plot':EWEMBI_plot.replace('app/',''),
-      'EWEMBI_plot_title':EWEMBI_plot_title,
+      'EWEMBI_plot_title':plot_text_dict[lang]['EWEMBI_plot_title'],
+      'EWEMBI_plot_title_txt':plot_text_dict[lang]['EWEMBI_plot_title_txt'].replace('INDICATOR',lang_dict[lang][s['indicator']]),
       'Projection_plot':Projection_plot.replace('app/',''),
       'Projection_plot_title':Projection_plot_title,
       'annual_cycle_plot':annual_cycle_plot.replace('app/',''),
@@ -242,6 +252,7 @@ def choices():
       'transient_plot':transient_plot.replace('app/',''),
       'transient_plot_title':transient_plot_title,    
     }
+
 
     other_dict={
       'language':language,
@@ -266,6 +277,7 @@ def choices():
     context.update(other_dict)
     context.update(plot_dict)
     context.update(text_dict[lang])
+
 
     return render_template('choices.html',**context)
 
