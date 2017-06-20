@@ -54,14 +54,9 @@ COUs={'BEN':country_analysis.country_analysis('BEN',basepath+'country_analysis/d
 
 
 for COU in COUs.values():
-	COU.load_data(quiet=False)
+	COU.load_data(quiet=True)
 	COU.unit_conversions()
 
-
-print basepath+'country_analysis/data/BEN/'
-print COUs['BEN']._DATA
-
-print COUs
 
 datasets=['CORDEX_BC','CMIP5_BC']
 

@@ -139,7 +139,7 @@ def choices():
 
     # EWEMBI map
     ewembi=COU.selection([s['indicator'],'EWEMBI'])
-    EWEMBI_plot='projection_sharing/app/static/images/'+s['country']+'/'+s['indicator']+'_EWEMBI_ref_'+s['season']+'.png'
+    EWEMBI_plot='app/static/images/'+s['country']+'/'+s['indicator']+'_EWEMBI_ref_'+s['season']+'.png'
     if os.path.isfile(EWEMBI_plot)==False:
       COU.period_statistics(periods={refP:s['ref_period']},selection=ewembi,ref_name=refP)
       ewembi[0].display_map(out_file=EWEMBI_plot,
@@ -153,7 +153,7 @@ def choices():
     # projection
     ens_selection=COU.selection([s['indicator'],s['dataset']])
     ens_mean=COU.selection([s['indicator'],s['dataset'],'ensemble_mean'])[0]
-    Projection_plot='projection_sharing/app/static/images/'+s['country']+'_'+s['indicator']+'_'+s["scenario"]+'_'+s["dataset"]+'_'+proP+'-'+refP+'_'+s['season']+'_'+region+'.png'
+    Projection_plot='app/static/images/'+s['country']+'_'+s['indicator']+'_'+s["scenario"]+'_'+s["dataset"]+'_'+proP+'-'+refP+'_'+s['season']+'_'+region+'.png'
     if os.path.isfile(Projection_plot)==False:
       COU.period_statistics(periods=periods,selection=ens_selection,ref_name=refP)
       COU.period_model_agreement(ref_name=refP)
@@ -166,7 +166,7 @@ def choices():
         )
 
     # transient
-    transient_plot='projection_sharing/app/static/images/'+s['country']+'/'+s['indicator']+'_'+s["dataset"]+'_'+region+'_'+s['season']+'_transient.png'
+    transient_plot='app/static/images/'+s['country']+'/'+s['indicator']+'_'+s["dataset"]+'_'+region+'_'+s['season']+'_transient.png'
     if os.path.isfile(transient_plot)==False:
       COU.create_mask_admin(ewembi[0].raw_file,s['indicator'],regions=[s['region']])
       COU.area_average('lat_weighted',overwrite=True,selection=ens_selection+ewembi,regions=[s['region']])
@@ -181,7 +181,7 @@ def choices():
 
 
 
-    annual_cycle_plot='projection_sharing/app/static/images/'+s['country']+'/'+s['indicator']+'_'+s["dataset"]+'_'+region+'_annual_cycle_'+proP+'-ref.png'
+    annual_cycle_plot='app/static/images/'+s['country']+'/'+s['indicator']+'_'+s["dataset"]+'_'+region+'_annual_cycle_'+proP+'-ref.png'
 
 
 
@@ -203,13 +203,13 @@ def choices():
       annual_cycle_plot_title='Annual cycle for observations over the reference period 1986-2006 and projections over the period '+proP
 
     plot_dict={
-      'EWEMBI_plot':EWEMBI_plot.replace('projection_sharing/app/',''),
+      'EWEMBI_plot':EWEMBI_plot.replace('app/',''),
       'EWEMBI_plot_title':EWEMBI_plot_title,
-      'Projection_plot':Projection_plot.replace('projection_sharing/app/',''),
+      'Projection_plot':Projection_plot.replace('app/',''),
       'Projection_plot_title':Projection_plot_title,
-      'annual_cycle_plot':annual_cycle_plot.replace('projection_sharing/app/',''),
+      'annual_cycle_plot':annual_cycle_plot.replace('app/',''),
       'annual_cycle_plot_title':annual_cycle_plot_title,
-      'transient_plot':transient_plot.replace('projection_sharing/app/',''),
+      'transient_plot':transient_plot.replace('app/',''),
       'transient_plot_title':transient_plot_title,    
     }
 
