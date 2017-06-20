@@ -63,6 +63,8 @@ print 'hey'
 
 languages={'en':'English','fr':'Français'}
 
+print 'hu'
+
 @app.route('/')
 def index():
   print 'ho'
