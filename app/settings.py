@@ -149,6 +149,34 @@ period_dict	= {
 	'1.5':'1.5 deg global warming',
 }
 
+text_dict={'en':{
+	'warning':'Warning!',
+	'warning_txt':'The chosen region is smaller than 5 grid-cells. Please use the "Merge Region" function to aggregate several small regions.',
+	'region_h':'Administrative Region',
+	'region_txt':'Region for which the transient and annual cycle is computed. Use "Merge Regions" function to aggregate several small regions.',
+	'country_h':'Country',
+	'country_txt':'For the moment only the PAS-PNA countries Benin and Senegal are available. Could be extended',
+	'indicator_h':'Climate Indicator',
+	'indicator_txt':'Climate indicators based on daily temperature and precipitation. For the moment no drought indicator is included. Please consider monthly precipitation for drought assements and keep in mind that potential evapotranspiration might increase in a warmer world.',
+	'time_scale_h':'Time Scale',
+	'time_scale_txt':'Projected trends might depend on the season. As for different regions the monsoon onset and end differes, use monthly data to estimate seasonal effects.',
+
+},'fr':{
+	'warning':'Warning!',
+	'warning_txt':'The chosen region is smaller than 5 grid-cells. Please use the "Merge Region" function to aggregate several small regions.',
+	'region_h':'Administrative Region',
+	'region_txt':'Region for which the transient and annual cycle is computed. Use "Merge Regions" function to aggregate several small regions.'
+
+}
+}
+
+
+
+
+
+
+
+
 
 
 

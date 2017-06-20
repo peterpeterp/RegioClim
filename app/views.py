@@ -18,13 +18,15 @@
 # along with wacalc; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-
+import os
 from app import app
 from flask import redirect, render_template, url_for, request, flash, get_flashed_messages, g, session, jsonify, Flask, send_from_directory
 from collections import OrderedDict
 from werkzeug.routing import BuildError
 import settings
 import forms
+import matplotlib.pylab as plt
+
 
 # from flask_nav import Nav
 # from flask_nav.elements import Navbar, View
@@ -53,6 +55,7 @@ period_dict=settings.period_dict
 regions=settings.regions
 form_labels=settings.form_labels
 season_dict=settings.season_dict
+text_dict=settings.text_dict
 
 COUs=settings.COUs
 
@@ -100,24 +103,19 @@ def choices():
     if region.split('(')[-1]=='full country)': region=s['country']
 
     form_country = forms.countryForm(request.form)
-    form_country.countrys.choices = zip(s['country_avail'],s['country_avail'])
-    form_country.countrys.label = form_labels[lang]['country']
+    form_country.countrys.choices = zip(s['country_avail'],[{'BEN':'Benin','SEN':'Senegal'}[cou] for cou in s['country_avail']])
 
     form_region = forms.regionForm(request.form)
     form_region.regions.choices = zip(s['region_avail'],s['region_avail'])
-    form_region.regions.label = form_labels[lang]['region']
 
     form_scenario = forms.scenarioForm(request.form)
     form_scenario.scenarios.choices = zip(s['scenario_avail'],s['scenario_avail'])
-    form_scenario.scenarios.label = form_labels[lang]['scenario']
 
     form_dataset = forms.datasetForm(request.form)
     form_dataset.datasets.choices = zip(s['dataset_avail'],s['dataset_avail'])
-    form_dataset.datasets.label = 'Dataset'
 
     form_indicator = forms.indicatorForm(request.form)
     form_indicator.indicators.choices = zip(s['indicator_avail'],[lang_dict[lang][ind] for ind in s['indicator_avail']])
-    form_indicator.indicators.label = form_labels[lang]['indicator']
 
     form_period = forms.PeriodField(request.form)
     ref_P = "-".join(str(t) for t in session["ref_period"])
@@ -127,7 +125,6 @@ def choices():
 
     form_season = forms.seasonForm(request.form)
     form_season.seasons.choices = zip(s['season_avail'],[lang_dict[lang][sea] for sea in s['season_avail']])
-    form_season.seasons.label = form_labels[lang]['season']
 
     refP = "to".join(str(t) for t in s["ref_period"])
     proP = "to".join(str(t) for t in s["proj_period"])
@@ -135,26 +132,58 @@ def choices():
 
     print periods
 
-    EWEMBI_plot='static/images/'+s['country']+'/'+s['indicator']+'_EWEMBI_ref_'+s['season']+'.png'
-    transient_plot='static/images/'+s['country']+'/'+s['indicator']+'_'+s["dataset"]+'_'+region+'_'+s['season']+'_transient.png'
-    annual_cycle_plot='static/images/'+s['country']+'/'+s['indicator']+'_'+s["dataset"]+'_'+region+'_annual_cycle_'+proP+'-ref.png'
+    
+
 
     COU=COUs[s['country']]
+
+    # EWEMBI map
+    ewembi=COU.selection([s['indicator'],'EWEMBI'])
+    EWEMBI_plot='projection_sharing/app/static/images/'+s['country']+'/'+s['indicator']+'_EWEMBI_ref_'+s['season']+'.png'
+    if os.path.isfile(EWEMBI_plot)==False:
+      COU.period_statistics(periods={refP:s['ref_period']},selection=ewembi,ref_name=refP)
+      ewembi[0].display_map(out_file=EWEMBI_plot,
+        highlight_region=region,
+        period=refP,
+        season=s['season'],
+        color_label='bla',
+        title='blala'
+        )
+
+    # projection
     ens_selection=COU.selection([s['indicator'],s['dataset']])
     ens_mean=COU.selection([s['indicator'],s['dataset'],'ensemble_mean'])[0]
-
-
     Projection_plot='projection_sharing/app/static/images/'+s['country']+'_'+s['indicator']+'_'+s["scenario"]+'_'+s["dataset"]+'_'+proP+'-'+refP+'_'+s['season']+'_'+region+'.png'
-    COU.period_statistics(periods=periods,selection=ens_selection,ref_name=refP)
-    COU.period_model_agreement(ref_name=refP)
-    print ens_mean.period
-    print ens_mean.agreement
-    ens_mean.display_map(out_file=Projection_plot,
-      highlight_region=region,
-      period='diff_'+proP+'-'+refP,
-      color_label='bla',
-      title='blala'
-      )
+    if os.path.isfile(Projection_plot)==False:
+      COU.period_statistics(periods=periods,selection=ens_selection,ref_name=refP)
+      COU.period_model_agreement(ref_name=refP)
+      ens_mean.display_map(out_file=Projection_plot,
+        highlight_region=region,
+        period='diff_'+proP+'-'+refP,
+        season=s['season'],
+        color_label='bla',
+        title='blala'
+        )
+
+    # transient
+    transient_plot='projection_sharing/app/static/images/'+s['country']+'/'+s['indicator']+'_'+s["dataset"]+'_'+region+'_'+s['season']+'_transient.png'
+    if os.path.isfile(transient_plot)==False:
+      COU.create_mask_admin(ewembi[0].raw_file,s['indicator'],regions=[s['region']])
+      COU.area_average('lat_weighted',overwrite=True,selection=ens_selection+ewembi,regions=[s['region']])
+      fig,ax=plt.subplots(nrows=1,ncols=1,figsize=(4,3))
+      message=ens_mean.plot_transients(season=s['season'],region=region,running_mean_years=20,ax=ax,title='',ylabel=None,label='model data',color='red')
+      message=ewembi[0].plot_transients(season=s['season'],region=region,running_mean_years=20,ax=ax,title='',ylabel=None,label='observations (EWEMBI)',color='green')
+      if message==1:
+        #ax.set_ylabel(indicator_dict[indicator]['ylabel'])
+        plt.legend(loc='best')
+        fig.tight_layout()
+        plt.savefig(transient_plot)   
+
+
+
+    annual_cycle_plot='projection_sharing/app/static/images/'+s['country']+'/'+s['indicator']+'_'+s["dataset"]+'_'+region+'_annual_cycle_'+proP+'-ref.png'
+
+
 
     if s['user_type']=='advanced': advanced_col='white'
     if s['user_type']=='beginner':  advanced_col='gray'
@@ -173,11 +202,26 @@ def choices():
       transient_plot_title='Regional average for observations and projections'     
       annual_cycle_plot_title='Annual cycle for observations over the reference period 1986-2006 and projections over the period '+proP
 
-    context = { 
+    plot_dict={
+      'EWEMBI_plot':EWEMBI_plot.replace('projection_sharing/app/',''),
+      'EWEMBI_plot_title':EWEMBI_plot_title,
+      'Projection_plot':Projection_plot.replace('projection_sharing/app/',''),
+      'Projection_plot_title':Projection_plot_title,
+      'annual_cycle_plot':annual_cycle_plot.replace('projection_sharing/app/',''),
+      'annual_cycle_plot_title':annual_cycle_plot_title,
+      'transient_plot':transient_plot.replace('projection_sharing/app/',''),
+      'transient_plot_title':transient_plot_title,    
+    }
+
+    other_dict={
       'language':language,
       'advanced_col':advanced_col,
       'user_type':s['user_type'],
+      'small_region_warning':s['small_region_warning'],
       'language_flag':languages[s['language']],
+    }
+
+    form_dict = { 
       'form_country':form_country,
       'form_country':form_country,
       'form_region':form_region,
@@ -186,20 +230,73 @@ def choices():
       'form_scenario':form_scenario,
       'form_dataset':form_dataset,
       'form_indicator':form_indicator,
-      'EWEMBI_plot':EWEMBI_plot,
-      'EWEMBI_plot_title':EWEMBI_plot_title,
-      'Projection_plot':Projection_plot.replace('projection_sharing/app/',''),
-      'Projection_plot_title':Projection_plot_title,
-      'annual_cycle_plot':annual_cycle_plot,
-      'annual_cycle_plot_title':annual_cycle_plot_title,
-      'transient_plot':transient_plot,
-      'transient_plot_title':transient_plot_title,
-      'small_region_warning':s['small_region_warning']
     }
+
+    context=form_dict.copy()
+    context.update(other_dict)
+    context.update(plot_dict)
+    context.update(text_dict[lang])
+
     return render_template('choices.html',**context)
 
   # except KeyError:
   #   return redirect(url_for("index"))
+
+
+@app.route('/merging_page')
+def merging_page():
+  try:
+    s=session
+    COU=COUs[s['country']]
+
+    regions_plot='projection_sharing/app/static/images/'+s['country']+'_'+s['region']+'.png'
+    if os.path.isfile(regions_plot)==False:
+      COU.selection([s['indicator'],s['dataset'],'ensemble_mean'])[0].plot_map(to_plot='empty',
+        show_region_names=True,
+        color_bar=False,
+        out_file=regions_plot,
+        highlight_region=s['region'],
+        title=s['region'])
+
+    form_region = forms.regionForm(request.form)
+    form_region.regions.choices = zip(s['region_avail'],s['region_avail'])
+    form_region.regions.label = 'Add another region'
+
+    context = { 
+      'form_region':form_region,
+      'regions_plot':regions_plot.replace('projection_sharing/app/',''),
+      'small_region_warning':s['small_region_warning']
+    }
+    return render_template('merging_page.html',**context)
+
+  except KeyError:
+    return redirect(url_for("index"))
+
+@app.route('/go_to_merging_page',  methods=("POST", ))
+def go_to_merging_page():
+  return redirect(url_for("merging_page"))
+
+@app.route('/merge_with_region',  methods=('POST', ))
+def merge_with_region():
+  print 'got here'
+  form_region = forms.regionForm(request.form)
+  to_merge=form_region.regions.data
+  s=session
+  s['region']=COUs[s['country']].merge_adm_regions([s['region'],to_merge])
+
+  if s['region'].split('(')[-1]!='full country)':
+    COU=COUs[s['country']]
+    area=COU.get_region_area(s['region'])['latxlon']*4
+    if area<4:
+      s['small_region_warning']=True
+    else:
+      s['small_region_warning']=False
+
+  s['region_avail']+=[s['region']]
+  #put chosen at beginning of list
+  index=s['region_avail'].index(s['region'])
+  s['region_avail'][index],s['region_avail'][0]=s['region_avail'][0],s['region_avail'][index]
+  return redirect(url_for('merging_page'))
 
 @app.route('/model_agreement')
 def model_agreement():

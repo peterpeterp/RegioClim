@@ -29,23 +29,23 @@ class countryForm(Form):
             validators=[Required("Please select at least one region.")])
 
 class regionForm(Form):
-  regions = SelectField(u'Administrative region:<br>(only relevant for transient and annual cycle)', choices=[],
+  regions = SelectField(u'', choices=[],
             validators=[Required("Please select at least one region.")])
 
 class indicatorForm(Form):
-  indicators = SelectField(u'Climate Indicator', choices=[],
+  indicators = SelectField(u'', choices=[],
             validators=[Required("Please select at least one region.")])
 
 class scenarioForm(Form):
-  scenarios = SelectField(u'Available Scenarios', choices=[],
+  scenarios = SelectField(u'', choices=[],
             validators=[Required("Please select at least one region.")])
 
 class datasetForm(Form):
-  datasets = SelectField(u'Available Datasets', choices=[],
+  datasets = SelectField(u'', choices=[],
             validators=[Required("Please select at least one region.")])
 
 class seasonForm(Form):
-  seasons = SelectField(u'Available seasons', choices=[],
+  seasons = SelectField(u'', choices=[],
             validators=[Required("Please select at least one season.")])
 
 # class periodForm(Form):
