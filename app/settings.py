@@ -39,15 +39,15 @@ basepath='/Users/peterpfleiderer/Documents/Projects/projection_sharing/'
 try: 
 	os.chdir(basepath)
 except:
-	basepath='/home/RCM_projection/projection_sharing/'
+	basepath='/home/RCM_projection/'
 
-sys.path.append(basepath+'../country_analysis/country_analysis_scripts/')
+sys.path.append(basepath+'country_analysis/country_analysis_scripts/')
 print glob.glob('*')
 import country_analysis; reload(country_analysis)
 sys.path.append(basepath+'/projection_sharing/')
 
 countrys=['BEN','SEN']
-COUs={'BEN':country_analysis.country_analysis('BEN',basepath+'../country_analysis/data/BEN/',seasons={'year':range(1,13)}),
+COUs={'BEN':country_analysis.country_analysis('BEN',basepath+'country_analysis/data/BEN/',seasons={'year':range(1,13)}),
 		#'SEN':country_analysis.country_analysis('SEN',basepath+'/country_analysis/data/SEN/',seasons={'year':range(1,13)})
 		}
 
