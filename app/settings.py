@@ -45,6 +45,7 @@ sys.path.append(basepath+'country_analysis/country_analysis_scripts/')
 print glob.glob('*')
 import country_analysis; reload(country_analysis)
 sys.path.append(basepath+'/projection_sharing/')
+os.chdir(basepath+'/projection_sharing/')
 
 countrys=['BEN','SEN']
 COUs={'BEN':country_analysis.country_analysis('BEN',basepath+'country_analysis/data/BEN/',seasons={'year':range(1,13)}),
