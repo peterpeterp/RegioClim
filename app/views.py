@@ -57,12 +57,15 @@ form_labels=settings.form_labels
 season_dict=settings.season_dict
 text_dict=settings.text_dict
 
+print 'hey'
+
 #COUs=settings.COUs
 
 languages={'en':'English','fr':'Français'}
 
 @app.route('/')
 def index():
+  print 'ho'
   session['user_type']='beginner'
   session['language']='en'
 
