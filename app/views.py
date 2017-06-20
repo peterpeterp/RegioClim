@@ -49,19 +49,19 @@ def flash_errors(form):
                 error
             ))
 
-ind_dict=settings.ind_dict
-lang_dict=settings.lang_dict
-period_dict=settings.period_dict
-regions=settings.regions
-form_labels=settings.form_labels
-season_dict=settings.season_dict
-text_dict=settings.text_dict
+# ind_dict=settings.ind_dict
+# lang_dict=settings.lang_dict
+# period_dict=settings.period_dict
+# regions=settings.regions
+# form_labels=settings.form_labels
+# season_dict=settings.season_dict
+# text_dict=settings.text_dict
 
 print 'hey'
 
 #COUs=settings.COUs
 
-languages={'en':'English','fr':'Français'}
+#languages={'en':'English','fr':'Français'}
 
 print 'hu'
 
