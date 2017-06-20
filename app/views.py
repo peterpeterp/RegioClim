@@ -71,28 +71,28 @@ def index():
   session['user_type']='beginner'
   session['language']='en'
 
-  session["country_avail"]   = settings.countrys
-  session['country']   = settings.countrys[0]
+  # session["country_avail"]   = settings.countrys
+  # session['country']   = settings.countrys[0]
 
-  session["ref_period"]   = settings.ref_period
-  session["proj_period"]  = settings.proj_period
+  # session["ref_period"]   = settings.ref_period
+  # session["proj_period"]  = settings.proj_period
 
-  session["scenario_avail"]   = settings.scenarios
-  session["scenario"]   = settings.scenarios[0]
+  # session["scenario_avail"]   = settings.scenarios
+  # session["scenario"]   = settings.scenarios[0]
 
-  session["dataset_avail"]   = settings.datasets
-  session["dataset"]   = settings.datasets[0]
+  # session["dataset_avail"]   = settings.datasets
+  # session["dataset"]   = settings.datasets[0]
 
-  session["indicator_avail"]   = settings.ind_dict.keys()
-  session["indicator"]   = session["indicator_avail"][0]
+  # session["indicator_avail"]   = settings.ind_dict.keys()
+  # session["indicator"]   = session["indicator_avail"][0]
 
-  session["region_avail"]   = regions[session['country']]
-  session['region']   = session["region_avail"][0]
+  # session["region_avail"]   = regions[session['country']]
+  # session['region']   = session["region_avail"][0]
 
-  session['small_region_warning']=False
+  # session['small_region_warning']=False
 
-  session["season_avail"]   = season_dict[session['country']]
-  session["season"]   = session["season_avail"][0]
+  # session["season_avail"]   = season_dict[session['country']]
+  # session["season"]   = session["season_avail"][0]
 
   print session
   return redirect(url_for("choices"))
