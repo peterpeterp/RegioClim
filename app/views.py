@@ -249,7 +249,7 @@ def merging_page():
     s=session
     COU=COUs[s['country']]
 
-    regions_plot='projection_sharing/app/static/images/'+s['country']+'_'+s['region']+'.png'
+    regions_plot='app/static/images/'+s['country']+'_'+s['region']+'.png'
     if os.path.isfile(regions_plot)==False:
       COU.selection([s['indicator'],s['dataset'],'ensemble_mean'])[0].plot_map(to_plot='empty',
         show_region_names=True,
@@ -264,7 +264,7 @@ def merging_page():
 
     context = { 
       'form_region':form_region,
-      'regions_plot':regions_plot.replace('projection_sharing/app/',''),
+      'regions_plot':regions_plot.replace('app/',''),
       'small_region_warning':s['small_region_warning']
     }
     return render_template('merging_page.html',**context)
