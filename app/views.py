@@ -57,7 +57,7 @@ form_labels=settings.form_labels
 season_dict=settings.season_dict
 text_dict=settings.text_dict
 
-COUs=settings.COUs
+#COUs=settings.COUs
 
 languages={'en':'English','fr':'Français'}
 
