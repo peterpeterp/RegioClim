@@ -35,7 +35,7 @@ import matplotlib.pyplot as plt
 from matplotlib import rc
 #rc('text', usetex=True)
 
-basepath='/Users/peterpfleiderer/Documents/Projects/projection_sharing/'
+basepath='/Users/peterpfleiderer/Documents/Projects/'
 try: 
 	os.chdir(basepath)
 except:
@@ -54,7 +54,7 @@ COUs={'BEN':country_analysis.country_analysis('BEN',basepath+'country_analysis/d
 
 
 for COU in COUs.values():
-	COU.load_data(quiet=True)
+	COU.load_data(quiet=False)
 	COU.unit_conversions()
 
 
