@@ -50,7 +50,10 @@
     document.getElementById("country_nav").submit();
    }
 
-  
+  function period_change() {
+    $("#loading").show();
+    document.getElementById("period_id").submit();
+   }
 
 
   </script>
@@ -135,7 +138,7 @@
 
     div#overlay {
         position: fixed;
-        width: 100%;
+        width: 70%;
         height: 100%;
         background: white url(/static/images/ajax-loader.gif) center center no-repeat;
         /*background: white url(/static/images/ajax-loader.gif) center center no-repeat;*/
@@ -144,7 +147,7 @@
 
     div#overlay_image {
         position: fixed;
-        width: 100%;
+        width: 70%;
         height: 70%;
         background: transparent url(/static/images/loading_message.png) center center no-repeat;
         /*background: white url(/static/images/ajax-loader.gif) center center no-repeat;*/

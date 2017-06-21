@@ -5,6 +5,7 @@
 
 
 
+
 <div id="content">
 
 <div id="LeftPanel" style="width: 20%; height: 100%; float: left;">
@@ -59,7 +60,7 @@
 
 
 
-  <form method="POST" action="/periodchoice">
+  <form method="POST" action="/periodchoice" onsubmit="period_change()" id="period_id">
       {{ form_period.hidden_tag() }}
       {{ form_period.ref_period.label }} {{ form_period.ref_period(size=10) }}
       {{ form_period.proj_period.label }} {{ form_period.proj_period(size=10 ) }}
