@@ -1,31 +1,36 @@
 {% extends "index.html" %}
 {% block content %}
 
+<div id="loading"><div id="overlay"></div></div>
 
+<div id="content">
 
-
-<div class="span2.5">
-    <form method="POST" action="/go_to_choices">
-      <button type="submit" class="btn">Done</button>
-    </form>
-	 <div class="span2.5">
+<div id="LeftPanel" style="width: 20%; height: 100%; float: left;">
+      <h3>{{ merge_page_h }}</h3>
+  	<p class=small>{{ merge_page_txt }}</p>
 	  <form method="POST" action="/merge_with_region" id="region_id">
-	  {{ form_region.regions.label }}<br> {{ form_region.regions(onchange="change_region();") }}
+	  {{ form_region.regions(onchange="change_region();") }}
 	  </form>
-</div>
-</div>
 
 {% if small_region_warning==True %}
-   The merged region is still small!
+  <h6>{{warning}}</h6>
+  <p class=warn_txt>{{warning_merge_page_txt}}</p>
 {% endif %}
 
-<div class="span7.5">
+<form method="POST" action="/go_to_choices">
+  <button type="submit" class="btn">Done</button>
+</form>
+
+</div>
+
+<div id="LeftPanel" style="width: 50%; height: 100%; float: left;">
 	<div row>
 	</div>
-    <IMG SRC={{ regions_plot }} ALT={{regions_plot}} WIDTH=300 HEIGHT=300>
+    <IMG SRC={{ regions_plot }} ALT={{regions_plot}} WIDTH=300 HEIGHT=300></IMG>
     <a class="label label-primary" href={{ regions_plot }} target="_blank"  style="margin-right: 5px;">Download plot </a>
 </div>
 
+</div>
 
 
 

@@ -11,39 +11,52 @@
   <script type="text/javascript">
 
    function change_indicator() {
+    $("#loading").show();
     document.getElementById("indicator_id").submit();
    }
 
    function change_scenario() {
+    $("#loading").show();
     document.getElementById("scenario_id").submit();
    }
 
    function change_dataset() {
+    $("#loading").show();
     document.getElementById("dataset_id").submit();
    }
 
   function change_country() {
+    $("#loading").show();
     document.getElementById("country_id").submit();
    }
 
   function change_region() {
+    $("#loading").show();
     document.getElementById("region_id").submit();
    }
 
   function change_period() {
+    $("#loading").show();
     document.getElementById("period_id").submit();
    }
 
   function change_season() {
+    $("#loading").show();
     document.getElementById("season_id").submit();
    }
 
   function change_country_nav() {
+    $("#loading").show();
     document.getElementById("country_nav").submit();
    }
 
-  </script>
+  
 
+
+  </script>
+<script type="text/javascript">// <![CDATA[
+
+// ]]></script>
 
     <meta charset="utf-8">
     <title>Climate Projections test</title>
@@ -96,6 +109,46 @@
       color: white;
       font-size: 10px; 
       line-height: 1;   
+    }
+
+    div#loading {
+      width: 35px;
+      height: 35px;
+      display: none;
+      opacity : 0.5,
+      background: #333 url(/static/images/BEN_Mono.png) no-repeat 50% 50%;
+      /*background: url(/static/images/BEN_Mono.png) no-repeat;*/
+      /*background: transparent;*/
+      cursor: wait;
+    }
+
+    .overlay {
+    background: #e9e9e9;  <- I left your 'gray' background
+    display: none;        <- Not displayed by default
+    position: absolute;   <- This and the following properties will
+    top: 0;                  make the overlay, the element will expand
+    right: 0;                so as to cover the whole body of the page
+    bottom: 0;
+    left: 0;
+    opacity: 0.5;
+    }
+
+    div#overlay {
+        position: fixed;
+        width: 100%;
+        height: 100%;
+        background: white url(/static/images/ajax-loader.gif) center center no-repeat;
+        /*background: white url(/static/images/ajax-loader.gif) center center no-repeat;*/
+        opacity: 0.5;
+    }
+
+    div#overlay_image {
+        position: fixed;
+        width: 100%;
+        height: 70%;
+        background: transparent url(/static/images/loading_message.png) center center no-repeat;
+        /*background: white url(/static/images/ajax-loader.gif) center center no-repeat;*/
+        opacity: 1;
     }
 
     </style>
@@ -203,6 +256,9 @@
 <script type="text/javascript">
   var $SCRIPT_ROOT = {{ request.script_root|tojson|safe }};
 </script>
+
+
+
 
   </body>
 

@@ -1,27 +1,30 @@
 {% extends "index.html" %}
 {% block content %}
 
+<div id="loading"><div id="overlay"></div><div id="overlay_image"></div></div>
 
+
+
+<div id="content">
 
 <div id="LeftPanel" style="width: 20%; height: 100%; float: left;">
 
   <form method="POST" action="/country_choice" id="country_id">
   <h3>{{ country_h }}</h3>
   <p class=small>{{ country_txt }}</p>
-  {{ form_country.countrys.label }}<br> {{ form_country.countrys(onchange="change_country();") }}
+  {{ form_country.countrys(onchange="change_country();") }}
   </form>
 
   <form method="POST" action="/indicator_choice" id="indicator_id">
   <h3>{{ indicator_h }}</h3>
   <p class=small>{{ indicator_txt }}</p>
-  {{ form_indicator.indicators.label }}<br> {{ form_indicator.indicators(onchange="change_indicator();") }}
+  {{ form_indicator.indicators(onchange="change_indicator();") }}
   </form>
 
   <form method="POST" action="/region_choice" id="region_id">
   <h3>{{ region_h }}</h3>
   <p class=small>{{ region_txt }}</p>
-
-  <br> {{ form_region.regions(onchange="change_region();") }}
+  {{ form_region.regions(onchange="change_region();") }}
   </form>
   {% if small_region_warning==True %}
   <h6>{{warning}}</h6>
@@ -68,7 +71,7 @@
   <form method="POST" action="/season_choice" id="season_id">
   <h3>{{ time_scale_h }}</h3>
   <p class=small>{{ time_scale_txt }}</p>
-  {{ form_season.seasons.label }}<br> {{ form_season.seasons(onchange="change_season();") }}
+  {{ form_season.seasons(onchange="change_season();") }}
   </form>
 </div>
 
@@ -83,8 +86,8 @@
       <a class="label label-primary" href={{ EWEMBI_plot }} target="_blank"  style="margin-right: 5px;">Download plot </a>
 
 
-    <h3>{{ EWEMBI_plot }}</h3>
-    <p class=small>{{ EWEMBI_plot_txt }}</p>
+    <h3>{{ transient_plot_title }}</h3>
+    <p class=small>{{ transient_plot_title_txt }}</p>
       <IMG SRC={{ transient_plot }} ALT=' ' WIDTH=350></IMG>
       <a class="label label-primary" href={{ transient_plot }} target="_blank"  style="margin-right: 5px;">Download plot </a>
 </div>
@@ -94,18 +97,20 @@
 </div>
 
 <div id="LeftPanel" style="width: 35%; height: 100%; float: left;">
-    <h3>{{ EWEMBI_plot_title }}</h3>
-    <p class=small>{{ EWEMBI_plot_title_txt }}</p>
+    <h3>{{ Projection_plot_title }}</h3>
+    <p class=small>{{ Projection_plot_title_txt }}</p>
       <IMG SRC={{ Projection_plot }} ALT=' ' WIDTH=350></IMG>
       <a class="label label-primary" href={{ EWEMBI_plot }} target="_blank"  style="margin-right: 5px;">Download plot </a>
 
 
-    <h3>{{ EWEMBI_plot }}</h3>
-    <p class=small>{{ EWEMBI_plot_txt }}</p>
+    <h3>{{ annual_cycle_plot_title }}</h3>
+    <p class=small>{{ annual_cycle_plot_title_txt }}</p>
       <IMG SRC={{ annual_cycle_plot }} ALT=' ' WIDTH=350></IMG>
       <a class="label label-primary" href={{ transient_plot }} target="_blank"  style="margin-right: 5px;">Download plot </a>
 </div>
 
+
+</div>
 
 
 

@@ -56,7 +56,6 @@ regions=settings.regions
 form_labels=settings.form_labels
 season_dict=settings.season_dict
 text_dict=settings.text_dict
-plot_text_dict=settings.plot_text_dict
 
 
 COUs=settings.COUs
@@ -149,13 +148,16 @@ def choices():
     EWEMBI_plot='app/static/images/'+s['country']+'/'+s['indicator']+'_EWEMBI_ref_'+s['season']+'_'+region+'.png'
     if os.path.isfile(EWEMBI_plot)==False:
       COU.period_statistics(periods={refP:s['ref_period']},selection=ewembi,ref_name=refP)
+      fig,ax=plt.subplots(nrows=1,ncols=1,figsize=(4,3))
       ewembi[0].display_map(out_file=EWEMBI_plot,
+        ax=ax,
         highlight_region=region,
         period=refP,
         season=s['season'],
         color_label=indicator_label,
-        title=refP.replace('to','-')+' '+lang_dict[lang][s['season']]
         )
+      plt.title(refP.replace('to','-')+' '+lang_dict[lang][s['season']],fontsize=10)
+      plt.savefig(EWEMBI_plot)
 
     # projection
     ens_selection=COU.selection([s['indicator'],s['dataset']])
@@ -164,13 +166,15 @@ def choices():
     if os.path.isfile(Projection_plot)==False:
       COU.period_statistics(periods=periods,selection=ens_selection,ref_name=refP)
       COU.period_model_agreement(ref_name=refP)
-      ens_mean.display_map(out_file=Projection_plot,
+      fig,ax=plt.subplots(nrows=1,ncols=1,figsize=(4,3))
+      ens_mean.display_map(ax=ax,
         highlight_region=region,
         period='diff_'+proP+'-'+refP,
         season=s['season'],
         color_label=indicator_label,
-        title=proP.replace('to','-')+' vs '+refP.replace('to','-')+' '+lang_dict[lang][s['season']]
         )
+      plt.title(proP.replace('to','-')+' vs '+refP.replace('to','-')+' '+lang_dict[lang][s['season']],fontsize=10)
+      plt.savefig(Projection_plot)
 
     # transient
     transient_plot='app/static/images/'+s['country']+'/'+s['indicator']+'_'+s["dataset"]+'_'+region+'_'+s['season']+'_transient.png'
@@ -184,7 +188,7 @@ def choices():
       if message==1:
         ax.set_ylabel(indicator_label)
         plt.legend(loc='best')
-        plt.title(region+' '+lang_dict[lang][s['season']])
+        plt.title(s['region']+' '+lang_dict[lang][s['season']],fontsize=10)
         fig.tight_layout()
         plt.savefig(transient_plot)   
 
@@ -192,67 +196,85 @@ def choices():
     # annual cycle
     annual_cycle_plot='app/static/images/'+s['country']+'/'+s['indicator']+'_'+s["dataset"]+'_'+region+'_annual_cycle_'+proP+'-ref.png'
     if os.path.isfile(annual_cycle_plot)==False:
-      print region
-      if region != s['country']:COU.create_mask_admin(ewembi[0].raw_file,s['indicator'],regions=[region])
-      COU.area_average('lat_weighted',overwrite=False,selection=ens_selection+ewembi,regions=[region])
-      COU.unit_conversions()
-
-      COU.annual_cycle(periods={refP:s['ref_period']},selection=ewembi,regions=[region])
-      COU.annual_cycle(periods=periods,selection=ens_selection,ref_name=refP,regions=[region])
-      COU.annual_cycle_ensemble_mean(regions=[region])
-
       if ewembi[0].time_format!='yearly':
-          fig,ax=plt.subplots(nrows=2,ncols=1,sharex=True,figsize=(4,3))
-          ewembi[0].plot_annual_cycle(period=refP,region=region,ax=ax[0],title='',ylabel='  ',label='observations (EWEMBI)',color='green',xlabel=False)
-          ens_mean.plot_annual_cycle(period=refP,region=region,ax=ax[0],title='',ylabel='  ',label='model data',color='red',xlabel=False)
-          ax[0].legend(loc='best')
-          ax[0].set_title(region+' '+proP.replace('to','-')+' vs '+refP.replace('to','-')+' '+lang_dict[lang][s['season']])
+        if region != s['country']:COU.create_mask_admin(ewembi[0].raw_file,s['indicator'],regions=[region])
+        COU.area_average('lat_weighted',overwrite=False,selection=ens_selection+ewembi,regions=[region])
+        COU.unit_conversions()
 
-          ens_mean.plot_annual_cycle(period='diff_'+proP+'-'+refP,region=region,ax=ax[1],title='',ylabel='  ',label='projected change',color='red')
-          ax[1].plot([0,1],[0,0],color='k')
-          ax[1].legend(loc='best')
-          ylab_ax=fig.add_axes([0.0,0.0,1,1])
-          ylab_ax.axis([0, 1, 0, 1])
-          ylab_ax.axis('off')
-          ylab_ax.text(0.05,0.5,indicator_label,rotation=90,verticalalignment='center')
-          fig.subplots_adjust(left=0.175, bottom=0.125, right=0.95, top=0.90, wspace=0, hspace=0.1)
-          plt.savefig(annual_cycle_plot)
+        COU.annual_cycle(periods={refP:s['ref_period']},selection=ewembi,regions=[region])
+        COU.annual_cycle(periods=periods,selection=ens_selection,ref_name=refP,regions=[region])
+        COU.annual_cycle_ensemble_mean(regions=[region])
+
+        fig,ax=plt.subplots(nrows=2,ncols=1,sharex=True,figsize=(4,3))
+        ewembi[0].plot_annual_cycle(period=refP,region=region,ax=ax[0],title='',ylabel='  ',label='observations (EWEMBI)',color='green',xlabel=False)
+        ens_mean.plot_annual_cycle(period=refP,region=region,ax=ax[0],title='',ylabel='  ',label='model data',color='red',xlabel=False)
+        ax[0].legend(loc='best')
+        ax[0].set_title(s['region']+' '+proP.replace('to','-')+' vs '+refP.replace('to','-')+' '+lang_dict[lang][s['season']],fontsize=10)
+
+        ens_mean.plot_annual_cycle(period='diff_'+proP+'-'+refP,region=region,ax=ax[1],title='',ylabel='  ',label='projected change',color='red')
+        ax[1].plot([0,1],[0,0],color='k')
+        ax[1].legend(loc='best')
+        ylab_ax=fig.add_axes([0.0,0.0,1,1])
+        ylab_ax.axis([0, 1, 0, 1])
+        ylab_ax.axis('off')
+        ylab_ax.text(0.05,0.5,indicator_label,rotation=90,verticalalignment='center')
+        fig.subplots_adjust(left=0.175, bottom=0.125, right=0.95, top=0.90, wspace=0, hspace=0.1)
+        plt.savefig(annual_cycle_plot)
 
 
     if s['user_type']=='advanced': advanced_col='white'
     if s['user_type']=='beginner':  advanced_col='gray'
 
-    if lang=='fr':
-      language=languages['en']
-      EWEMBI_plot_title=u"Observations pour la période de réference 1986-2006"
-      Projection_plot_title=u"Changement projeté pour la période "+proP+" par rapport à la période de réfernce 1986-2006"
-      transient_plot_title='Moyenne régionale pour les observations et projections'
-      annual_cycle_plot_title='Cycle annuel pour les observations durant la période de réference 1986-2006 et les projections pour la période '+proP
-
-    if lang=='en':
-      language=languages['fr']
-      EWEMBI_plot_title=u"Observations over the reference period 1986-2006"
-      Projection_plot_title=u"Change projected for the period "+proP+" with respect to the reference period 1986-2006"
-      transient_plot_title='Regional average for observations and projections'     
-      annual_cycle_plot_title='Annual cycle for observations over the reference period 1986-2006 and projections over the period '+proP
-
-      '''
-      would be nice to make a function creating all these texts
-      '''
-
-
     plot_dict={
       'EWEMBI_plot':EWEMBI_plot.replace('app/',''),
-      'EWEMBI_plot_title':plot_text_dict[lang]['EWEMBI_plot_title'],
-      'EWEMBI_plot_title_txt':plot_text_dict[lang]['EWEMBI_plot_title_txt'].replace('INDICATOR',lang_dict[lang][s['indicator']]),
       'Projection_plot':Projection_plot.replace('app/',''),
-      'Projection_plot_title':Projection_plot_title,
-      'annual_cycle_plot':annual_cycle_plot.replace('app/',''),
-      'annual_cycle_plot_title':annual_cycle_plot_title,
       'transient_plot':transient_plot.replace('app/',''),
-      'transient_plot_title':transient_plot_title,    
+      'annual_cycle_plot':annual_cycle_plot.replace('app/',''),
     }
 
+    if s['season']=='year':season_add_on=''
+    if s['season']!='year':season_add_on=' in '+lang_dict[lang][s['season']]
+    plot_txt_dict={'en':{
+      'EWEMBI_plot':EWEMBI_plot.replace('app/',''),
+      'EWEMBI_plot_title':'Climatology',
+      'EWEMBI_plot_title_txt':lang_dict[lang][s['indicator']]+' averaged over the reference period '+refP.replace('to','-')+season_add_on+'. Observations are taken from EWEMBI.',
+
+      'Projection_plot':Projection_plot.replace('app/',''),
+      'Projection_plot_title':'Projected Change',
+      'Projection_plot_title_txt':'Projected change in '+lang_dict[lang][s['indicator']]+' for '+proP.replace('to','-')+' compared to the reference period '+refP.replace('to','-')+season_add_on+'. Here the ensemble mean is displayed, grid-cells for which a model-disagreement is found are colored in gray.',
+
+      'transient_plot':transient_plot.replace('app/',''),
+      'transient_plot_title':'Transient',
+      'transient_plot_title_txt':lang_dict[lang][s['indicator']]+' displayed as 20 year running mean'+season_add_on+'. Observations (EWEMBI) are shown in green for the period 1999-2016. RCM simulations are shown in red for the period 1970-2100. The line represents the ensemble mean while the shaded area represents the model spread. Differences between observations and model data during the period 1999-2016 have to be expected.',
+
+      'annual_cycle_plot':annual_cycle_plot.replace('app/',''),
+      'annual_cycle_plot_title':'Annual Cycle',
+      'annual_cycle_plot_title_txt':'Annual cycle of '+lang_dict[lang][s['indicator']]+' for the reference period '+refP.replace('to','-')+' (top) and changes in the annual cycle projected for '+proP.replace('to','-')+' compared to the reference period '+refP.replace('to','-')+' (bottom). Observations (EWEMBI) are shown in green, RCM simulations are shown in red. The line represents the ensemble mean while the shaded area represents the model spread.',
+    },
+
+    'fr':{
+      'EWEMBI_plot':EWEMBI_plot.replace('app/',''),
+      'EWEMBI_plot_title':'Climatology',
+      'EWEMBI_plot_title_txt':lang_dict[lang][s['indicator']]+'averaged over the reference period '+refP.replace('to','')+' '+s['season']+'. Observations are taken from EWEMBI',
+
+      'Projection_plot':Projection_plot.replace('app/',''),
+      'Projection_plot_title':'Projected Change',
+      'Projection_plot_title_txt':'Projected change in '+lang_dict[lang][s['indicator']]+' for '+proP.replace('to','')+' compared to the reference period '+refP.replace('to','')+' '+s['season']+'. In red (blue) areas an increase (decrease) is projected. Here the ensemble mean is displayed, grid-cells for which a model-disagreement is found are colored in gray.',
+
+      'transient_plot':transient_plot.replace('app/',''),
+      'transient_plot_title':'Climatology',
+      'transient_plot_title_txt':lang_dict[lang][s['indicator']]+'averaged over the reference period '+refP.replace('to','')+' '+s['season']+'. Observations are taken from EWEMBI',
+
+      'annual_cycle_plot':annual_cycle_plot.replace('app/',''),
+      'annual_cycle_plot_title':'Projected Change',
+      'annual_cycle_plot_title_txt':'Projected change in '+lang_dict[lang][s['indicator']]+' for '+proP.replace('to','')+' compared to the reference period '+refP.replace('to','')+' '+s['season']+'. In red (blue) areas an increase (decrease) is projected. Here the ensemble mean is displayed, grid-cells for which a model-disagreement is found are colored in gray.',
+    }
+    }
+
+    if lang=='fr':
+      language=languages['en']
+    if lang=='en':
+      language=languages['fr']
 
     other_dict={
       'language':language,
@@ -276,6 +298,7 @@ def choices():
     context=form_dict.copy()
     context.update(other_dict)
     context.update(plot_dict)
+    context.update(plot_txt_dict[lang])
     context.update(text_dict[lang])
 
 
@@ -309,6 +332,8 @@ def merging_page():
       'regions_plot':regions_plot.replace('app/',''),
       'small_region_warning':s['small_region_warning']
     }
+    context.update(text_dict[s['language']])
+
     return render_template('merging_page.html',**context)
 
   except KeyError:

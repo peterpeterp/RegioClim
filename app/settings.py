@@ -174,12 +174,21 @@ period_dict	= {
 text_dict={'en':{
 	'warning':'Warning!',
 	'warning_txt':'The chosen region is smaller than 5 grid-cells. Please use the "Merge Region" function to aggregate several small regions.',
+
+	'merge_page_h':'Add another region',
+	'merge_page_txt':'Select a region you want to add to the chosen region.',
+	'warning_merge_page_txt':'The chosen region is smaller than 5 grid-cells. Please select another region you want to merge the current region with.',
+
+
 	'region_h':'Administrative Region',
-	'region_txt':'Region for which the transient and annual cycle is computed. Use "Merge Regions" function to aggregate several small regions.',
+	'region_txt':'Region for which the transient and annual cycle is presented. Use "Merge Regions" function to aggregate several small regions.',
+
 	'country_h':'Country',
 	'country_txt':'For the moment only the PAS-PNA countries Benin and Senegal are available. Could be extended',
+
 	'indicator_h':'Climate Indicator',
 	'indicator_txt':'Climate indicators based on daily temperature and precipitation. For the moment no drought indicator is included. Please consider monthly precipitation for drought assements and keep in mind that potential evapotranspiration might increase in a warmer world.',
+	
 	'time_scale_h':'Time Scale',
 	'time_scale_txt':'Projected trends might depend on the season. As for different regions the monsoon onset and end differes, use monthly data to estimate seasonal changes.',
 
@@ -196,24 +205,6 @@ text_dict={'en':{
 }
 
 
-def create_plot_texts(s,lang):
-	plot_text_dict={'en':{
-		'EWEMBI_plot_title':'Climatology',
-		'EWEMBI_plot_title_txt':lang_dict[s['indicator']]+'averaged over the reference period REFERNCE_PERIOD SEASONAL. Observations are taken from EWEMBI',
-
-		'proj_map':'Projected Change',
-		'proj_map_txt':'Projected change in INDICATOR for PROJECTION_PERIOD compared to the reference period REFERNCE_PERIOD SEASONAL. In red (blue) areas an increase (decrease) is projected. Here the ensemble mean is displayed, grid-cells for which a model-disagreement is found are colored in gray.',
-
-	},'fr':{
-		'EWEMBI_plot_title':'Climatology',
-		'EWEMBI_plot_title_txt':'INDICATOR averaged over the reference period REFERNCE_PERIOD SEASONAL. Observations are taken from EWEMBI',
-
-		'proj_map':'Projected Change',
-		'proj_map_txt':'Projected change in INDICATOR for PROJECTION_PERIOD compared to the reference period REFERNCE_PERIOD SEASONAL. In red (blue) areas an increase (decrease) is projected. Here the ensemble mean is displayed, grid-cells for which a model-disagreement is found are colored in gray.',
-
-	}
-	}
-	return plot_text_dict
 
 
 print 'done with settings'
