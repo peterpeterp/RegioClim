@@ -52,12 +52,12 @@ for i in range(1,13):
 
 countrys=['BEN','SEN']
 COUs={'BEN':country_analysis.country_analysis('BEN',basepath+'country_analysis/data/BEN/',seasons=seasons),
-		#'SEN':country_analysis.country_analysis('SEN',basepath+'/country_analysis/data/SEN/',seasons={'year':range(1,13)})
+		# 'SEN':country_analysis.country_analysis('SEN',basepath+'/country_analysis/data/SEN/',seasons=seasons)
 		}
 
 
 for COU in COUs.values():
-	COU.load_data(quiet=True)
+	COU.load_data(quiet=False)
 	COU.unit_conversions()
 
 
@@ -188,7 +188,7 @@ text_dict={'en':{
 
 	'indicator_h':'Climate Indicator',
 	'indicator_txt':'Climate indicators based on daily temperature and precipitation. For the moment no drought indicator is included. Please consider monthly precipitation for drought assements and keep in mind that potential evapotranspiration might increase in a warmer world.',
-	
+
 	'time_scale_h':'Time Scale',
 	'time_scale_txt':'Projected trends might depend on the season. As for different regions the monsoon onset and end differes, use monthly data to estimate seasonal changes.',
 
