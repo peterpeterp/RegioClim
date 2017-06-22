@@ -55,7 +55,6 @@
       <button type="submit" class="btn">Bias Correction</button>
     </form>
   </div>
-
 {% endif %}
 
 
@@ -64,7 +63,6 @@
       {{ form_period.hidden_tag() }}
       {{ form_period.ref_period.label }} {{ form_period.ref_period(size=10) }}
       {{ form_period.proj_period.label }} {{ form_period.proj_period(size=10 ) }}
-  
     <button type="submit" class="btn">Select periods       </button>
   </form>
   
@@ -74,6 +72,7 @@
   <p class=small>{{ time_scale_txt }}</p>
   {{ form_season.seasons(onchange="change_season();") }}
   </form>
+  <a class="label label-primary" href="/prepare_for_download/get_data**bla" target="_blank"  style="margin-right: 5px;">Download data </a>
 </div>
 
 <div id="LeftPanel" style="width: 5%; height: 100%; float: left;">
@@ -84,13 +83,15 @@
     <h3>{{ EWEMBI_plot_title }}</h3>
     <p class=small>{{ EWEMBI_plot_title_txt }}</p>
       <IMG SRC={{ EWEMBI_plot }} ALT=' ' WIDTH=350></IMG>
-      <a class="label label-primary" href={{ EWEMBI_plot }} target="_blank"  style="margin-right: 5px;">Download plot </a>
-
+  <a class="label label-primary" href="/prepare_for_download/EWEMBI_plot**_large.png" target="_blank"  style="margin-right: 5px;">Download png </a>
+  <a class="label label-primary" href="/prepare_for_download/EWEMBI_plot**.pdf" target="_blank"  style="margin-right: 5px;">Download pdf </a>
 
     <h3>{{ transient_plot_title }}</h3>
     <p class=small>{{ transient_plot_title_txt }}</p>
       <IMG SRC={{ transient_plot }} ALT=' ' WIDTH=350></IMG>
-      <a class="label label-primary" href={{ transient_plot }} target="_blank"  style="margin-right: 5px;">Download plot </a>
+  <a class="label label-primary" href="/prepare_for_download/transient_plot**_large.png" target="_blank"  style="margin-right: 5px;">Download png </a>
+  <a class="label label-primary" href="/prepare_for_download/transient_plot**.pdf" target="_blank"  style="margin-right: 5px;">Download pdf </a>
+
 </div>
 
 <div id="LeftPanel" style="width: 5%; height: 100%; float: left;">
@@ -101,14 +102,15 @@
     <h3>{{ Projection_plot_title }}</h3>
     <p class=small>{{ Projection_plot_title_txt }}</p>
       <IMG SRC={{ Projection_plot }} ALT=' ' WIDTH=350></IMG>
-      <a class="label label-primary" href={{ EWEMBI_plot }} target="_blank"  style="margin-right: 5px;">Download plot </a>
-
+  <a class="label label-primary" href="/prepare_for_download/Projection_plot**_large.png" target="_blank"  style="margin-right: 5px;">Download png </a>
+  <a class="label label-primary" href="/prepare_for_download/Projection_plot**.pdf" target="_blank"  style="margin-right: 5px;">Download pdf </a>
 
     <h3>{{ annual_cycle_plot_title }}</h3>
     <p class=small>{{ annual_cycle_plot_title_txt }}</p>
       <IMG SRC={{ annual_cycle_plot }} ALT=' ' WIDTH=350></IMG>
-      <a class="label label-primary" href={{ transient_plot }} target="_blank"  style="margin-right: 5px;">Download plot </a>
-</div>
+  <a class="label label-primary" href="/prepare_for_download/annual_cycle_plot**_large.png" target="_blank"  style="margin-right: 5px;">Download png </a>
+  <a class="label label-primary" href="/prepare_for_download/annual_cycle_plot**.pdf" target="_blank"  style="margin-right: 5px;">Download pdf </a>
+  </div>
 
 
 </div>

@@ -18,7 +18,7 @@
 # along with wacalc; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-import os
+import os,glob
 from app import app
 from flask import redirect, render_template, url_for, request, flash, get_flashed_messages, g, session, jsonify, Flask, send_from_directory
 from collections import OrderedDict
@@ -26,7 +26,7 @@ from werkzeug.routing import BuildError
 import settings
 import forms
 import matplotlib.pylab as plt
-
+from plotting import *
 
 # from flask_nav import Nav
 # from flask_nav.elements import Navbar, View
@@ -98,8 +98,7 @@ def index():
 
 @app.route('/choices')
 def choices():
-  try: 
-    print session
+  if True: 
     s=session
     lang=s['language']
 
@@ -134,93 +133,17 @@ def choices():
     proP = "to".join(str(t) for t in s["proj_period"])
     periods={refP:s["ref_period"],proP:s["proj_period"]}
 
-    print periods
-
-    
-
-
     COU=COUs[s['country']]
 
     indicator_label=lang_dict[lang][s['indicator']]+' ['+ind_dict[s['indicator']]['unit']+']'
 
-    # EWEMBI map
-    ewembi=COU.selection([s['indicator'],'EWEMBI'])
-    EWEMBI_plot='app/static/images/'+s['country']+'/'+s['indicator']+'_EWEMBI_ref_'+s['season']+'_'+region+'.png'
-    if os.path.isfile(EWEMBI_plot)==False:
-      COU.period_statistics(periods={refP:s['ref_period']},selection=ewembi,ref_name=refP)
-      fig,ax=plt.subplots(nrows=1,ncols=1,figsize=(4,3))
-      ewembi[0].display_map(out_file=EWEMBI_plot,
-        ax=ax,
-        highlight_region=region,
-        period=refP,
-        season=s['season'],
-        color_label=indicator_label,
-        )
-      plt.title(refP.replace('to','-')+' '+lang_dict[lang][s['season']],fontsize=10)
-      plt.savefig(EWEMBI_plot)
-
-    # projection
-    ens_selection=COU.selection([s['indicator'],s['dataset']])
-    ens_mean=COU.selection([s['indicator'],s['dataset'],'ensemble_mean'])[0]
-    Projection_plot='app/static/images/'+s['country']+'/'+s['indicator']+'_'+s["scenario"]+'_'+s["dataset"]+'_'+proP+'-'+refP+'_'+s['season']+'_'+region+'.png'
-    if os.path.isfile(Projection_plot)==False:
-      COU.period_statistics(periods=periods,selection=ens_selection,ref_name=refP)
-      COU.period_model_agreement(ref_name=refP)
-      fig,ax=plt.subplots(nrows=1,ncols=1,figsize=(4,3))
-      ens_mean.display_map(ax=ax,
-        highlight_region=region,
-        period='diff_'+proP+'-'+refP,
-        season=s['season'],
-        color_label=indicator_label,
-        )
-      plt.title(proP.replace('to','-')+' vs '+refP.replace('to','-')+' '+lang_dict[lang][s['season']],fontsize=10)
-      plt.savefig(Projection_plot)
-
-    # transient
-    transient_plot='app/static/images/'+s['country']+'/'+s['indicator']+'_'+s["dataset"]+'_'+region+'_'+s['season']+'_transient.png'
-    if os.path.isfile(transient_plot)==False:
-
-      if region != s['country']:COU.create_mask_admin(ewembi[0].raw_file,s['indicator'],regions=[region])
-      COU.area_average('lat_weighted',overwrite=True,selection=ens_selection+ewembi,regions=[region])
-      fig,ax=plt.subplots(nrows=1,ncols=1,figsize=(4,3))
-      message=ens_mean.plot_transients(season=s['season'],region=region,running_mean_years=20,ax=ax,title='',ylabel=None,label='model data',color='red')
-      message=ewembi[0].plot_transients(season=s['season'],region=region,running_mean_years=20,ax=ax,title='',ylabel=None,label='observations (EWEMBI)',color='green')
-      if message==1:
-        ax.set_ylabel(indicator_label)
-        plt.legend(loc='best')
-        plt.title(s['region']+' '+lang_dict[lang][s['season']],fontsize=10)
-        fig.tight_layout()
-        plt.savefig(transient_plot)   
-
-
-    # annual cycle
-    annual_cycle_plot='app/static/images/'+s['country']+'/'+s['indicator']+'_'+s["dataset"]+'_'+region+'_annual_cycle_'+proP+'-ref.png'
-    if os.path.isfile(annual_cycle_plot)==False:
-      if ewembi[0].time_format!='yearly':
-        if region != s['country']:COU.create_mask_admin(ewembi[0].raw_file,s['indicator'],regions=[region])
-        COU.area_average('lat_weighted',overwrite=False,selection=ens_selection+ewembi,regions=[region])
-        COU.unit_conversions()
-
-        COU.annual_cycle(periods={refP:s['ref_period']},selection=ewembi,regions=[region])
-        COU.annual_cycle(periods=periods,selection=ens_selection,ref_name=refP,regions=[region])
-        COU.annual_cycle_ensemble_mean(regions=[region])
-
-        fig,ax=plt.subplots(nrows=2,ncols=1,sharex=True,figsize=(4,3))
-        ewembi[0].plot_annual_cycle(period=refP,region=region,ax=ax[0],title='',ylabel='  ',label='observations (EWEMBI)',color='green',xlabel=False)
-        ens_mean.plot_annual_cycle(period=refP,region=region,ax=ax[0],title='',ylabel='  ',label='model data',color='red',xlabel=False)
-        ax[0].legend(loc='best')
-        ax[0].set_title(s['region']+' '+proP.replace('to','-')+' vs '+refP.replace('to','-')+' '+lang_dict[lang][s['season']],fontsize=10)
-
-        ens_mean.plot_annual_cycle(period='diff_'+proP+'-'+refP,region=region,ax=ax[1],title='',ylabel='  ',label='projected change',color='red')
-        ax[1].plot([0,1],[0,0],color='k')
-        ax[1].legend(loc='best')
-        ylab_ax=fig.add_axes([0.0,0.0,1,1])
-        ylab_ax.axis([0, 1, 0, 1])
-        ylab_ax.axis('off')
-        ylab_ax.text(0.05,0.5,indicator_label,rotation=90,verticalalignment='center')
-        fig.subplots_adjust(left=0.175, bottom=0.125, right=0.95, top=0.90, wspace=0, hspace=0.1)
-        plt.savefig(annual_cycle_plot)
-
+    EWEMBI_plot=EWEMBI_plot_func(s,COU,refP,proP,region,periods,lang,indicator_label,lang_dict,'_small.png',highlight_region=region)
+    Projection_plot=Projection_plot_func(s,COU,refP,proP,region,periods,lang,indicator_label,lang_dict,'_small.png',highlight_region=region)
+    print '_________ transient'
+    transient_plot=transient_plot_func(s,COU,refP,proP,region,periods,lang,indicator_label,lang_dict,'_small.png')
+    print '_________ annual cycle'
+    annual_cycle_plot=annual_cycle_plot_func(s,COU,refP,proP,region,periods,lang,indicator_label,lang_dict,'_small.png')
+    print '_________ done'
 
     if s['user_type']=='advanced': advanced_col='white'
     if s['user_type']=='beginner':  advanced_col='gray'
@@ -245,7 +168,7 @@ def choices():
 
       'transient_plot':transient_plot.replace('app/',''),
       'transient_plot_title':'Transient',
-      'transient_plot_title_txt':lang_dict[lang][s['indicator']]+' displayed as 20 year running mean'+season_add_on+'. Observations (EWEMBI) are shown in green for the period 1999-2016. RCM simulations are shown in red for the period 1970-2100. The line represents the ensemble mean while the shaded area represents the model spread. Differences between observations and model data during the period 1999-2016 have to be expected.',
+      'transient_plot_title_txt':lang_dict[lang][s['indicator']]+' displayed as 20 year running mean'+season_add_on+'. Observations (EWEMBI) are shown in green for the period 1999-2013. RCM simulations are shown in red for the period 1970-2100. The line represents the ensemble mean while the shaded area represents the model spread. Differences between observations and model data during the period 1999-2013 have to be expected.',
 
       'annual_cycle_plot':annual_cycle_plot.replace('app/',''),
       'annual_cycle_plot_title':'Annual Cycle',
@@ -301,11 +224,13 @@ def choices():
     context.update(plot_txt_dict[lang])
     context.update(text_dict[lang])
 
+    print plot_dict
+
 
     return render_template('choices.html',**context)
 
-  except KeyError:
-    return redirect(url_for("index"))
+  # except KeyError:
+  #   return redirect(url_for("index"))
 
 
 @app.route('/merging_page')
@@ -314,7 +239,7 @@ def merging_page():
     s=session
     COU=COUs[s['country']]
 
-    regions_plot='app/static/images/'+s['country']+'_'+s['region']+'.png'
+    regions_plot='app/static/images/'+s['country']+'/'+s['region']+'.png'
     if os.path.isfile(regions_plot)==False:
       COU.selection([s['indicator'],s['dataset'],'ensemble_mean'])[0].plot_map(to_plot='empty',
         show_region_names=True,
@@ -365,47 +290,7 @@ def merge_with_region():
   s['region_avail'][index],s['region_avail'][0]=s['region_avail'][0],s['region_avail'][index]
   return redirect(url_for('merging_page'))
 
-@app.route('/model_agreement')
-def model_agreement():
-  try:
-    country=session['country']
 
-    form_period = forms.periodForm(request.form)
-    form_period.periods.choices = zip(session['period_avail'],session['period_avail'])
-
-    refP = "-".join(str(t) for t in session["ref_period"])
-    proP = session['period']
-    periods={'ref':session["ref_period"],'projection':session["proj_period"]}
-    CORDEX_BC_plot_detail='static/images/'+country+'/'+session["indicator"]+'_'+session["scenario"]+'_'+session['dataset']+'_'+session['season']+'_details.png'
-
-    context = { 
-      'CORDEX_BC_plot_detail':CORDEX_BC_plot_detail,
-    }
-    return render_template('model_agreement.html',**context)
-
-  except KeyError:
-    return redirect(url_for("index"))
-
-@app.route('/bias_correction')
-def bias_correction():
-  try:
-    country=session['country']
-
-    form_period = forms.PeriodField(request.form)
-    form_period.periods.choices = zip(session['period_avail'],session['period_avail'])
-
-    refP = "-".join(str(t) for t in session["ref_period"])
-    proP = session['period']
-    periods={'ref':session["ref_period"],'projection':session["proj_period"]}
-    bias_corretion_check='static/images/'+country+'/'+session["indicator"]+'_BC_check_'+session['season']+'.png'
-
-    context = { 
-      'bias_corretion_check':bias_corretion_check
-    }
-    return render_template('bias_correction.html',**context)
-
-  except KeyError:
-    return redirect(url_for("index"))
 
 @app.route('/go_to_choices',  methods=("POST", ))
 def go_to_choices():
@@ -419,9 +304,52 @@ def go_to_model_agreement():
 def go_to_bias_correction():
   return redirect(url_for("bias_correction"))
 
+@app.route('/prepare_for_download/<plot_request>',  methods=('GET',"POST", ))
+def prepare_for_download(plot_request):
+  print plot_request
+  request_type=plot_request.split('**')[0]
+  plot_format=plot_request.split('**')[-1]
+
+  s=session
+  lang=s['language']
+
+  region=s['region']
+  if region.split('(')[-1]=='full country)': region=s['country']
+
+  refP = "to".join(str(t) for t in s["ref_period"])
+  proP = "to".join(str(t) for t in s["proj_period"])
+  periods={refP:s["ref_period"],proP:s["proj_period"]}
+
+  COU=COUs[s['country']]
+
+  indicator_label=lang_dict[lang][s['indicator']]+' ['+ind_dict[s['indicator']]['unit']+']'
+
+  if request_type=='EWEMBI_plot':  filename=EWEMBI_plot_func(s,COU,refP,proP,region,periods,lang,indicator_label,lang_dict,plot_format)
+  if request_type=='Projection_plot':  filename=Projection_plot_func(s,COU,refP,proP,region,periods,lang,indicator_label,lang_dict,plot_format)
+  if request_type=='transient_plot':  filename=transient_plot_func(s,COU,refP,proP,region,periods,lang,indicator_label,lang_dict,plot_format)
+  if request_type=='annual_cycle_plot':  filename=annual_cycle_plot_func(s,COU,refP,proP,region,periods,lang,indicator_label,lang_dict,plot_format)
+
+  
+
+  if request_type=='get_data':  
+    curretn_path=os.getcwd()
+    os.chdir('../country_analysis/data/'+s['country']+'/')
+    os.system('tar -vzcf ../../../projection_sharing/app/static/data/'+s['indicator']+'.tar.gz area_average/*-'+s['indicator']+'_* raw/*_'+s['indicator']+'_*')
+    os.chdir(curretn_path)
+    filename='static/data/'+s['indicator']+'.tar.gz'
+
+  print filename
+
+  #print glob.glob(settings.basepath+'projection_sharing/app/'+'../../country_analysis/data/*')
+  if 'data' in request_type.split('_'):
+    return send_from_directory(directory=settings.basepath+'projection_sharing/app/', filename=filename.replace('app/',''),as_attachment=True)
+
+  if 'plot' in request_type.split('_'):
+    return send_from_directory(directory=settings.basepath+'projection_sharing/app/', filename=filename.replace('app/',''),as_attachment=True)
+
 @app.route('/<path:filename>', methods=['GET', 'POST'])
 def download(filename):    
-  return send_from_directory(directory='/Users/peterpfleiderer/Documents/Projects/projection_sharing/app/', filename=filename,as_attachment=True)
+  return send_from_directory(directory=settings.basepath+'projection_sharing/app/', filename=filename,as_attachment=True)
 
 @app.route('/user_type_choice',  methods=('POST', ))
 def user_type_choice():
@@ -557,4 +485,46 @@ def render_contact():
 def render_docu():
   return render_template('documentation.html')
 
+
+@app.route('/model_agreement')
+def model_agreement():
+  try:
+    country=session['country']
+
+    form_period = forms.periodForm(request.form)
+    form_period.periods.choices = zip(session['period_avail'],session['period_avail'])
+
+    refP = "-".join(str(t) for t in session["ref_period"])
+    proP = session['period']
+    periods={'ref':session["ref_period"],'projection':session["proj_period"]}
+    CORDEX_BC_plot_detail='static/images/'+country+'/'+session["indicator"]+'_'+session["scenario"]+'_'+session['dataset']+'_'+session['season']+'_details.png'
+
+    context = { 
+      'CORDEX_BC_plot_detail':CORDEX_BC_plot_detail,
+    }
+    return render_template('model_agreement.html',**context)
+
+  except KeyError:
+    return redirect(url_for("index"))
+
+@app.route('/bias_correction')
+def bias_correction():
+  try:
+    country=session['country']
+
+    form_period = forms.PeriodField(request.form)
+    form_period.periods.choices = zip(session['period_avail'],session['period_avail'])
+
+    refP = "-".join(str(t) for t in session["ref_period"])
+    proP = session['period']
+    periods={'ref':session["ref_period"],'projection':session["proj_period"]}
+    bias_corretion_check='static/images/'+country+'/'+session["indicator"]+'_BC_check_'+session['season']+'.png'
+
+    context = { 
+      'bias_corretion_check':bias_corretion_check
+    }
+    return render_template('bias_correction.html',**context)
+
+  except KeyError:
+    return redirect(url_for("index"))
 
