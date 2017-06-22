@@ -98,7 +98,7 @@ def index():
 
 @app.route('/choices')
 def choices():
-  if True: 
+  try: 
     s=session
     lang=s['language']
 
@@ -229,8 +229,8 @@ def choices():
 
     return render_template('choices.html',**context)
 
-  # except KeyError:
-  #   return redirect(url_for("index"))
+  except KeyError:
+    return redirect(url_for("index"))
 
 
 @app.route('/merging_page')
