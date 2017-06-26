@@ -503,15 +503,15 @@ def prepare_for_download(plot_request):
   if request_type=='get_data':  
     curretn_path=os.getcwd()
     os.chdir('../country_analysis/data/'+s['country']+'/')
-    os.system('tar -vzcf ../../../projection_sharing/app/static/data/'+s['indicator']+'.tar.gz area_average/*-'+s['indicator']+'_* raw/*_'+s['indicator']+'_*')
+    os.system('tar -vzcf ../'+s['country']+'_'+s['indicator']+'.tar.gz area_average/*-'+s['indicator']+'_* raw/*_'+s['indicator']+'_*')
     os.chdir(curretn_path)
-    filename='static/data/'+s['indicator']+'.tar.gz'
+    filename=s['country']+'_'+s['indicator']+'.tar.gz'
 
   print filename
 
   #print glob.glob(settings.basepath+'projection_sharing/app/'+'../../country_analysis/data/*')
-  if 'data' in request_type.split('_'):
-    return send_from_directory(directory=settings.basepath+'projection_sharing/app/', filename=filename.replace('app/',''),as_attachment=True)
+  if 'get_data' in request_type.split('**'):
+    return send_from_directory(directory=settings.basepath+'country_analysis/data/', filename=filename.replace('app/',''),as_attachment=True)
 
   if 'plot' in request_type.split('_'):
     return send_from_directory(directory=settings.basepath+'projection_sharing/app/', filename=filename.replace('app/',''),as_attachment=True)

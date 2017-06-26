@@ -94,7 +94,7 @@ def annual_cycle_plot_func(s,COU,refP,proP,region,periods,lang,indicator_label,l
       ens_mean.plot_annual_cycle(period=refP,region=region,ax=ax[0],title='',ylabel='  ',label='model data',color='green',xlabel=False)
       leg = ax[0].legend(loc='best',fancybox=True,fontsize=10)
       leg.get_frame().set_alpha(0.3)
-      ax[0].set_title(s['region']+' '+proP.replace('to','-')+' vs '+refP.replace('to','-')+' '+lang_dict[lang][s['season']],fontsize=12)
+      ax[0].set_title(s['region']+' '+proP.replace('to','-')+' vs '+refP.replace('to','-'),fontsize=12)
 
       ens_mean.plot_annual_cycle(period='diff_'+proP+'-'+refP,region=region,ax=ax[1],title='',ylabel='  ',label='projected change',color='green')
       ax[1].plot([0,1],[0,0],color='k')
