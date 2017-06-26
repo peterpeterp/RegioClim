@@ -179,6 +179,8 @@ text_dict={'en':{
 	'merge_page_txt':'Select a region you want to add to the chosen region.',
 	'warning_merge_page_txt':'The chosen region is smaller than 5 grid-cells. Please select another region you want to merge the current region with.',
 
+	'season_page_h':'Add another month',
+	'season_page_txt':'Select a month that will be added to the season',
 
 	'region_h':'Administrative Region',
 	'region_txt':'Region for which the transient and annual cycle is presented. Use "Merge Regions" function to aggregate several small regions.',

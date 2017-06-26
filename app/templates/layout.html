@@ -45,6 +45,11 @@
     document.getElementById("season_id").submit();
    }
 
+  function month_to_new_season() {
+    $("#loading").show();
+    document.getElementById("month_id").submit();
+   }
+
   function change_country_nav() {
     $("#loading").show();
     document.getElementById("country_nav").submit();
@@ -54,10 +59,15 @@
     $("#loading").show();
     document.getElementById("period_id").submit();
    }
-   
+  
   function back_to_choices() {
     $("#loading").show();
     document.getElementById("done_id").submit();
+   }
+
+  function save_this_season() {
+    $("#loading").show();
+    document.getElementById("save_season_id").submit();
    }
 
 

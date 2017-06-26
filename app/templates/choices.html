@@ -20,7 +20,9 @@
   <h3>{{ indicator_h }}</h3>
   <p class=small>{{ indicator_txt }}</p>
   {{ form_indicator.indicators(onchange="change_indicator();") }}
+  <a class="label label-primary" href="/prepare_for_download/get_data**bla" target="_blank"  style="margin-right: 5px;">Download data</a>
   </form>
+
 
   <form method="POST" action="/region_choice" id="region_id">
   <h3>{{ region_h }}</h3>
@@ -72,7 +74,9 @@
   <p class=small>{{ time_scale_txt }}</p>
   {{ form_season.seasons(onchange="change_season();") }}
   </form>
-  <a class="label label-primary" href="/prepare_for_download/get_data**bla" target="_blank"  style="margin-right: 5px;">Download data </a>
+  <form method="POST" action="/go_to_season_page">
+    <button type="submit" class="btn">Define Season</button>
+  </form>
 </div>
 
 <div id="LeftPanel" style="width: 5%; height: 100%; float: left;">

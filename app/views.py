@@ -126,6 +126,8 @@ def choices():
   
     form_period = forms.PeriodField(request.form, proj_period=proj_P, ref_period=ref_P)
 
+    print s['season_avail']
+
     form_season = forms.seasonForm(request.form)
     form_season.seasons.choices = zip(s['season_avail'],[lang_dict[lang][sea] for sea in s['season_avail']])
 
@@ -233,6 +235,70 @@ def choices():
     return redirect(url_for("index"))
 
 
+
+###############################
+# Define Season
+###############################
+
+@app.route('/season_page')
+def season_page():
+  if True:
+    s=session
+
+    form_season = forms.seasonForm(request.form)
+    form_season.seasons.choices = zip([str(sea) for sea in range(1,13)],[lang_dict[s['language']][str(sea)] for sea in range(1,13)])
+
+    new_season_name='+'.join([lang_dict[s['language']][str(sea)] for sea in session['new_season']])
+
+    context = { 
+      'form_season':form_season,
+      'new_season_name':new_season_name
+    }
+    context.update(text_dict[s['language']])
+
+    return render_template('season_page.html',**context)
+
+  # except KeyError:
+  #   return redirect(url_for("index"))
+
+
+@app.route('/go_to_season_page',  methods=("POST", ))
+def go_to_season_page():
+  session['new_season']=[]
+  return redirect(url_for("season_page"))
+
+@app.route('/add_month',  methods=('POST', ))
+def add_month():
+  form_season = forms.seasonForm(request.form)
+  session['new_season']+=[form_season.seasons.data]
+  session['new_season']=sorted(set(session['new_season']))
+  #update_keywords()
+  return redirect(url_for('season_page'))
+
+@app.route('/save_this_season',  methods=("POST", ))
+def save_this_season():
+  season_name='+'.join([str(sea) for sea in sorted(session['new_season'])])
+
+  for COU in COUs.values():
+    COU._seasons[season_name]=[int(sea) for sea in sorted(session['new_season'])]
+
+  for lang in ['en','fr']:
+    lang_dict[lang][season_name]='+'.join([lang_dict[lang][str(sea)] for sea in session['new_season']])
+
+  for cou in season_dict.keys():
+    season_dict[cou].append(season_name)
+
+  session['season_avail']+=[season_name]
+
+  print session['season_avail']
+
+  return redirect(url_for("choices"))
+
+
+###############################
+# Region Merge
+###############################
+
 @app.route('/merging_page')
 def merging_page():
   try:
@@ -264,6 +330,7 @@ def merging_page():
   except KeyError:
     return redirect(url_for("index"))
 
+
 @app.route('/go_to_merging_page',  methods=("POST", ))
 def go_to_merging_page():
   return redirect(url_for("merging_page"))
@@ -291,65 +358,9 @@ def merge_with_region():
   return redirect(url_for('merging_page'))
 
 
-
-@app.route('/go_to_choices',  methods=("POST", ))
-def go_to_choices():
-  return redirect(url_for("choices"))
-
-@app.route('/go_to_model_agreement',  methods=("POST", ))
-def go_to_model_agreement():
-  return redirect(url_for("model_agreement"))
-
-@app.route('/go_to_bias_correction',  methods=("POST", ))
-def go_to_bias_correction():
-  return redirect(url_for("bias_correction"))
-
-@app.route('/prepare_for_download/<plot_request>',  methods=('GET',"POST", ))
-def prepare_for_download(plot_request):
-  print plot_request
-  request_type=plot_request.split('**')[0]
-  plot_format=plot_request.split('**')[-1]
-
-  s=session
-  lang=s['language']
-
-  region=s['region']
-  if region.split('(')[-1]=='full country)': region=s['country']
-
-  refP = "to".join(str(t) for t in s["ref_period"])
-  proP = "to".join(str(t) for t in s["proj_period"])
-  periods={refP:s["ref_period"],proP:s["proj_period"]}
-
-  COU=COUs[s['country']]
-
-  indicator_label=lang_dict[lang][s['indicator']]+' ['+ind_dict[s['indicator']]['unit']+']'
-
-  if request_type=='EWEMBI_plot':  filename=EWEMBI_plot_func(s,COU,refP,proP,region,periods,lang,indicator_label,lang_dict,plot_format)
-  if request_type=='Projection_plot':  filename=Projection_plot_func(s,COU,refP,proP,region,periods,lang,indicator_label,lang_dict,plot_format)
-  if request_type=='transient_plot':  filename=transient_plot_func(s,COU,refP,proP,region,periods,lang,indicator_label,lang_dict,plot_format)
-  if request_type=='annual_cycle_plot':  filename=annual_cycle_plot_func(s,COU,refP,proP,region,periods,lang,indicator_label,lang_dict,plot_format)
-
-  
-
-  if request_type=='get_data':  
-    curretn_path=os.getcwd()
-    os.chdir('../country_analysis/data/'+s['country']+'/')
-    os.system('tar -vzcf ../../../projection_sharing/app/static/data/'+s['indicator']+'.tar.gz area_average/*-'+s['indicator']+'_* raw/*_'+s['indicator']+'_*')
-    os.chdir(curretn_path)
-    filename='static/data/'+s['indicator']+'.tar.gz'
-
-  print filename
-
-  #print glob.glob(settings.basepath+'projection_sharing/app/'+'../../country_analysis/data/*')
-  if 'data' in request_type.split('_'):
-    return send_from_directory(directory=settings.basepath+'projection_sharing/app/', filename=filename.replace('app/',''),as_attachment=True)
-
-  if 'plot' in request_type.split('_'):
-    return send_from_directory(directory=settings.basepath+'projection_sharing/app/', filename=filename.replace('app/',''),as_attachment=True)
-
-@app.route('/<path:filename>', methods=['GET', 'POST'])
-def download(filename):    
-  return send_from_directory(directory=settings.basepath+'projection_sharing/app/', filename=filename,as_attachment=True)
+###############################
+# option choices
+###############################
 
 @app.route('/user_type_choice',  methods=('POST', ))
 def user_type_choice():
@@ -413,15 +424,6 @@ def indicator_choice():
   return redirect(url_for('choices'))
 
 
-@app.route('/period_choice__',  methods=('POST', ))
-def period_choice__():
-  form_period = forms.periodForm(request.form)
-  session['period']=form_period.periods.data
-  # put chosen at beginning of list
-  index=session['period_avail'].index(session['period'])
-  session['period_avail'][index],session['period_avail'][0]=session['period_avail'][0],session['period_avail'][index]
-  return redirect(url_for('choices'))
-
 @app.route('/periodchoice',  methods=("POST", ))
 def add_periodchoice():
   form_period = forms.PeriodField(request.form)
@@ -429,7 +431,6 @@ def add_periodchoice():
   if form_period.validate_on_submit():
     session["ref_period"]   = [int(t) for t in form_period.ref_period.data.split("-")]
     session["proj_period"]  = [int(t) for t in form_period.proj_period.data.split("-")]
-
   else:
     flash_errors(form_period)
 
@@ -469,6 +470,61 @@ def country_choice():
 
   return redirect(url_for('choices'))
 
+
+###############################
+# Download
+###############################
+
+@app.route('/prepare_for_download/<plot_request>',  methods=('GET',"POST", ))
+def prepare_for_download(plot_request):
+  print plot_request
+  request_type=plot_request.split('**')[0]
+  plot_format=plot_request.split('**')[-1]
+
+  s=session
+  lang=s['language']
+
+  region=s['region']
+  if region.split('(')[-1]=='full country)': region=s['country']
+
+  refP = "to".join(str(t) for t in s["ref_period"])
+  proP = "to".join(str(t) for t in s["proj_period"])
+  periods={refP:s["ref_period"],proP:s["proj_period"]}
+
+  COU=COUs[s['country']]
+
+  indicator_label=lang_dict[lang][s['indicator']]+' ['+ind_dict[s['indicator']]['unit']+']'
+
+  if request_type=='EWEMBI_plot':  filename=EWEMBI_plot_func(s,COU,refP,proP,region,periods,lang,indicator_label,lang_dict,plot_format)
+  if request_type=='Projection_plot':  filename=Projection_plot_func(s,COU,refP,proP,region,periods,lang,indicator_label,lang_dict,plot_format)
+  if request_type=='transient_plot':  filename=transient_plot_func(s,COU,refP,proP,region,periods,lang,indicator_label,lang_dict,plot_format)
+  if request_type=='annual_cycle_plot':  filename=annual_cycle_plot_func(s,COU,refP,proP,region,periods,lang,indicator_label,lang_dict,plot_format)
+
+  if request_type=='get_data':  
+    curretn_path=os.getcwd()
+    os.chdir('../country_analysis/data/'+s['country']+'/')
+    os.system('tar -vzcf ../../../projection_sharing/app/static/data/'+s['indicator']+'.tar.gz area_average/*-'+s['indicator']+'_* raw/*_'+s['indicator']+'_*')
+    os.chdir(curretn_path)
+    filename='static/data/'+s['indicator']+'.tar.gz'
+
+  print filename
+
+  #print glob.glob(settings.basepath+'projection_sharing/app/'+'../../country_analysis/data/*')
+  if 'data' in request_type.split('_'):
+    return send_from_directory(directory=settings.basepath+'projection_sharing/app/', filename=filename.replace('app/',''),as_attachment=True)
+
+  if 'plot' in request_type.split('_'):
+    return send_from_directory(directory=settings.basepath+'projection_sharing/app/', filename=filename.replace('app/',''),as_attachment=True)
+
+
+###############################
+# Navigation
+###############################
+
+@app.route('/go_to_choices',  methods=("POST", ))
+def go_to_choices():
+  return redirect(url_for("choices"))
+
 @app.route('/home',  methods=('GET', ))
 def render_home():
   return redirect(url_for('index'))
@@ -486,45 +542,54 @@ def render_docu():
   return render_template('documentation.html')
 
 
-@app.route('/model_agreement')
-def model_agreement():
-  try:
-    country=session['country']
 
-    form_period = forms.periodForm(request.form)
-    form_period.periods.choices = zip(session['period_avail'],session['period_avail'])
+# @app.route('/go_to_model_agreement',  methods=("POST", ))
+# def go_to_model_agreement():
+#   return redirect(url_for("model_agreement"))
 
-    refP = "-".join(str(t) for t in session["ref_period"])
-    proP = session['period']
-    periods={'ref':session["ref_period"],'projection':session["proj_period"]}
-    CORDEX_BC_plot_detail='static/images/'+country+'/'+session["indicator"]+'_'+session["scenario"]+'_'+session['dataset']+'_'+session['season']+'_details.png'
+# @app.route('/go_to_bias_correction',  methods=("POST", ))
+# def go_to_bias_correction():
+#   return redirect(url_for("bias_correction"))
 
-    context = { 
-      'CORDEX_BC_plot_detail':CORDEX_BC_plot_detail,
-    }
-    return render_template('model_agreement.html',**context)
+# @app.route('/model_agreement')
+# def model_agreement():
+#   try:
+#     country=session['country']
 
-  except KeyError:
-    return redirect(url_for("index"))
+#     form_period = forms.periodForm(request.form)
+#     form_period.periods.choices = zip(session['period_avail'],session['period_avail'])
 
-@app.route('/bias_correction')
-def bias_correction():
-  try:
-    country=session['country']
+#     refP = "-".join(str(t) for t in session["ref_period"])
+#     proP = session['period']
+#     periods={'ref':session["ref_period"],'projection':session["proj_period"]}
+#     CORDEX_BC_plot_detail='static/images/'+country+'/'+session["indicator"]+'_'+session["scenario"]+'_'+session['dataset']+'_'+session['season']+'_details.png'
 
-    form_period = forms.PeriodField(request.form)
-    form_period.periods.choices = zip(session['period_avail'],session['period_avail'])
+#     context = { 
+#       'CORDEX_BC_plot_detail':CORDEX_BC_plot_detail,
+#     }
+#     return render_template('model_agreement.html',**context)
 
-    refP = "-".join(str(t) for t in session["ref_period"])
-    proP = session['period']
-    periods={'ref':session["ref_period"],'projection':session["proj_period"]}
-    bias_corretion_check='static/images/'+country+'/'+session["indicator"]+'_BC_check_'+session['season']+'.png'
+#   except KeyError:
+#     return redirect(url_for("index"))
 
-    context = { 
-      'bias_corretion_check':bias_corretion_check
-    }
-    return render_template('bias_correction.html',**context)
+# @app.route('/bias_correction')
+# def bias_correction():
+#   try:
+#     country=session['country']
 
-  except KeyError:
-    return redirect(url_for("index"))
+#     form_period = forms.PeriodField(request.form)
+#     form_period.periods.choices = zip(session['period_avail'],session['period_avail'])
+
+#     refP = "-".join(str(t) for t in session["ref_period"])
+#     proP = session['period']
+#     periods={'ref':session["ref_period"],'projection':session["proj_period"]}
+#     bias_corretion_check='static/images/'+country+'/'+session["indicator"]+'_BC_check_'+session['season']+'.png'
+
+#     context = { 
+#       'bias_corretion_check':bias_corretion_check
+#     }
+#     return render_template('bias_correction.html',**context)
+
+#   except KeyError:
+#     return redirect(url_for("index"))
 
