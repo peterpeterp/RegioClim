@@ -17,8 +17,8 @@
   <p class=warn_txt>{{warning_merge_page_txt}}</p>
 {% endif %}
 
-<form method="POST" action="/go_to_choices"  onsubmit="back_to_choices()" id="done_id">
-  <button type="submit" class="btn">Done</button>
+<form method="POST" action="/save_this_region"  onsubmit="save_this_region()" id="done_id">
+  <button type="submit" class="btn">{{save_region}}</button>
 </form>
 
 </div>
@@ -27,8 +27,8 @@
 	<div row>
 	</div>
     <IMG SRC={{ regions_plot }} ALT={{regions_plot}} WIDTH=300 HEIGHT=300></IMG>
-    <a class="label label-primary" href={{ regions_plot }} target="_blank"  style="margin-right: 5px;">Download plot </a>
-</div>
+<!--     <a class="label label-primary" href={{ regions_plot }} target="_blank"  style="margin-right: 5px;"></a>
+ --></div>
 
 </div>
 

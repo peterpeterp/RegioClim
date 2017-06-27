@@ -56,6 +56,7 @@ regions=settings.regions
 form_labels=settings.form_labels
 season_dict=settings.season_dict
 text_dict=settings.text_dict
+button_dict=settings.button_dict
 
 
 COUs=settings.COUs
@@ -179,20 +180,20 @@ def choices():
 
     'fr':{
       'EWEMBI_plot':EWEMBI_plot.replace('app/',''),
-      'EWEMBI_plot_title':'Climatology',
-      'EWEMBI_plot_title_txt':lang_dict[lang][s['indicator']]+'averaged over the reference period '+refP.replace('to','')+' '+s['season']+'. Observations are taken from EWEMBI',
+      'EWEMBI_plot_title':'Climatologie',
+      'EWEMBI_plot_title_txt':lang_dict[lang][s['indicator']]+' en moyenne de le période de référence '+refP.replace('to','')+' '+s['season']+'. Les observations proviennent de EWEMBI',
 
       'Projection_plot':Projection_plot.replace('app/',''),
-      'Projection_plot_title':'Projected Change',
-      'Projection_plot_title_txt':'Projected change in '+lang_dict[lang][s['indicator']]+' for '+proP.replace('to','')+' compared to the reference period '+refP.replace('to','')+' '+s['season']+'. In red (blue) areas an increase (decrease) is projected. Here the ensemble mean is displayed, grid-cells for which a model-disagreement is found are colored in gray.',
+      'Projection_plot_title':'Changement Projeté',
+      'Projection_plot_title_txt':'Changement projeté en '+lang_dict[lang][s['indicator']]+' pour '+proP.replace('to','')+' par rapport à la période de référence '+refP.replace('to','')+' '+s['season']+'. Ici la moyenne de l`ensemble est présentée, les grilles pour lesquelles les différents modèles sont en désaccord sont coloriés en gris.',
 
       'transient_plot':transient_plot.replace('app/',''),
-      'transient_plot_title':'Climatology',
-      'transient_plot_title_txt':lang_dict[lang][s['indicator']]+'averaged over the reference period '+refP.replace('to','')+' '+s['season']+'. Observations are taken from EWEMBI',
+      'transient_plot_title':'Trajectoire Projetée',
+      'transient_plot_title_txt':lang_dict[lang][s['indicator']]+' présenté comme moyenne mobile de 20 années. Observations (EWEMBI) en vert pour la période 1999-2013. Modélisations climatiques régionales en rouge pour la période 1970-2100. La ligne représente la moyenne de l`ensemble et la zone ombragée montre l`écart entre les modèles.',
 
       'annual_cycle_plot':annual_cycle_plot.replace('app/',''),
-      'annual_cycle_plot_title':'Projected Change',
-      'annual_cycle_plot_title_txt':'Projected change in '+lang_dict[lang][s['indicator']]+' for '+proP.replace('to','')+' compared to the reference period '+refP.replace('to','')+' '+s['season']+'. In red (blue) areas an increase (decrease) is projected. Here the ensemble mean is displayed, grid-cells for which a model-disagreement is found are colored in gray.',
+      'annual_cycle_plot_title':'Cycle Annuel',
+      'annual_cycle_plot_title_txt':'Cycle annuel de '+lang_dict[lang][s['indicator']]+' pour la période de référence '+refP.replace('to','')+' (en haut) et différences dans le cycle annuel projetées pour '+proP.replace('to','')+ ' par rapport à la période de référence'+refP.replace('to','-')+' (en bas). Observations (EWEMBI) en vert, modélisation climatique régionale en rouge. La ligne représente la moyenne de l`ensemble et la zone ombragée montre l`écart entre les modèles.',
     }
     }
 
@@ -225,6 +226,7 @@ def choices():
     context.update(plot_dict)
     context.update(plot_txt_dict[lang])
     context.update(text_dict[lang])
+    context.update(button_dict[lang])
 
     print plot_dict
 
@@ -255,6 +257,7 @@ def season_page():
       'new_season_name':new_season_name
     }
     context.update(text_dict[s['language']])
+    context.update(button_dict[s['language']])
 
     return render_template('season_page.html',**context)
 
@@ -301,6 +304,11 @@ def save_this_season():
 
 @app.route('/merging_page')
 def merging_page():
+
+  '''
+  not working if full country is actual region
+  '''
+
   try:
     s=session
     COU=COUs[s['country']]
@@ -324,6 +332,7 @@ def merging_page():
       'small_region_warning':s['small_region_warning']
     }
     context.update(text_dict[s['language']])
+    context.update(button_dict[s['language']])
 
     return render_template('merging_page.html',**context)
 
@@ -337,7 +346,6 @@ def go_to_merging_page():
 
 @app.route('/merge_with_region',  methods=('POST', ))
 def merge_with_region():
-  print 'got here'
   form_region = forms.regionForm(request.form)
   to_merge=form_region.regions.data
   s=session
@@ -351,11 +359,17 @@ def merge_with_region():
     else:
       s['small_region_warning']=False
 
-  s['region_avail']+=[s['region']]
-  #put chosen at beginning of list
-  index=s['region_avail'].index(s['region'])
-  s['region_avail'][index],s['region_avail'][0]=s['region_avail'][0],s['region_avail'][index]
   return redirect(url_for('merging_page'))
+
+@app.route('/save_this_region',  methods=("POST", ))
+def save_this_region():
+
+  if session['region'] not in session['region_avail']:
+    session['region_avail']+=[session['region']]
+    index=session['region_avail'].index(session['region'])
+    session['region_avail'][index],session['region_avail'][0]=session['region_avail'][0],session['region_avail'][index]
+
+  return redirect(url_for("choices"))
 
 
 ###############################

@@ -55,6 +55,6 @@ class seasonForm(Form):
 class PeriodField(Form):
   regex = "[1-2][0-9]{3}-[1-2][0-9]{3}"
 
-  ref_period    = TextField(u'Refernce  Period', validators=[Regexp(regex, message="Please use YYYY-YYYY format.")])
-  proj_period   = TextField(u'Projection Period', validators=[Regexp(regex, message="Please use YYYY-YYYY format.")])
+  ref_period    = TextField(u'', validators=[Regexp(regex, message="Please use YYYY-YYYY format.")])
+  proj_period   = TextField(u'', validators=[Regexp(regex, message="Please use YYYY-YYYY format.")])
 

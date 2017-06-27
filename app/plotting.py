@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 import os
 import matplotlib.pyplot as plt
+from matplotlib.patches import Rectangle
 
 from matplotlib import rc
 rc('text', usetex=True)
@@ -10,10 +11,11 @@ plt.style.use('classic')
 def EWEMBI_plot_func(s,COU,refP,proP,region,periods,lang,indicator_label,lang_dict,out_format,highlight_region=None):
   # EWEMBI map
   ewembi=COU.selection([s['indicator'],'EWEMBI'])
-  EWEMBI_plot='app/static/images/'+s['country']+'/'+s['indicator']+'_EWEMBI_ref_'+s['season']+'_'+region+out_format
+  EWEMBI_plot='app/static/images/'+s['country']+'/'+s['indicator']+'_EWEMBI_ref_'+s['season']+'_'+region+'_'+lang+out_format
   if os.path.isfile(EWEMBI_plot)==False:
     COU.period_statistics(periods={refP:s['ref_period']},selection=ewembi,ref_name=refP)
-    fig,ax=plt.subplots(nrows=1,ncols=1,figsize=(4,3))
+    asp=(float(len(ewembi[0].lon))/float(len(ewembi[0].lat)))**0.5
+    fig,ax=plt.subplots(nrows=1,ncols=1,figsize=(3*asp+2,3/asp+1))
     ewembi[0].display_map(out_file=EWEMBI_plot,
       ax=ax,
       highlight_region=highlight_region,
@@ -22,6 +24,11 @@ def EWEMBI_plot_func(s,COU,refP,proP,region,periods,lang,indicator_label,lang_di
       color_label=indicator_label,
       )
     plt.title(refP.replace('to','-')+' '+lang_dict[lang][s['season']],fontsize=10)
+    # # put signature below
+    # box = ax.get_position()
+    # ax.set_position([box.x0, box.y0+box.height*0.2, box.width, box.height*0.8])
+    # extra = Rectangle((0, 0), 1, 1, fc="w", fill=False, edgecolor='none', linewidth=0)
+    # plt.legend(bbox_to_anchor=(0., 1.02, 1., .102), loc=3,ncol=2, mode="expand", borderaxespad=0.)
     plt.savefig(EWEMBI_plot)
     if out_format=='_small.png':plt.savefig(EWEMBI_plot)
     if out_format=='_large.png':plt.savefig(EWEMBI_plot,dpi=300) 
@@ -32,11 +39,12 @@ def Projection_plot_func(s,COU,refP,proP,region,periods,lang,indicator_label,lan
   # projection
   ens_selection=COU.selection([s['indicator'],s['dataset']])
   ens_mean=COU.selection([s['indicator'],s['dataset'],'ensemble_mean'])[0]
-  Projection_plot='app/static/images/'+s['country']+'/'+s['indicator']+'_'+s["scenario"]+'_'+s["dataset"]+'_'+proP+'-'+refP+'_'+s['season']+'_'+region+out_format
+  Projection_plot='app/static/images/'+s['country']+'/'+s['indicator']+'_'+s["scenario"]+'_'+s["dataset"]+'_'+proP+'-'+refP+'_'+s['season']+'_'+region+'_'+lang+out_format
   if os.path.isfile(Projection_plot)==False:
     COU.period_statistics(periods=periods,selection=ens_selection,ref_name=refP)
     COU.period_model_agreement(ref_name=refP)
-    fig,ax=plt.subplots(nrows=1,ncols=1,figsize=(4,3))
+    asp=(float(len(ens_selection[0].lon))/float(len(ens_selection[0].lat)))**0.5
+    fig,ax=plt.subplots(nrows=1,ncols=1,figsize=(3*asp+2,3/asp+1))    
     ens_mean.display_map(ax=ax,
       highlight_region=highlight_region,
       period='diff_'+proP+'-'+refP,
@@ -54,7 +62,7 @@ def transient_plot_func(s,COU,refP,proP,region,periods,lang,indicator_label,lang
   ewembi=COU.selection([s['indicator'],'EWEMBI'])
   ens_selection=COU.selection([s['indicator'],s['dataset']])
   ens_mean=COU.selection([s['indicator'],s['dataset'],'ensemble_mean'])[0]
-  transient_plot='app/static/images/'+s['country']+'/'+s['indicator']+'_'+s["dataset"]+'_'+region+'_'+s['season']+'_transient'+out_format
+  transient_plot='app/static/images/'+s['country']+'/'+s['indicator']+'_'+s["dataset"]+'_'+region+'_'+s['season']+'_transient'+'_'+lang+out_format
   if os.path.isfile(transient_plot)==False:
 
     if region != s['country']:COU.create_mask_admin(ewembi[0].raw_file,s['indicator'],regions=[region])
@@ -67,6 +75,7 @@ def transient_plot_func(s,COU,refP,proP,region,periods,lang,indicator_label,lang
       leg = plt.legend(loc='best',fancybox=True,fontsize=10)
       leg.get_frame().set_alpha(0.3)
       plt.title(s['region']+' '+lang_dict[lang][s['season']],fontsize=12)
+      plt.text(2100,60,'Climate Analytics',horizontalalignment='right',fontsize=7)
       fig.tight_layout()
       if out_format=='_small.png':plt.savefig(transient_plot)
       if out_format=='_large.png':plt.savefig(transient_plot,dpi=300)  
@@ -78,7 +87,7 @@ def annual_cycle_plot_func(s,COU,refP,proP,region,periods,lang,indicator_label,l
   ewembi=COU.selection([s['indicator'],'EWEMBI'])
   ens_selection=COU.selection([s['indicator'],s['dataset']])
   ens_mean=COU.selection([s['indicator'],s['dataset'],'ensemble_mean'])[0]
-  annual_cycle_plot='app/static/images/'+s['country']+'/'+s['indicator']+'_'+s["dataset"]+'_'+region+'_annual_cycle_'+proP+'-'+refP+out_format
+  annual_cycle_plot='app/static/images/'+s['country']+'/'+s['indicator']+'_'+s["dataset"]+'_'+region+'_annual_cycle_'+proP+'-'+refP+'_'+lang+out_format
   if os.path.isfile(annual_cycle_plot)==False:
     if ewembi[0].time_format!='yearly':
       if region != s['country']:COU.create_mask_admin(ewembi[0].raw_file,s['indicator'],regions=[region])

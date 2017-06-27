@@ -52,7 +52,7 @@ for i in range(1,13):
 
 countrys=['BEN','SEN']
 COUs={'BEN':country_analysis.country_analysis('BEN',basepath+'country_analysis/data/BEN/',seasons=seasons),
-		# 'SEN':country_analysis.country_analysis('SEN',basepath+'/country_analysis/data/SEN/',seasons=seasons)
+	'SEN':country_analysis.country_analysis('SEN',basepath+'/country_analysis/data/SEN/',seasons=seasons)
 		}
 
 
@@ -77,25 +77,24 @@ ind_dict={
 }
 
 lang_dict={'fr':{
-	'tas':'température moyenne',
-	'pr':'précipitation',
-	'RX1':'précipitation quotidienne maximale',
-	'TXx':'température quotidienne maximale',
-	'year_RX5':'précipitation maximale cumulées en 5 jours',
-	'year_CDD':'duré maximal de période aride',
+	'tas':'Température',
+	'pr':'Précipitation',
+	'RX1':'Extrêmes humides (RX1day)',
+	'TXx':'Extrêmes de chaleur (TXx)',
+	'year_RX5':'Extrêmes humides de 5 jours (RX5day)',
 	'year':'annuel',
-	'1':'January',
-	'2':'Febuary',
-	'3':'March',
-	'4':'April',
+	'1':'Janvier',
+	'2':'Février',
+	'3':'Mars',
+	'4':'Avril',
 	'5':'Mai',
-	'6':'June',
-	'7':'July',
-	'8':'August',
-	'9':'September',
-	'10':'October',
-	'11':'November',
-	'12':'December',
+	'6':'Juin',
+	'7':'Juillet',
+	'8':'Août',
+	'9':'Septembre',
+	'10':'Octobre',
+	'11':'Novembre',
+	'12':'Décembre',
 	},
 	'en':{
 	'tas':'Temperature',
@@ -194,19 +193,59 @@ text_dict={'en':{
 	'time_scale_h':'Time Scale',
 	'time_scale_txt':'Projected trends might depend on the season. As for different regions the monsoon onset and end differes, use monthly data to estimate seasonal changes.',
 
-	'obs_map_txt':'INDICATOR averaged over the reference period REFERNCE_PERIOD SEASONAL. Observations are taken from EWEMBI',
-	'proj_map_txt':'Projected change in INDICATOR for PROJECTION_PERIOD compared to the reference period REFERNCE_PERIOD SEASONAL. In red (blue) areas an increase (decrease) is projected. Here the ensemble mean is displayed, grid-cells for which a model-disagreement is found are colored in gray.',
+	'ref_period':'Reference Period',
+	'proj_period':'Projection Period',
 
 },'fr':{
-	'warning':'Warning!',
-	'warning_txt':'The chosen region is smaller than 5 grid-cells. Please use the "Merge Region" function to aggregate several small regions.',
-	'region_h':'Administrative Region',
-	'region_txt':'Region for which the transient and annual cycle is computed. Use "Merge Regions" function to aggregate several small regions.'
+	'warning':'Avertissement!',
+	'warning_txt':'La région choisie est plus petite que 5 grilles. Veuillez utiliser la fonction "Regrouper des Régions" pour regrouper différentes régions.',
+
+	'merge_page_h':'Ajoutez une Région',
+	'merge_page_txt':'Choisissez une région qui sera combiné avec la région actuelle.',
+	'warning_merge_page_txt':'La région choisie est plus petite que 5 grilles. Veuillez choisir une autre région à combiner avec la région actuelle.',
+
+	'season_page_h':'Ajoutez un mois',
+	'season_page_txt':'Choisissez un mois qui sera ajouté à la saison',
+
+	'region_h':'Région administrative',
+	'region_txt':'Région pour laquelle le trajectoire et le cycle annuel sont présentés. Utilisez la fonction "Regrouper des Régions" pour regrouper différentes régions.',
+
+	'country_h':'Pays',
+	'country_txt':'Pour le moment seulement le Bénin et le Sénégal peuvent être sélectionné. La liste des pays sera bientôt élargie.',
+
+	'indicator_h':'Indicateur Climatique',
+	'indicator_txt':'Indicateurs climatiques basés sur des donnés quotidiennes de température et de précipitation. Pour le moment aucun indicateur de sécheresse est présenté. Veuillez considérer les projection de précipitation pour les analyses de sécheresses en gardant à l`esprit que l`évapotranspiration potentielle pourrait augmenter avec la température.',
+
+	'time_scale_h':'Échelle temporelle',
+	'time_scale_txt':'Les tendances projetés peuvent fortement dépendre de la saison. Veuillez choisir le mois le plus pertinent pour votre analyse ou définir une saison en utilisant la fonction "Définir une Saison".',
+
+	'ref_period':'Période de Référence',
+	'proj_period':'Période de Projection',
 
 }
 }
 
+button_dict={'en':{
+	'merge_regions':'Merge regions',
+	'select_periods':'Select Periods',
+	'define_season':'Define Season',
+	'download_png':'Download png',
+	'download_pdf':'Download pdf',
+	'download_data':'Download data',
+	'save_region':'Keep this Region',
+	'save_season':'Keep this Season',
 
+},'fr':{
+	'merge_regions':'Regrouper des Régions',
+	'select_periods':'Choisir ces Périodes',
+	'define_season':'Définir une Saison',
+	'download_png':'Télécharger png',
+	'download_pdf':'Télécharger pdf',
+	'download_data':'Télécharger data',
+	'save_region':'Garder cette Région',
+	'save_season':'Garder cette Saison',
+}
+}
 
 
 print 'done with settings'
