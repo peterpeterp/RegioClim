@@ -99,7 +99,7 @@ def index():
 
 @app.route('/choices')
 def choices():
-  try: 
+  if True: 
     s=session
     lang=s['language']
 
@@ -233,8 +233,9 @@ def choices():
 
     return render_template('choices.html',**context)
 
-  except KeyError:
-    return redirect(url_for("index"))
+  # except Exception,e: 
+  #   print str(e)
+  #   return redirect(url_for("index"))
 
 
 
