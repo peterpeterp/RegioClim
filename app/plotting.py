@@ -67,6 +67,8 @@ def transient_plot_func(s,COU,refP,proP,region,periods,lang,indicator_label,lang
 
     if region != s['country']:COU.create_mask_admin(ewembi[0].raw_file,s['indicator'],regions=[region])
     COU.area_average('lat_weighted',overwrite=False,selection=ens_selection+ewembi,regions=[region])
+    COU.unit_conversions()
+
     fig,ax=plt.subplots(nrows=1,ncols=1,figsize=(5,4))
     message=ens_mean.plot_transients(season=s['season'],region=region,running_mean_years=20,ax=ax,title='',ylabel=None,label='model data',color='green')
     message=ewembi[0].plot_transients(season=s['season'],region=region,running_mean_years=20,ax=ax,title='',ylabel=None,label='observations (EWEMBI)',color='black')
