@@ -15,7 +15,7 @@ def EWEMBI_plot_func(s,COU,refP,proP,region,periods,lang,indicator_label,lang_di
   if os.path.isfile(EWEMBI_plot)==False:
     COU.period_statistics(periods={refP:s['ref_period']},selection=ewembi,ref_name=refP)
     asp=(float(len(ewembi[0].lon))/float(len(ewembi[0].lat)))**0.5
-    fig,ax=plt.subplots(nrows=1,ncols=1,figsize=(3*asp+2,3/asp+1))
+    fig,ax=plt.subplots(nrows=1,ncols=1,figsize=(3*asp+2.5,3/asp+1))
     ewembi[0].display_map(out_file=EWEMBI_plot,
       ax=ax,
       highlight_region=highlight_region,
@@ -44,7 +44,7 @@ def Projection_plot_func(s,COU,refP,proP,region,periods,lang,indicator_label,lan
     COU.period_statistics(periods=periods,selection=ens_selection,ref_name=refP)
     COU.period_model_agreement(ref_name=refP)
     asp=(float(len(ens_selection[0].lon))/float(len(ens_selection[0].lat)))**0.5
-    fig,ax=plt.subplots(nrows=1,ncols=1,figsize=(3*asp+2,3/asp+1))    
+    fig,ax=plt.subplots(nrows=1,ncols=1,figsize=(3*asp+2.5,3/asp+1))    
     ens_mean.display_map(ax=ax,
       highlight_region=highlight_region,
       period='diff_'+proP+'-'+refP,
