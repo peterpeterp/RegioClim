@@ -57,11 +57,11 @@ regions={}
 	# 'BEN':['Benin (full country)','Borgou', 'Collines', 'Mono', 'Kouffo', 'Atlantique', 'Donga', 'Plateau', 'Atakora', 'Alibori', 'Littoral', 'Oueme', 'Zou']
 #}
 
-for iso in country_names.keys():
-	print iso
-	COU=country_analysis.country_analysis(iso,'../country_analysis/data/'+iso+'/',seasons=seasons)
-	COU.load_data(quiet=True,filename_filter='dont_load_anything')
-	regions[iso]=[country_names[iso]+' (full country)']+COU._regions.keys()
+# for iso in country_names.keys():
+# 	print iso
+# 	COU=country_analysis.country_analysis(iso,'../country_analysis/data/'+iso+'/',seasons=seasons)
+# 	COU.load_data(quiet=True,filename_filter='dont_load_anything')
+# 	regions[iso]=[country_names[iso]+' (full country)']+COU._regions.keys()
 
 
 datasets=['CORDEX_BC','CMIP5_BC']

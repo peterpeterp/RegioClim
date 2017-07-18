@@ -86,7 +86,6 @@ def transient_plot_func(s,COU,refP,proP,region,periods,lang,indicator_label,lang
 
 def annual_cycle_plot_func(s,COU,refP,proP,region,periods,lang,indicator_label,lang_dict,out_format):
   # annual cycle
-  print '_________ annual cycle'
   ewembi=COU.selection([s['indicator'],'EWEMBI'])
   ens_selection=COU.selection([s['indicator'],s['dataset']])
   ens_mean=COU.selection([s['indicator'],s['dataset'],'ensemble_mean'])[0]

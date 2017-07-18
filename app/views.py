@@ -18,7 +18,7 @@
 # along with wacalc; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-import os,glob,sys,time
+import os,glob,sys,time,random,cPickle
 from app import app
 from flask import redirect, render_template, url_for, request, flash, get_flashed_messages, g, session, jsonify, Flask, send_from_directory
 from collections import OrderedDict
@@ -62,10 +62,9 @@ button_dict=settings.button_dict
 
 languages={'en':'English','fr':'Français'}
 
-
-
 @app.route('/')
 def index():
+
   session['user_type']='beginner'
   session['language']='en'
 
@@ -84,15 +83,23 @@ def index():
   session["indicator_avail"]   = settings.ind_dict.keys()
   session["indicator"]   = session["indicator_avail"][0]
 
-  session["region_avail"]   = regions[session['country']]
-  session['region']   = session["region_avail"][0]
-
   session['small_region_warning']=False
 
   session["season_avail"]   = season_dict[session['country']]
   index=session['season_avail'].index('year')
   session['season_avail'][index],session['season_avail'][0]=session['season_avail'][0],session['season_avail'][index]
   session["season"]   = session["season_avail"][0]
+
+  COU=country_analysis.country_analysis(session['country'],'../country_analysis/data/'+session['country']+'/',seasons=settings.seasons)
+  COU.load_data(quiet=True,load_mask=True,load_raw=False,load_area_averages=False,load_region_polygons=True)
+
+  session['id']=str(int((time.time()-int(time.time()))*10000))+str(int(random.random()*100000))
+  session['cou_path']='app/static/COU_sessions/'+session['id']+'_'+session['country']+'.pkl'
+  session_cou = open(session['cou_path'], 'wb')
+  cPickle.dump(COU, session_cou, protocol=2) ; session_cou.close()  
+
+  session["region_avail"]   = [settings.country_names[session['country']]+' (full country)']+COU._regions.keys()
+  session['region']   = session["region_avail"][0]
 
   print session
   return redirect(url_for("choices"))
@@ -111,9 +118,12 @@ def choices():
     form_country = forms.countryForm(request.form)
     form_country.countrys.choices = zip(s['country_avail'],[settings.country_names[cou] for cou in s['country_avail']])
 
-    COU=country_analysis.country_analysis(s['country'],'../country_analysis/data/'+s['country']+'/',seasons=settings.seasons)
-    COU.load_data(quiet=True,filename_filter=s['indicator'])
+    session_cou = open(s['cou_path'], 'rb')
+    COU=cPickle.load( session_cou) ; session_cou.close()      
+    COU.load_data(quiet=True,filename_filter=s['indicator'],load_mask=False,load_raw=True,load_area_averages=True,load_region_polygons=False)
     COU.unit_conversions()
+
+    print 'loaded session and data '+str(time.time()-start_time)
 
     form_region = forms.regionForm(request.form)
     form_region.regions.choices = zip(s['region_avail'],s['region_avail'])
@@ -140,23 +150,14 @@ def choices():
     proP = "to".join(str(t) for t in s["proj_period"])
     periods={refP:s["ref_period"],proP:s["proj_period"]}
 
-    print time.time()-start_time
-
-
-
-    print time.time()-start_time
-
     indicator_label=lang_dict[lang][s['indicator']]+' ['+ind_dict[s['indicator']]['unit']+']'
 
     EWEMBI_plot=EWEMBI_plot_func(s,COU,refP,proP,region,periods,lang,indicator_label,lang_dict,'_small.png',highlight_region=region)
     Projection_plot=Projection_plot_func(s,COU,refP,proP,region,periods,lang,indicator_label,lang_dict,'_small.png',highlight_region=region)
-    print '_________ transient'
     transient_plot=transient_plot_func(s,COU,refP,proP,region,periods,lang,indicator_label,lang_dict,'_small.png')
-    
     annual_cycle_plot=annual_cycle_plot_func(s,COU,refP,proP,region,periods,lang,indicator_label,lang_dict,'_small.png')
-    print '_________ done'
 
-    print time.time()-start_time
+    print 'everything plotted '+str(time.time()-start_time)
 
     if s['user_type']=='advanced': advanced_col='white'
     if s['user_type']=='beginner':  advanced_col='gray'
@@ -324,17 +325,23 @@ def merging_page():
 
   try:
     s=session
-    COU=country_analysis.country_analysis(s['country'],'../country_analysis/data/'+s['country']+'/',seasons=settings.seasons)
-    COU.load_data(quiet=True,filename_filter=s['indicator'])
+    session_cou = open(s['cou_path'], 'rb')
+    COU=cPickle.load( session_cou) ; session_cou.close()  
+    COU.load_data(quiet=True,filename_filter=s['indicator'],load_mask=False,load_raw=True,load_area_averages=False,load_region_polygons=False)
 
     regions_plot='app/static/images/'+s['country']+'/'+s['region']+'.png'
     if os.path.isfile(regions_plot)==False:
-      COU.selection([s['indicator'],s['dataset'],'ensemble_mean'])[0].plot_map(to_plot='empty',
+      empty_object=COU.selection([s['indicator'],s['dataset'],'ensemble_mean'])[0]
+      asp=(float(len(empty_object.lon))/float(len(empty_object.lat)))**0.5
+      fig,ax=plt.subplots(nrows=1,ncols=1,figsize=(6*asp,6/asp+1)) 
+      empty_object.plot_map(to_plot='empty',
         show_region_names=True,
         color_bar=False,
-        out_file=regions_plot,
+        ax=ax,
+        show_all_adm_polygons=True,
         highlight_region=s['region'],
         title=s['region'])
+      plt.savefig(regions_plot,dpi=300)
 
     form_region = forms.regionForm(request.form)
     form_region.regions.choices = zip(s['region_avail'],s['region_avail'])
@@ -365,19 +372,22 @@ def merge_with_region():
   to_merge=form_region.regions.data
   s=session
 
-  COU=country_analysis.country_analysis(s['country'],'../country_analysis/data/'+s['country']+'/',seasons=settings.seasons)
-  COU.load_data(quiet=True,filename_filter='dont_load_anything')
+  session_cou = open(s['cou_path'], 'rb')
+  COU=cPickle.load( session_cou) ; session_cou.close()  
 
   s['region']=COU.merge_adm_regions([s['region'],to_merge])
 
   if s['region'].split('(')[-1]!='full country)':
-
-
     area=COU.get_region_area(s['region'])['latxlon']*4
     if area<4:
       s['small_region_warning']=True
     else:
       s['small_region_warning']=False
+
+    session_cou = open(session['cou_path'], 'wb')
+    cPickle.dump(COU, session_cou, protocol=2) ; session_cou.close()  
+
+
 
   return redirect(url_for('merging_page'))
 
@@ -476,8 +486,8 @@ def region_choice():
   session['region']=form_region.regions.data
   if session['region'].split('(')[-1]!='full country)':
     #COU=COUs[session['country']]
-    COU=country_analysis.country_analysis(session['country'],'../country_analysis/data/'+session['country']+'/',seasons=settings.seasons)
-    COU.load_data(quiet=True,filename_filter='dont_load_anything')
+    session_cou = open(session['cou_path'], 'rb')
+    COU=cPickle.load( session_cou) ; session_cou.close()  
     area=COU.get_region_area(session['region'])['latxlon']*4
     print area
     if area<4:
@@ -500,8 +510,20 @@ def country_choice():
   session["season_avail"]   = season_dict[session['country']]
   session["season"]   = 'year'
 
+  session['cou_path']='app/static/COU_sessions/'+session['id']+'_'+session['country']+'.pkl'
+  if os.path.isfile(session['cou_path'])==False:
+    COU=country_analysis.country_analysis(session['country'],'../country_analysis/data/'+session['country']+'/',seasons=settings.seasons)
+    COU.load_data(quiet=True,load_mask=True,load_raw=False,load_area_averages=False,load_region_polygons=True)
+    session_cou = open(session['cou_path'], 'wb')
+    cPickle.dump(COU, session_cou, protocol=2) ; session_cou.close() 
+
+  else:
+    session_cou = open(session['cou_path'], 'rb')
+    COU=cPickle.load( session_cou) ; session_cou.close() 
+
+
   session["indicator"]   = session["indicator_avail"][0]
-  session["region_avail"]   = regions[session['country']]
+  session["region_avail"]   = [settings.country_names[session['country']]+' (full country)']+COU._regions.keys()
   session['region']   = session["region_avail"][0]
 
   return redirect(url_for('choices'))
@@ -527,8 +549,9 @@ def prepare_for_download(plot_request):
   proP = "to".join(str(t) for t in s["proj_period"])
   periods={refP:s["ref_period"],proP:s["proj_period"]}
 
-  COU=country_analysis.country_analysis(s['country'],'../country_analysis/data/'+s['country']+'/',seasons=settings.seasons)
-  COU.load_data(quiet=True,filename_filter=s['indicator'])
+  session_cou = open(s['cou_path'], 'rb')
+  COU=cPickle.load( session_cou) ; session_cou.close()  
+  COU.load_data(quiet=True,filename_filter=s['indicator'],load_mask=False,load_raw=True,load_area_averages=True,load_region_polygons=False)
   COU.unit_conversions()
 
   indicator_label=lang_dict[lang][s['indicator']]+' ['+ind_dict[s['indicator']]['unit']+']'
