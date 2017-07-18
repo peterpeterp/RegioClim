@@ -35,12 +35,34 @@ import matplotlib.pyplot as plt
 from matplotlib import rc
 rc('text', usetex=True)
 
+basepath='/Users/peterpfleiderer/Documents/Projects/'
+try: 
+  os.chdir(basepath)
+except:
+  basepath='/home/RCM_projection/'
+
+sys.path.append(basepath+'country_analysis/country_analysis_scripts/')
+import country_analysis; reload(country_analysis)
+sys.path.append(basepath+'/projection_sharing/')
+os.chdir(basepath+'/projection_sharing/')
 
 seasons={'year':range(1,13)}
 for i in range(1,13):
 	seasons[str(i)]=[i]
 
-countrys=['BEN','SEN','UGA']
+country_names={'BEN':'Benin','SEN':'Senegal','UGA':'Uganda'}
+
+regions={}
+	# 'SEN':['Senegal (full country)', 'Kaolack', 'Fatick', 'Kolda', 'Tambacounda', 'Dakar', 'Saint-Louis', 'Matam', 'Kedougou', 'Louga', 'Sedhiou', 'Thies', 'Diourbel', 'Kaffrine', 'Ziguinchor'],
+	# 'BEN':['Benin (full country)','Borgou', 'Collines', 'Mono', 'Kouffo', 'Atlantique', 'Donga', 'Plateau', 'Atakora', 'Alibori', 'Littoral', 'Oueme', 'Zou']
+#}
+
+for iso in country_names.keys():
+	print iso
+	COU=country_analysis.country_analysis(iso,'../country_analysis/data/'+iso+'/',seasons=seasons)
+	COU.load_data(quiet=True,filename_filter='dont_load_anything')
+	regions[iso]=[country_names[iso]+' (full country)']+COU._regions.keys()
+
 
 datasets=['CORDEX_BC','CMIP5_BC']
 
@@ -134,10 +156,6 @@ plot_titles={'en':{
 
 scenarios=['rcp4p5']
 
-regions={
-	'SEN':['Senegal (full country)', 'Kaolack', 'Fatick', 'Kolda', 'Tambacounda', 'Dakar', 'Saint-Louis', 'Matam', 'Kedougou', 'Louga', 'Sedhiou', 'Thies', 'Diourbel', 'Kaffrine', 'Ziguinchor'],
-	'BEN':['Benin (full country)','Borgou', 'Collines', 'Mono', 'Kouffo', 'Atlantique', 'Donga', 'Plateau', 'Atakora', 'Alibori', 'Littoral', 'Oueme', 'Zou']
-}
 
 
 ref_period  = [1986,2005]
