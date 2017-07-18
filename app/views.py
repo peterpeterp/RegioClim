@@ -109,7 +109,7 @@ def choices():
     if region.split('(')[-1]=='full country)': region=s['country']
 
     form_country = forms.countryForm(request.form)
-    form_country.countrys.choices = zip(s['country_avail'],[{'BEN':'Benin','SEN':'Senegal'}[cou] for cou in s['country_avail']])
+    form_country.countrys.choices = zip(s['country_avail'],[{'BEN':'Benin','SEN':'Senegal','UGA':'Uganda'}[cou] for cou in s['country_avail']])
 
     COU=country_analysis.country_analysis(s['country'],'../country_analysis/data/'+s['country']+'/',seasons=settings.seasons)
     COU.load_data(quiet=True,filename_filter=s['indicator'])
