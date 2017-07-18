@@ -18,7 +18,7 @@
 # along with wacalc; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-import os,glob
+import os,glob,sys,time
 from app import app
 from flask import redirect, render_template, url_for, request, flash, get_flashed_messages, g, session, jsonify, Flask, send_from_directory
 from collections import OrderedDict
@@ -28,17 +28,16 @@ import forms
 import matplotlib.pylab as plt
 from plotting import *
 
-# from flask_nav import Nav
-# from flask_nav.elements import Navbar, View
-# nav = Nav()
-# nav.init_app(app)
-# @nav.navigation()
-# def top_nav():
-#     items = [View('Home', 'index'), View('Shopping Area', 'index')]
-#     items.append(View('Secret Shop', 'index'))
-#     return Navbar('', *items)
+basepath='/Users/peterpfleiderer/Documents/Projects/'
+try: 
+  os.chdir(basepath)
+except:
+  basepath='/home/RCM_projection/'
 
-
+sys.path.append(basepath+'country_analysis/country_analysis_scripts/')
+import country_analysis; reload(country_analysis)
+sys.path.append(basepath+'/projection_sharing/')
+os.chdir(basepath+'/projection_sharing/')
 
 
 def flash_errors(form):
@@ -59,9 +58,10 @@ text_dict=settings.text_dict
 button_dict=settings.button_dict
 
 
-COUs=settings.COUs
+#COUs=settings.COUs
 
 languages={'en':'English','fr':'Français'}
+
 
 
 @app.route('/')
@@ -100,6 +100,8 @@ def index():
 @app.route('/choices')
 def choices():
   try: 
+    start_time=time.time()
+
     s=session
     lang=s['language']
 
@@ -108,6 +110,10 @@ def choices():
 
     form_country = forms.countryForm(request.form)
     form_country.countrys.choices = zip(s['country_avail'],[{'BEN':'Benin','SEN':'Senegal'}[cou] for cou in s['country_avail']])
+
+    COU=country_analysis.country_analysis(s['country'],'../country_analysis/data/'+s['country']+'/',seasons=settings.seasons)
+    COU.load_data(quiet=True,filename_filter=s['indicator'])
+    COU.unit_conversions()
 
     form_region = forms.regionForm(request.form)
     form_region.regions.choices = zip(s['region_avail'],s['region_avail'])
@@ -127,8 +133,6 @@ def choices():
   
     form_period = forms.PeriodField(request.form, proj_period=proj_P, ref_period=ref_P)
 
-    print s['season_avail']
-
     form_season = forms.seasonForm(request.form)
     form_season.seasons.choices = zip(s['season_avail'],[lang_dict[lang][sea] for sea in s['season_avail']])
 
@@ -136,7 +140,11 @@ def choices():
     proP = "to".join(str(t) for t in s["proj_period"])
     periods={refP:s["ref_period"],proP:s["proj_period"]}
 
-    COU=COUs[s['country']]
+    print time.time()-start_time
+
+
+
+    print time.time()-start_time
 
     indicator_label=lang_dict[lang][s['indicator']]+' ['+ind_dict[s['indicator']]['unit']+']'
 
@@ -144,9 +152,11 @@ def choices():
     Projection_plot=Projection_plot_func(s,COU,refP,proP,region,periods,lang,indicator_label,lang_dict,'_small.png',highlight_region=region)
     print '_________ transient'
     transient_plot=transient_plot_func(s,COU,refP,proP,region,periods,lang,indicator_label,lang_dict,'_small.png')
-    print '_________ annual cycle'
+    
     annual_cycle_plot=annual_cycle_plot_func(s,COU,refP,proP,region,periods,lang,indicator_label,lang_dict,'_small.png')
     print '_________ done'
+
+    print time.time()-start_time
 
     if s['user_type']=='advanced': advanced_col='white'
     if s['user_type']=='beginner':  advanced_col='gray'
@@ -245,7 +255,7 @@ def choices():
 
 @app.route('/season_page')
 def season_page():
-  if True:
+  try:
     s=session
 
     form_season = forms.seasonForm(request.form)
@@ -262,8 +272,9 @@ def season_page():
 
     return render_template('season_page.html',**context)
 
-  # except KeyError:
-  #   return redirect(url_for("index"))
+  except Exception,e: 
+    print str(e)
+    return redirect(url_for("index"))
 
 
 @app.route('/go_to_season_page',  methods=("POST", ))
@@ -283,8 +294,9 @@ def add_month():
 def save_this_season():
   season_name='+'.join([str(sea) for sea in sorted(session['new_season'])])
 
-  for COU in COUs.values():
-    COU._seasons[season_name]=[int(sea) for sea in sorted(session['new_season'])]
+  # for COU in COUs.values():
+  #   COU._seasons[season_name]=[int(sea) for sea in sorted(session['new_season'])]
+  settings.seasons[season_name]=[int(sea) for sea in sorted(session['new_season'])]
 
   for lang in ['en','fr']:
     lang_dict[lang][season_name]='+'.join([lang_dict[lang][str(sea)] for sea in session['new_season']])
@@ -312,7 +324,8 @@ def merging_page():
 
   try:
     s=session
-    COU=COUs[s['country']]
+    COU=country_analysis.country_analysis(s['country'],'../country_analysis/data/'+s['country']+'/',seasons=settings.seasons)
+    COU.load_data(quiet=True,filename_filter=s['indicator'])
 
     regions_plot='app/static/images/'+s['country']+'/'+s['region']+'.png'
     if os.path.isfile(regions_plot)==False:
@@ -337,7 +350,8 @@ def merging_page():
 
     return render_template('merging_page.html',**context)
 
-  except KeyError:
+  except Exception,e: 
+    print str(e)
     return redirect(url_for("index"))
 
 
@@ -350,10 +364,15 @@ def merge_with_region():
   form_region = forms.regionForm(request.form)
   to_merge=form_region.regions.data
   s=session
-  s['region']=COUs[s['country']].merge_adm_regions([s['region'],to_merge])
+
+  COU=country_analysis.country_analysis(s['country'],'../country_analysis/data/'+s['country']+'/',seasons=settings.seasons)
+  COU.load_data(quiet=True,filename_filter='dont_load_anything')
+
+  s['region']=COU.merge_adm_regions([s['region'],to_merge])
 
   if s['region'].split('(')[-1]!='full country)':
-    COU=COUs[s['country']]
+
+
     area=COU.get_region_area(s['region'])['latxlon']*4
     if area<4:
       s['small_region_warning']=True
@@ -456,7 +475,9 @@ def region_choice():
   form_region = forms.regionForm(request.form)
   session['region']=form_region.regions.data
   if session['region'].split('(')[-1]!='full country)':
-    COU=COUs[session['country']]
+    #COU=COUs[session['country']]
+    COU=country_analysis.country_analysis(session['country'],'../country_analysis/data/'+session['country']+'/',seasons=settings.seasons)
+    COU.load_data(quiet=True,filename_filter='dont_load_anything')
     area=COU.get_region_area(session['region'])['latxlon']*4
     print area
     if area<4:
@@ -506,7 +527,9 @@ def prepare_for_download(plot_request):
   proP = "to".join(str(t) for t in s["proj_period"])
   periods={refP:s["ref_period"],proP:s["proj_period"]}
 
-  COU=COUs[s['country']]
+  COU=country_analysis.country_analysis(s['country'],'../country_analysis/data/'+s['country']+'/',seasons=settings.seasons)
+  COU.load_data(quiet=True,filename_filter=s['indicator'])
+  COU.unit_conversions()
 
   indicator_label=lang_dict[lang][s['indicator']]+' ['+ind_dict[s['indicator']]['unit']+']'
 

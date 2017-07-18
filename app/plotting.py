@@ -70,7 +70,7 @@ def transient_plot_func(s,COU,refP,proP,region,periods,lang,indicator_label,lang
     COU.unit_conversions()
 
     fig,ax=plt.subplots(nrows=1,ncols=1,figsize=(5,4))
-    message=ens_mean.plot_transients(season=s['season'],region=region,running_mean_years=20,ax=ax,title='',ylabel=None,label='model data',color='green')
+    message=ens_mean.plot_transients(season=s['season'],region=region,running_mean_years=20,ax=ax,title='',ylabel=None,label='model data',color='green',shading_range=[0,100])
     message=ewembi[0].plot_transients(season=s['season'],region=region,running_mean_years=20,ax=ax,title='',ylabel=None,label='observations (EWEMBI)',color='black')
     if message==1:
       ax.set_ylabel(indicator_label)
@@ -86,6 +86,7 @@ def transient_plot_func(s,COU,refP,proP,region,periods,lang,indicator_label,lang
 
 def annual_cycle_plot_func(s,COU,refP,proP,region,periods,lang,indicator_label,lang_dict,out_format):
   # annual cycle
+  print '_________ annual cycle'
   ewembi=COU.selection([s['indicator'],'EWEMBI'])
   ens_selection=COU.selection([s['indicator'],s['dataset']])
   ens_mean=COU.selection([s['indicator'],s['dataset'],'ensemble_mean'])[0]
@@ -102,12 +103,12 @@ def annual_cycle_plot_func(s,COU,refP,proP,region,periods,lang,indicator_label,l
 
       fig,ax=plt.subplots(nrows=2,ncols=1,sharex=True,figsize=(5,4))
       ewembi[0].plot_annual_cycle(period=refP,region=region,ax=ax[0],title='',ylabel='  ',label='observations (EWEMBI)',color='black',xlabel=False)
-      ens_mean.plot_annual_cycle(period=refP,region=region,ax=ax[0],title='',ylabel='  ',label='model data',color='green',xlabel=False)
+      ens_mean.plot_annual_cycle(period=refP,region=region,ax=ax[0],title='',ylabel='  ',label='model data',color='green',xlabel=False,shading_range=[0,100])
       leg = ax[0].legend(loc='best',fancybox=True,fontsize=10)
       leg.get_frame().set_alpha(0.3)
       ax[0].set_title(s['region']+' '+proP.replace('to','-')+' vs '+refP.replace('to','-'),fontsize=12)
 
-      ens_mean.plot_annual_cycle(period='diff_'+proP+'-'+refP,region=region,ax=ax[1],title='',ylabel='  ',label='projected change',color='green')
+      ens_mean.plot_annual_cycle(period='diff_'+proP+'-'+refP,region=region,ax=ax[1],title='',ylabel='  ',label='projected change',color='green',shading_range=[0,100])
       ax[1].plot([0,1],[0,0],color='k')
       leg = ax[1].legend(loc='best',fancybox=True,fontsize=10)
       leg.get_frame().set_alpha(0.3)

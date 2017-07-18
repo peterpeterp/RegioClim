@@ -35,31 +35,12 @@ import matplotlib.pyplot as plt
 from matplotlib import rc
 rc('text', usetex=True)
 
-basepath='/Users/peterpfleiderer/Documents/Projects/'
-try: 
-	os.chdir(basepath)
-except:
-	basepath='/home/RCM_projection/'
-
-sys.path.append(basepath+'country_analysis/country_analysis_scripts/')
-import country_analysis; reload(country_analysis)
-sys.path.append(basepath+'/projection_sharing/')
-os.chdir(basepath+'/projection_sharing/')
 
 seasons={'year':range(1,13)}
 for i in range(1,13):
 	seasons[str(i)]=[i]
 
 countrys=['BEN','SEN']
-COUs={'BEN':country_analysis.country_analysis('BEN',basepath+'country_analysis/data/BEN/',seasons=seasons),
-	'SEN':country_analysis.country_analysis('SEN',basepath+'/country_analysis/data/SEN/',seasons=seasons)
-		}
-
-
-for COU in COUs.values():
-	COU.load_data(quiet=False)
-	COU.unit_conversions()
-
 
 datasets=['CORDEX_BC','CMIP5_BC']
 
