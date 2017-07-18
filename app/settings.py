@@ -40,12 +40,13 @@ seasons={'year':range(1,13)}
 for i in range(1,13):
 	seasons[str(i)]=[i]
 
-countrys=['BEN','SEN']
+countrys=['BEN','SEN','UGA']
 
 datasets=['CORDEX_BC','CMIP5_BC']
 
 season_dict={
 	'SEN':seasons.keys(),
+	'UGA':seasons.keys(),
 	'BEN':seasons.keys()
 }
 
