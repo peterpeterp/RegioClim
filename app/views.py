@@ -98,7 +98,7 @@ def index():
   session_cou = open(session['cou_path'], 'wb')
   cPickle.dump(COU, session_cou, protocol=2) ; session_cou.close()  
 
-  session["region_avail"]   = [settings.country_names[session['country']]+' (full country)']+COU._regions.keys()
+  session["region_avail"]   = [settings.country_names[session['country']]+' (full country)']+sorted(COU._regions.keys())
   session['region']   = session["region_avail"][0]
 
   print session
@@ -307,7 +307,15 @@ def save_this_season():
 
   session['season_avail']+=[season_name]
 
-  print session['season_avail']
+  session_cou = open(session['cou_path'], 'rb')
+  COU=cPickle.load(session_cou) ; session_cou.close()      
+  COU._seasons[season_name]=[int(sea) for sea in sorted(session['new_season'])]
+  session_cou = open(session['cou_path'], 'wb')
+  cPickle.dump(COU, session_cou, protocol=2) ; session_cou.close() 
+
+  session['season']=season_name
+  index=session['season_avail'].index(session['season'])
+  session['season_avail'][index],session['season_avail'][0]=session['season_avail'][0],session['season_avail'][index]
 
   return redirect(url_for("choices"))
 
@@ -472,11 +480,14 @@ def indicator_choice():
 def add_periodchoice():
   form_period = forms.PeriodField(request.form)
 
-  if form_period.validate_on_submit():
-    session["ref_period"]   = [int(t) for t in form_period.ref_period.data.split("-")]
-    session["proj_period"]  = [int(t) for t in form_period.proj_period.data.split("-")]
-  else:
-    flash_errors(form_period)
+
+
+  #if form_period.validate_on_submit():
+  session["ref_period"]   = [int(t) for t in form_period.ref_period.data.split("-")]
+  session["proj_period"]  = [int(t) for t in form_period.proj_period.data.split("-")]
+  # else:
+  #   print 'issue___________________________'
+  #   flash_errors(form_period)
 
   return redirect(url_for("choices"))
 
@@ -523,8 +534,13 @@ def country_choice():
 
 
   session["indicator"]   = session["indicator_avail"][0]
-  session["region_avail"]   = [settings.country_names[session['country']]+' (full country)']+COU._regions.keys()
+  session["region_avail"]   = [settings.country_names[session['country']]+' (full country)']+sorted(COU._regions.keys())
   session['region']   = session["region_avail"][0]
+
+  session["season_avail"]   = season_dict[session['country']]
+  session["season"]   = 'year'  
+  index=session['season_avail'].index(session['season'])
+  session['season_avail'][index],session['season_avail'][0]=session['season_avail'][0],session['season_avail'][index]
 
   return redirect(url_for('choices'))
 
