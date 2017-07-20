@@ -28,6 +28,7 @@ import sys,glob,os,pickle
 import numpy as np
 from netCDF4 import Dataset,netcdftime,num2date
 import pandas as pd
+import pycountry
 
 import matplotlib
 matplotlib.use('Agg')
@@ -50,7 +51,13 @@ seasons={'year':range(1,13)}
 for i in range(1,13):
 	seasons[str(i)]=[i]
 
+all_isos=['AGO', 'DZA', 'EGY', 'GNQ', 'BEN', 'NGA', 'NER', 'ZWE', 'NAM', 'GNB', 'SWZ', 'GHA', 'COG', 'SLE', 'ETH', 'COM', 'ERI', 'CPV', 'LBR', 'LBY', 'LSO', 'UGA', 'RWA', 'SOM', 'MDG', 'CMR', 'TZA', 'BWA', 'SEN', 'TCD', 'GAB', 'BFA', 'MWI', 'MOZ', 'MRT', 'GMB', 'MLI', 'BDI', 'STP', 'DJI', 'GIN', 'ESH', 'KEN', 'MAR', 'COD', 'ZMB', 'ZAF', 'TGO', 'TUN', 'CAF', 'SSD', 'SDN', 'CIV']
+
 country_names={'BEN':'Benin','SEN':'Senegal','UGA':'Uganda'}
+for iso in all_isos:
+	if os.path.isdir('app/static/images/'+iso)==False:os.system('mkdir app/static/images/'+iso)
+	country_names[iso]=pycountry.countries.get(alpha_3=iso).name
+
 
 regions={}
 	# 'SEN':['Senegal (full country)', 'Kaolack', 'Fatick', 'Kolda', 'Tambacounda', 'Dakar', 'Saint-Louis', 'Matam', 'Kedougou', 'Louga', 'Sedhiou', 'Thies', 'Diourbel', 'Kaffrine', 'Ziguinchor'],
@@ -65,12 +72,6 @@ regions={}
 
 
 datasets=['CORDEX_BC','CMIP5_BC']
-
-season_dict={
-	'SEN':seasons.keys(),
-	'UGA':seasons.keys(),
-	'BEN':seasons.keys()
-}
 
 ind_dict={
 	'tas':{'unit':'$^\circ C$','time_step':'monthly'},

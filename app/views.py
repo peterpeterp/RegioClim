@@ -53,7 +53,6 @@ lang_dict=settings.lang_dict
 period_dict=settings.period_dict
 regions=settings.regions
 form_labels=settings.form_labels
-season_dict=settings.season_dict
 text_dict=settings.text_dict
 button_dict=settings.button_dict
 
@@ -62,8 +61,20 @@ button_dict=settings.button_dict
 
 languages={'en':'English','fr':'Français'}
 
+def initialize():
+  print '________________initialize_____________'
+  COU=country_analysis.country_analysis(session['country'],'../country_analysis/data/'+session['country']+'/',seasons=settings.seasons)
+  COU.load_data(quiet=True,load_mask=True,load_raw=False,load_area_averages=False,load_region_polygons=True)
+  session_cou = open(session['cou_path'], 'wb')
+  cPickle.dump(COU, session_cou, protocol=2) ; session_cou.close() 
+  
+  return COU   
+
 @app.route('/')
 def index():
+
+  # delete session files older than an hour
+  os.system('find app/static/COU_sessions/ -type f -mmin +60 -delete')
 
   session['user_type']='beginner'
   session['language']='en'
@@ -85,23 +96,21 @@ def index():
 
   session['small_region_warning']=False
 
-  session["season_avail"]   = season_dict[session['country']]
+  session["season_avail"]   = settings.seasons.keys()
   index=session['season_avail'].index('year')
   session['season_avail'][index],session['season_avail'][0]=session['season_avail'][0],session['season_avail'][index]
-  session["season"]   = session["season_avail"][0]
-
-  COU=country_analysis.country_analysis(session['country'],'../country_analysis/data/'+session['country']+'/',seasons=settings.seasons)
-  COU.load_data(quiet=True,load_mask=True,load_raw=False,load_area_averages=False,load_region_polygons=True)
+  session["season"]   = 'year'
 
   session['id']=str(int((time.time()-int(time.time()))*10000))+str(int(random.random()*100000))
   session['cou_path']='app/static/COU_sessions/'+session['id']+'_'+session['country']+'.pkl'
-  session_cou = open(session['cou_path'], 'wb')
-  cPickle.dump(COU, session_cou, protocol=2) ; session_cou.close()  
+  
+  if os.path.isfile(session['cou_path'])==False:
+    COU=initialize()
 
   session["region_avail"]   = [settings.country_names[session['country']]+' (full country)']+sorted(COU._regions.keys())
   session['region']   = session["region_avail"][0]
 
-  print session
+  session['location']='index'
   return redirect(url_for("choices"))
 
 @app.route('/choices')
@@ -208,13 +217,8 @@ def choices():
     }
     }
 
-    if lang=='fr':
-      language=languages['en']
-    if lang=='en':
-      language=languages['fr']
-
     other_dict={
-      'language':language,
+      'language':get_language_tag(),
       'advanced_col':advanced_col,
       'user_type':s['user_type'],
       'small_region_warning':s['small_region_warning'],
@@ -239,9 +243,7 @@ def choices():
     context.update(text_dict[lang])
     context.update(button_dict[lang])
 
-    print plot_dict
-
-
+    session['location']='choices'
     return render_template('choices.html',**context)
 
   except Exception,e: 
@@ -266,11 +268,13 @@ def season_page():
 
     context = { 
       'form_season':form_season,
-      'new_season_name':new_season_name
+      'new_season_name':new_season_name,
+      'language':get_language_tag()
     }
     context.update(text_dict[s['language']])
     context.update(button_dict[s['language']])
 
+    session['location']='season_page'
     return render_template('season_page.html',**context)
 
   except Exception,e: 
@@ -302,8 +306,7 @@ def save_this_season():
   for lang in ['en','fr']:
     lang_dict[lang][season_name]='+'.join([lang_dict[lang][str(sea)] for sea in session['new_season']])
 
-  for cou in season_dict.keys():
-    season_dict[cou].append(season_name)
+  settings.seasons.append(season_name)
 
   session['season_avail']+=[season_name]
 
@@ -358,11 +361,13 @@ def merging_page():
     context = { 
       'form_region':form_region,
       'regions_plot':regions_plot.replace('app/',''),
-      'small_region_warning':s['small_region_warning']
+      'small_region_warning':s['small_region_warning'],
+      'language':get_language_tag()
     }
     context.update(text_dict[s['language']])
     context.update(button_dict[s['language']])
 
+    session['location']='merging_page'
     return render_template('merging_page.html',**context)
 
   except Exception,e: 
@@ -413,29 +418,6 @@ def save_this_region():
 ###############################
 # option choices
 ###############################
-
-@app.route('/user_type_choice',  methods=('POST', ))
-def user_type_choice():
-  if session['user_type']=='beginner': usr=0
-  if session['user_type']=='advanced': usr=1
-  usr*=-1
-  session['user_type']=['beginner','advanced'][usr+1]
-  if session['user_type']=='advanced':
-    print 'asdasdasd ------- asdas'
-    session['period_avail']=settings.periods_advanced
-  if session['user_type']=='beginner':
-    session['period_avail']=settings.periods_beginner
-    session['dataset']='CORDEX_BC'
-  return redirect(url_for('choices'))
-
-@app.route('/language_choice',  methods=('POST', ))
-def language_choice():
-  if session['language']=='en': lang=0
-  if session['language']=='fr': lang=1
-  lang*=-1
-  session['language']=['en','fr'][lang+1]
-  return redirect(url_for('choices'))
-
 @app.route('/scenario_choice',  methods=('POST', ))
 def scenario_choice():
   form_scenario = forms.scenarioForm(request.form)
@@ -471,23 +453,17 @@ def indicator_choice():
   index=session['indicator_avail'].index(session['indicator'])
   session['indicator_avail'][index],session['indicator_avail'][0]=session['indicator_avail'][0],session['indicator_avail'][index]
   if ind_dict[session['indicator']]['time_step']=='yearly':  session["season_avail"]=['year']
-  if ind_dict[session['indicator']]['time_step']=='monthly':  session["season_avail"]=season_dict[session['country']]
-  if session["season"] not in session["season_avail"]: session["season"] = session["season_avail"][0]
+  if ind_dict[session['indicator']]['time_step']=='monthly':  session["season_avail"]=settings.seasons.keys()
+  if session["season"] not in session["season_avail"]: session["season"] = 'year'
   return redirect(url_for('choices'))
 
 
 @app.route('/periodchoice',  methods=("POST", ))
 def add_periodchoice():
   form_period = forms.PeriodField(request.form)
-
-
-
-  #if form_period.validate_on_submit():
   session["ref_period"]   = [int(t) for t in form_period.ref_period.data.split("-")]
   session["proj_period"]  = [int(t) for t in form_period.proj_period.data.split("-")]
-  # else:
-  #   print 'issue___________________________'
-  #   flash_errors(form_period)
+
 
   return redirect(url_for("choices"))
 
@@ -518,15 +494,12 @@ def country_choice():
   index=session['country_avail'].index(session['country'])
   session['country_avail'][index],session['country_avail'][0]=session['country_avail'][0],session['country_avail'][index]
 
-  session["season_avail"]   = season_dict[session['country']]
+  session["season_avail"]   = settings.seasons.keys()
   session["season"]   = 'year'
 
   session['cou_path']='app/static/COU_sessions/'+session['id']+'_'+session['country']+'.pkl'
   if os.path.isfile(session['cou_path'])==False:
-    COU=country_analysis.country_analysis(session['country'],'../country_analysis/data/'+session['country']+'/',seasons=settings.seasons)
-    COU.load_data(quiet=True,load_mask=True,load_raw=False,load_area_averages=False,load_region_polygons=True)
-    session_cou = open(session['cou_path'], 'wb')
-    cPickle.dump(COU, session_cou, protocol=2) ; session_cou.close() 
+    COU=initialize()
 
   else:
     session_cou = open(session['cou_path'], 'rb')
@@ -537,7 +510,7 @@ def country_choice():
   session["region_avail"]   = [settings.country_names[session['country']]+' (full country)']+sorted(COU._regions.keys())
   session['region']   = session["region_avail"][0]
 
-  session["season_avail"]   = season_dict[session['country']]
+  session["season_avail"]   = settings.seasons.keys()
   session["season"]   = 'year'  
   index=session['season_avail'].index(session['season'])
   session['season_avail'][index],session['season_avail'][0]=session['season_avail'][0],session['season_avail'][index]
@@ -584,9 +557,7 @@ def prepare_for_download(plot_request):
     os.chdir(curretn_path)
     filename=s['country']+'_'+s['indicator']+'.tar.gz'
 
-  print filename
 
-  #print glob.glob(settings.basepath+'projection_sharing/app/'+'../../country_analysis/data/*')
   if 'get_data' in request_type.split('**'):
     return send_from_directory(directory=settings.basepath+'country_analysis/data/', filename=filename.replace('app/',''),as_attachment=True)
 
@@ -597,6 +568,19 @@ def prepare_for_download(plot_request):
 ###############################
 # Navigation
 ###############################
+def get_language_tag():
+  if session['language']=='fr':
+    return(languages['en'])
+  if session['language']=='en':
+    return(languages['fr'])
+
+@app.route('/language_choice',  methods=('POST', ))
+def language_choice():
+  if session['language']=='en': lang=0
+  if session['language']=='fr': lang=1
+  lang*=-1
+  session['language']=['en','fr'][lang+1]
+  return redirect(url_for(session['location']))
 
 @app.route('/go_to_choices',  methods=("POST", ))
 def go_to_choices():
@@ -614,11 +598,25 @@ def render_about():
 def render_contact():
   return render_template('contact.html')
 
-@app.route('/documentation',  methods=('GET', ))
-def render_docu():
-  return render_template('documentation.html')
+@app.route('/documentation')
+def documentation():
+  session['location']='documentation'
+  return render_template('documentation_'+session['language']+'.html',language=get_language_tag())
 
 
+# @app.route('/user_type_choice',  methods=('POST', ))
+# def user_type_choice():
+#   if session['user_type']=='beginner': usr=0
+#   if session['user_type']=='advanced': usr=1
+#   usr*=-1
+#   session['user_type']=['beginner','advanced'][usr+1]
+#   if session['user_type']=='advanced':
+#     print 'asdasdasd ------- asdas'
+#     session['period_avail']=settings.periods_advanced
+#   if session['user_type']=='beginner':
+#     session['period_avail']=settings.periods_beginner
+#     session['dataset']='CORDEX_BC'
+#   return redirect(url_for('choices'))
 
 # @app.route('/go_to_model_agreement',  methods=("POST", ))
 # def go_to_model_agreement():
