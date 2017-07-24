@@ -38,35 +38,29 @@
   </form>
 
 
-
-
-{% if user_type=='advanced' %}
-  <form method="POST" action="/scenario_choice" id="scenario_id">
-  {{ form_scenario.scenarios.label }}<br> {{ form_scenario.scenarios(onchange="change_scenario();") }}
+{% if use_periods==0 %}
+  <form method="POST" action="/warming_lvl_choice" id="warming_lvl_id">
+  <h3>{{ warming_lvl_h }}</h3>
+  <p class=small>{{ warming_lvl_txt }}</p>
+  {{ form_warming_lvl.warming_lvls.label }}<br> {{ form_warming_lvl.warming_lvls(onchange="change_warming_lvl();") }}
   </form>
-
-  <form method="POST" action="/dataset_choice" id="dataset_id">
-  {{ form_dataset.datasets.label }}<br> {{ form_dataset.datasets(onchange="change_dataset();") }}
+  <form method="POST" action="/switch_to_periods">
+    <button type="submit" class="btn">{{use_periods_0}}</button>
   </form>
-
-  <div row>
-    <form method="POST" action="/go_to_model_agreement">
-      <button type="submit" class="btn">Model Agreement</button>
-    </form>
-    <form method="POST" action="/go_to_bias_correction">
-      <button type="submit" class="btn">Bias Correction</button>
-    </form>
-  </div>
 {% endif %}
 
-
-
+{% if use_periods==1 %}
   <form method="POST" action="/periodchoice" onsubmit="period_change()" id="period_id">
+  <h3>{{ period_h }}</h3>
+  <p class=small>{{ period_txt }}</p>
       {{ ref_period }} {{ form_period.ref_period(size=10) }}
       {{ proj_period }} {{ form_period.proj_period(size=10 ) }}
     <button type="submit" class="btn">{{select_periods}}</button>
   </form>
-  
+  <form method="POST" action="/switch_to_periods">
+    <button type="submit" class="btn">{{use_periods_1}}</button>
+  </form>
+{% endif %}  
 
   <form method="POST" action="/season_choice" id="season_id">
   <h3>{{ time_scale_h }}</h3>
@@ -120,7 +114,24 @@
 
 
 
+<!-- {% if user_type=='advanced' %}
+  <form method="POST" action="/scenario_choice" id="scenario_id">
+  {{ form_scenario.scenarios.label }}<br> {{ form_scenario.scenarios(onchange="change_scenario();") }}
+  </form>
 
+  <form method="POST" action="/dataset_choice" id="dataset_id">
+  {{ form_dataset.datasets.label }}<br> {{ form_dataset.datasets(onchange="change_dataset();") }}
+  </form>
+
+  <div row>
+    <form method="POST" action="/go_to_model_agreement">
+      <button type="submit" class="btn">Model Agreement</button>
+    </form>
+    <form method="POST" action="/go_to_bias_correction">
+      <button type="submit" class="btn">Bias Correction</button>
+    </form>
+  </div>
+{% endif %} -->
 
 
 

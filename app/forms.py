@@ -20,7 +20,7 @@
 
 
 from wtforms import RadioField, SelectMultipleField, TextField, IntegerField, SelectField, StringField
-from flask.ext.wtf import Form, validators
+from flask_wtf import Form,validators
 from wtforms.validators import ValidationError, Required, Regexp
 
 
@@ -48,9 +48,9 @@ class seasonForm(Form):
   seasons = SelectField(u'', choices=[],
             validators=[Required("Please select at least one season.")])
 
-# class periodForm(Form):
-#   periods = SelectField(u'Available periods', choices=[],
-#             validators=[Required("Please select at least one period.")])
+class warming_lvlForm(Form):
+  warming_lvls = SelectField(u'', choices=[],
+            validators=[Required("Please select at least one period.")])
 
 class PeriodField(Form):
   regex = "[1-2][0-9]{3}-[1-2][0-9]{3}"

@@ -51,7 +51,6 @@ def flash_errors(form):
 ind_dict=settings.ind_dict
 lang_dict=settings.lang_dict
 period_dict=settings.period_dict
-regions=settings.regions
 form_labels=settings.form_labels
 text_dict=settings.text_dict
 button_dict=settings.button_dict
@@ -65,6 +64,10 @@ def initialize():
   print '________________initialize_____________'
   COU=country_analysis.country_analysis(session['country'],'../country_analysis/data/'+session['country']+'/',seasons=settings.seasons)
   COU.load_data(quiet=True,load_mask=True,load_raw=False,load_area_averages=False,load_region_polygons=True)
+  COU.load_data(quiet=True,filename_filter='RX1',load_mask=False,load_raw=True,load_area_averages=True,load_region_polygons=False)
+
+  COU._regions[session['country']]='(full country) '+settings.country_names[session['country']]
+  COU.get_warming_slices(wlcalculator_path=basepath+'/wlcalculator/app/',model_real_names={'IPSL':'ipsl-cm5a-lr','HADGEM2':'hadgem2-es','ECEARTH':'ec-earth','MPIESM':'mpi-esm-lr'})
   session_cou = open(session['cou_path'], 'wb')
   cPickle.dump(COU, session_cou, protocol=2) ; session_cou.close() 
   
@@ -79,11 +82,18 @@ def index():
   session['user_type']='beginner'
   session['language']='en'
 
-  session["country_avail"]   = settings.country_names.keys()
-  session['country']   = settings.country_names.keys()[0]
+  session["country_avail"]   = sorted(settings.country_names.keys())
+  session['country']   = session["country_avail"][0]
 
   session["ref_period"]   = settings.ref_period
   session["proj_period"]  = settings.proj_period
+
+  session['use_periods'] = False
+
+  session['warming_lvl_avail']=['1.5','2.0','2.5','3']
+  session['warming_lvl']='2.0'
+  index=session['warming_lvl_avail'].index(session['warming_lvl'])
+  session['warming_lvl_avail'][index],session['warming_lvl_avail'][0]=session['warming_lvl_avail'][0],session['warming_lvl_avail'][index]
 
   session["scenario_avail"]   = settings.scenarios
   session["scenario"]   = settings.scenarios[0]
@@ -107,7 +117,7 @@ def index():
   if os.path.isfile(session['cou_path'])==False:
     COU=initialize()
 
-  session["region_avail"]   = [settings.country_names[session['country']]+' (full country)']+sorted(COU._regions.keys())
+  session["region_avail"]   = sorted(COU._regions.keys())
   session['region']   = session["region_avail"][0]
 
   session['location']='index'
@@ -115,14 +125,13 @@ def index():
 
 @app.route('/choices')
 def choices():
-  try: 
+  if True: 
     start_time=time.time()
 
     s=session
     lang=s['language']
 
     region=s['region']
-    if region.split('(')[-1]=='full country)': region=s['country']
 
     form_country = forms.countryForm(request.form)
     form_country.countrys.choices = zip(s['country_avail'],[settings.country_names[cou] for cou in s['country_avail']])
@@ -135,7 +144,8 @@ def choices():
     print 'loaded session and data '+str(time.time()-start_time)
 
     form_region = forms.regionForm(request.form)
-    form_region.regions.choices = zip(s['region_avail'],s['region_avail'])
+
+    form_region.regions.choices = zip(s['region_avail'],[COU._regions[reg] for reg in s['region_avail']])
 
     form_scenario = forms.scenarioForm(request.form)
     form_scenario.scenarios.choices = zip(s['scenario_avail'],s['scenario_avail'])
@@ -146,6 +156,9 @@ def choices():
     form_indicator = forms.indicatorForm(request.form)
     form_indicator.indicators.choices = zip(s['indicator_avail'],[lang_dict[lang][ind] for ind in s['indicator_avail']])
 
+    form_warming_lvl = forms.warming_lvlForm(request.form)
+    form_warming_lvl.warming_lvls.choices = zip(s['warming_lvl_avail'],s['warming_lvl_avail'])
+
     form_period = forms.PeriodField(request.form)
     ref_P = "-".join(str(t) for t in session["ref_period"])
     proj_P = "-".join(str(t) for t in session["proj_period"])
@@ -155,9 +168,16 @@ def choices():
     form_season = forms.seasonForm(request.form)
     form_season.seasons.choices = zip(s['season_avail'],[lang_dict[lang][sea] for sea in s['season_avail']])
 
-    refP = "to".join(str(t) for t in s["ref_period"])
-    proP = "to".join(str(t) for t in s["proj_period"])
-    periods={refP:s["ref_period"],proP:s["proj_period"]}
+    if s['use_periods']:
+      refP = "to".join(str(t) for t in s["ref_period"])
+      proP = "to".join(str(t) for t in s["proj_period"])
+      periods={refP:s["ref_period"],proP:s["proj_period"]}
+    else:
+      refP = 'ref'
+      proP = s['warming_lvl']
+      periods=COU._warming_slices
+
+    print s
 
     indicator_label=lang_dict[lang][s['indicator']]+' ['+ind_dict[s['indicator']]['unit']+']'
 
@@ -191,7 +211,7 @@ def choices():
 
       'transient_plot':transient_plot.replace('app/',''),
       'transient_plot_title':'Transient',
-      'transient_plot_title_txt':lang_dict[lang][s['indicator']]+' displayed as 20 year running mean'+season_add_on+'. Observations (EWEMBI) are shown in green for the period 1999-2013. RCM simulations are shown in red for the period 1970-2100. The line represents the ensemble mean while the shaded area represents the model spread. Differences between observations and model data during the period 1999-2013 have to be expected.',
+      'transient_plot_title_txt':lang_dict[lang][s['indicator']]+' displayed as 20 year running mean'+season_add_on+'. Observations (EWEMBI) are shown in green for the period 1989-2003. RCM simulations are shown in red for the period 1960-2090. The line represents the ensemble mean while the shaded area represents the model spread. Differences between observations and model data during the period 1989-2003 have to be expected.',
 
       'annual_cycle_plot':annual_cycle_plot.replace('app/',''),
       'annual_cycle_plot_title':'Annual Cycle',
@@ -209,7 +229,7 @@ def choices():
 
       'transient_plot':transient_plot.replace('app/',''),
       'transient_plot_title':'Trajectoire Projetée',
-      'transient_plot_title_txt':lang_dict[lang][s['indicator']]+' présenté comme moyenne mobile de 20 années. Observations (EWEMBI) en vert pour la période 1999-2013. Modélisations climatiques régionales en rouge pour la période 1970-2100. La ligne représente la moyenne de l`ensemble et la zone ombragée montre l`écart entre les modèles.',
+      'transient_plot_title_txt':lang_dict[lang][s['indicator']]+' présenté comme moyenne mobile de 20 années. Observations (EWEMBI) en vert pour la période 1989-2003. Modélisations climatiques régionales en rouge pour la période 1960-2090. La ligne représente la moyenne de l`ensemble et la zone ombragée montre l`écart entre les modèles. Des différences entre observations et la modélisation climatique pendant la période 1989-2003 doivent être attendus.',
 
       'annual_cycle_plot':annual_cycle_plot.replace('app/',''),
       'annual_cycle_plot_title':'Cycle Annuel',
@@ -220,6 +240,7 @@ def choices():
     other_dict={
       'language':get_language_tag(),
       'advanced_col':advanced_col,
+      'use_periods':s['use_periods'],
       'user_type':s['user_type'],
       'small_region_warning':s['small_region_warning'],
       'language_flag':languages[s['language']],
@@ -227,9 +248,9 @@ def choices():
 
     form_dict = { 
       'form_country':form_country,
-      'form_country':form_country,
       'form_region':form_region,
       'form_period':form_period,
+      'form_warming_lvl':form_warming_lvl,
       'form_season':form_season,
       'form_scenario':form_scenario,
       'form_dataset':form_dataset,
@@ -246,9 +267,9 @@ def choices():
     session['location']='choices'
     return render_template('choices.html',**context)
 
-  except Exception,e: 
-    print str(e)
-    return redirect(url_for("index"))
+  # except Exception,e: 
+  #   print str(e)
+  #   return redirect(url_for("index"))
 
 
 
@@ -336,9 +357,12 @@ def merging_page():
 
   try:
     s=session
+
     session_cou = open(s['cou_path'], 'rb')
     COU=cPickle.load( session_cou) ; session_cou.close()  
     COU.load_data(quiet=True,filename_filter=s['indicator'],load_mask=False,load_raw=True,load_area_averages=False,load_region_polygons=False)
+
+    print COU._regions
 
     regions_plot='app/static/images/'+s['country']+'/'+s['region']+'.png'
     if os.path.isfile(regions_plot)==False:
@@ -351,11 +375,14 @@ def merging_page():
         ax=ax,
         show_all_adm_polygons=True,
         highlight_region=s['region'],
-        title=s['region'])
+        title=COU._regions[s['region']])
       plt.savefig(regions_plot,dpi=300)
 
+    print 'plotted'
+
+    choosable_regions=[reg for reg in s['region_avail'][:] if reg!=s['country']]
     form_region = forms.regionForm(request.form)
-    form_region.regions.choices = zip(s['region_avail'],s['region_avail'])
+    form_region.regions.choices = zip(choosable_regions,[COU._regions[reg] for reg in choosable_regions])
     form_region.regions.label = 'Add another region'
 
     context = { 
@@ -390,15 +417,14 @@ def merge_with_region():
 
   s['region']=COU.merge_adm_regions([s['region'],to_merge])
 
-  if s['region'].split('(')[-1]!='full country)':
-    area=COU.get_region_area(s['region'])['latxlon']*4
-    if area<4:
-      s['small_region_warning']=True
-    else:
-      s['small_region_warning']=False
+  area=COU.get_region_area(s['region'])['latxlon']*4
+  if area<4:
+    s['small_region_warning']=True
+  else:
+    s['small_region_warning']=False
 
-    session_cou = open(session['cou_path'], 'wb')
-    cPickle.dump(COU, session_cou, protocol=2) ; session_cou.close()  
+  session_cou = open(session['cou_path'], 'wb')
+  cPickle.dump(COU, session_cou, protocol=2) ; session_cou.close()  
 
 
 
@@ -436,6 +462,37 @@ def dataset_choice():
   session['dataset_avail'][index],session['dataset_avail'][0]=session['dataset_avail'][0],session['dataset_avail'][index]
   return redirect(url_for('choices'))
 
+@app.route('/warming_lvl_choice',  methods=('POST', ))
+def warming_lvl_choice():
+  form_warming_lvl = forms.warming_lvlForm(request.form)
+  session['warming_lvl']=form_warming_lvl.warming_lvls.data
+  # put chosen at beginning of list
+  index=session['warming_lvl_avail'].index(session['warming_lvl'])
+  session['warming_lvl_avail'][index],session['warming_lvl_avail'][0]=session['warming_lvl_avail'][0],session['warming_lvl_avail'][index]
+  return redirect(url_for('choices'))
+
+@app.route('/switch_to_periods',  methods=("POST", ))
+def switch_to_periods():
+  session['use_periods']=abs(session['use_periods']-1)
+  if session['use_periods']:
+    session["ref_period"]   = settings.ref_period
+    session["proj_period"]  = settings.proj_period
+  else:
+    session['warming_lvl_avail']=['1.5','2.0','2.5','3']
+    session['warming_lvl']='2.0'  
+    index=session['warming_lvl_avail'].index(session['warming_lvl'])
+    session['warming_lvl_avail'][index],session['warming_lvl_avail'][0]=session['warming_lvl_avail'][0],session['warming_lvl_avail'][index]
+
+  return redirect(url_for("choices"))
+
+@app.route('/periodchoice',  methods=("POST", ))
+def add_periodchoice():
+  form_period = forms.PeriodField(request.form)
+  session["ref_period"]   = [int(t) for t in form_period.ref_period.data.split("-")]
+  session["proj_period"]  = [int(t) for t in form_period.proj_period.data.split("-")]
+
+  return redirect(url_for("choices"))
+
 @app.route('/season_choice',  methods=('POST', ))
 def season_choice():
   form_season = forms.seasonForm(request.form)
@@ -457,16 +514,6 @@ def indicator_choice():
   if session["season"] not in session["season_avail"]: session["season"] = 'year'
   return redirect(url_for('choices'))
 
-
-@app.route('/periodchoice',  methods=("POST", ))
-def add_periodchoice():
-  form_period = forms.PeriodField(request.form)
-  session["ref_period"]   = [int(t) for t in form_period.ref_period.data.split("-")]
-  session["proj_period"]  = [int(t) for t in form_period.proj_period.data.split("-")]
-
-
-  return redirect(url_for("choices"))
-
 @app.route('/region_choice',  methods=('POST', ))
 def region_choice():
   form_region = forms.regionForm(request.form)
@@ -474,13 +521,13 @@ def region_choice():
   if session['region'].split('(')[-1]!='full country)':
     #COU=COUs[session['country']]
     session_cou = open(session['cou_path'], 'rb')
-    COU=cPickle.load( session_cou) ; session_cou.close()  
-    area=COU.get_region_area(session['region'])['latxlon']*4
-    print area
-    if area<4:
-      session['small_region_warning']=True
-    else:
-      session['small_region_warning']=False
+    COU=cPickle.load( session_cou) ; session_cou.close()
+    if session['region']!=session['country']:  
+      area=COU.get_region_area(session['region'])['latxlon']*4
+      if area<4:
+        session['small_region_warning']=True
+      else:
+        session['small_region_warning']=False
   # put chosen at beginning of list
   index=session['region_avail'].index(session['region'])
   session['region_avail'][index],session['region_avail'][0]=session['region_avail'][0],session['region_avail'][index]
@@ -507,8 +554,11 @@ def country_choice():
 
 
   session["indicator"]   = session["indicator_avail"][0]
-  session["region_avail"]   = [settings.country_names[session['country']]+' (full country)']+sorted(COU._regions.keys())
-  session['region']   = session["region_avail"][0]
+
+  session["region_avail"]   = sorted(COU._regions.keys())
+  session['region']   = session["region_avail"][-1]
+  index=session['region_avail'].index(session['region'])
+  session['region_avail'][index],session['region_avail'][0]=session['region_avail'][0],session['region_avail'][index]
 
   session["season_avail"]   = settings.seasons.keys()
   session["season"]   = 'year'  

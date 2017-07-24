@@ -53,22 +53,12 @@ for i in range(1,13):
 
 all_isos=['AGO', 'DZA', 'EGY', 'GNQ', 'BEN', 'NGA', 'NER', 'ZWE', 'NAM', 'GNB', 'SWZ', 'GHA', 'COG', 'SLE', 'ETH', 'COM', 'ERI', 'CPV', 'LBR', 'LBY', 'LSO', 'UGA', 'RWA', 'SOM', 'MDG', 'CMR', 'TZA', 'BWA', 'SEN', 'TCD', 'GAB', 'BFA', 'MWI', 'MOZ', 'MRT', 'GMB', 'MLI', 'BDI', 'STP', 'DJI', 'GIN', 'ESH', 'KEN', 'MAR', 'COD', 'ZMB', 'ZAF', 'TGO', 'TUN', 'CAF', 'SSD', 'SDN', 'CIV']
 
-country_names={'BEN':'Benin','SEN':'Senegal','UGA':'Uganda'}
+country_names={}
 for iso in all_isos:
 	if os.path.isdir('app/static/images/'+iso)==False:os.system('mkdir app/static/images/'+iso)
 	country_names[iso]=pycountry.countries.get(alpha_3=iso).name
 
 
-regions={}
-	# 'SEN':['Senegal (full country)', 'Kaolack', 'Fatick', 'Kolda', 'Tambacounda', 'Dakar', 'Saint-Louis', 'Matam', 'Kedougou', 'Louga', 'Sedhiou', 'Thies', 'Diourbel', 'Kaffrine', 'Ziguinchor'],
-	# 'BEN':['Benin (full country)','Borgou', 'Collines', 'Mono', 'Kouffo', 'Atlantique', 'Donga', 'Plateau', 'Atakora', 'Alibori', 'Littoral', 'Oueme', 'Zou']
-#}
-
-# for iso in country_names.keys():
-# 	print iso
-# 	COU=country_analysis.country_analysis(iso,'../country_analysis/data/'+iso+'/',seasons=seasons)
-# 	COU.load_data(quiet=True,filename_filter='dont_load_anything')
-# 	regions[iso]=[country_names[iso]+' (full country)']+COU._regions.keys()
 
 
 datasets=['CORDEX_BC','CMIP5_BC']
@@ -185,14 +175,23 @@ text_dict={'en':{
 	'region_h':'Administrative Region',
 	'region_txt':'Region for which the transient and annual cycle is presented. Use "Merge Regions" function to aggregate several small regions.',
 
+	'period_h':'Administrative period',
+	'period_txt':'Region for which the transient and annual cycle is presented. Use "Merge Regions" function to aggregate several small regions.',
+
+	'warming_lvl_h':'Global Warming Level',
+	'warming_lvl_txt':'Global warming level for which the regional response is presented. (Click on "Use fixed periods" if you want to show projections for a fixed time period)',
+
+	'period_h':'Projection Period',
+	'period_txt':'Time period for which projections are shown. As climate projections depend on emission scenarios, we encourage the user to select global warming levels for which the regional climate response will be displayed (Click on "Use Global Warming Levels").',
+
 	'country_h':'Country',
 	'country_txt':'For the moment only the PAS-PNA countries Benin and Senegal are available. Could be extended',
 
 	'indicator_h':'Climate Indicator',
-	'indicator_txt':'Climate indicators based on daily temperature and precipitation. For the moment no drought indicator is included. Please consider monthly precipitation for drought assements and keep in mind that potential evapotranspiration might increase in a warmer world.',
+	'indicator_txt':'Climate indicators based on daily temperature and precipitation. For the moment no drought indicator is included. Please consider monthly precipitation for drought assessments and keep in mind that potential evapotranspiration might increase in a warmer world.',
 
 	'time_scale_h':'Time Scale',
-	'time_scale_txt':'Projected trends might depend on the season. As for different regions the monsoon onset and end differes, use monthly data to estimate seasonal changes.',
+	'time_scale_txt':'Projected trends might depend on the season. As for different regions the monsoon onset and end differs, use monthly data to estimate seasonal changes.',
 
 	'ref_period':'Reference Period',
 	'proj_period':'Projection Period',
@@ -227,6 +226,8 @@ text_dict={'en':{
 }
 
 button_dict={'en':{
+	'use_periods_0':'Use fixed Periods',
+	'use_periods_1':'Use Global Warming Levels',
 	'merge_regions':'Merge regions',
 	'select_periods':'Select Periods',
 	'define_season':'Define Season',
@@ -237,6 +238,8 @@ button_dict={'en':{
 	'save_season':'Keep this Season',
 
 },'fr':{
+	'use_periods_0':'Périodes fixes',
+	'use_periods_1':'Niveaux de Rechauffement Global',
 	'merge_regions':'Regrouper des Régions',
 	'select_periods':'Choisir ces Périodes',
 	'define_season':'Définir une Saison',
