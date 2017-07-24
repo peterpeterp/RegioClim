@@ -54,6 +54,7 @@ period_dict=settings.period_dict
 form_labels=settings.form_labels
 text_dict=settings.text_dict
 button_dict=settings.button_dict
+warming_lvl_dict=settings.warming_lvl_dict
 
 
 #COUs=settings.COUs
@@ -90,8 +91,9 @@ def index():
 
   session['use_periods'] = False
 
-  session['warming_lvl_avail']=['1.5','2.0','2.5','3']
+  session['warming_lvl_avail']=warming_lvl_dict['en'].keys()
   session['warming_lvl']='2.0'
+  session['warming_lvl_ref']='0.5'
   index=session['warming_lvl_avail'].index(session['warming_lvl'])
   session['warming_lvl_avail'][index],session['warming_lvl_avail'][0]=session['warming_lvl_avail'][0],session['warming_lvl_avail'][index]
 
@@ -125,7 +127,7 @@ def index():
 
 @app.route('/choices')
 def choices():
-  if True: 
+  try: 
     start_time=time.time()
 
     s=session
@@ -157,15 +159,27 @@ def choices():
     form_indicator.indicators.choices = zip(s['indicator_avail'],[lang_dict[lang][ind] for ind in s['indicator_avail']])
 
     form_warming_lvl = forms.warming_lvlForm(request.form)
-    form_warming_lvl.warming_lvls.choices = zip(s['warming_lvl_avail'],s['warming_lvl_avail'])
+    index=s['warming_lvl_avail'].index(s['warming_lvl'])
+    #s['warming_lvl_avail']=sorted(s['warming_lvl_avail'])
+    s['warming_lvl_avail'][index],s['warming_lvl_avail'][0]=s['warming_lvl_avail'][0],s['warming_lvl_avail'][index]
+    form_warming_lvl.warming_lvls.choices = zip([lvl for lvl in s['warming_lvl_avail'] if float(lvl)>float(s['warming_lvl_ref'])],[warming_lvl_dict[lang][lvl] for lvl in s['warming_lvl_avail'] if float(lvl)>float(s['warming_lvl_ref'])])
+
+    form_warming_lvl_ref = forms.warming_lvl_refForm(request.form)
+    index=s['warming_lvl_avail'].index(s['warming_lvl_ref'])
+    #s['warming_lvl_avail']=sorted(s['warming_lvl_avail'])
+    s['warming_lvl_avail'][index],s['warming_lvl_avail'][0]=s['warming_lvl_avail'][0],s['warming_lvl_avail'][index]
+    form_warming_lvl_ref.warming_lvl_refs.choices = zip(s['warming_lvl_avail'],[warming_lvl_dict[lang][lvl] for lvl in s['warming_lvl_avail']])
 
     form_period = forms.PeriodField(request.form)
-    ref_P = "-".join(str(t) for t in session["ref_period"])
-    proj_P = "-".join(str(t) for t in session["proj_period"])
+    ref_P = "-".join(str(t) for t in s["ref_period"])
+    proj_P = "-".join(str(t) for t in s["proj_period"])
   
     form_period = forms.PeriodField(request.form, proj_period=proj_P, ref_period=ref_P)
 
     form_season = forms.seasonForm(request.form)
+    s['season_avail']=sorted(s['season_avail'])
+    index=s['season_avail'].index(s['season'])
+    s['season_avail'][index],s['season_avail'][0]=s['season_avail'][0],s['season_avail'][index]
     form_season.seasons.choices = zip(s['season_avail'],[lang_dict[lang][sea] for sea in s['season_avail']])
 
     if s['use_periods']:
@@ -173,11 +187,9 @@ def choices():
       proP = "to".join(str(t) for t in s["proj_period"])
       periods={refP:s["ref_period"],proP:s["proj_period"]}
     else:
-      refP = 'ref'
+      refP = s['warming_lvl_ref']
       proP = s['warming_lvl']
       periods=COU._warming_slices
-
-    print s
 
     indicator_label=lang_dict[lang][s['indicator']]+' ['+ind_dict[s['indicator']]['unit']+']'
 
@@ -251,6 +263,7 @@ def choices():
       'form_region':form_region,
       'form_period':form_period,
       'form_warming_lvl':form_warming_lvl,
+      'form_warming_lvl_ref':form_warming_lvl_ref,
       'form_season':form_season,
       'form_scenario':form_scenario,
       'form_dataset':form_dataset,
@@ -267,9 +280,9 @@ def choices():
     session['location']='choices'
     return render_template('choices.html',**context)
 
-  # except Exception,e: 
-  #   print str(e)
-  #   return redirect(url_for("index"))
+  except Exception,e: 
+    print str(e)
+    return redirect(url_for("index"))
 
 
 
@@ -464,11 +477,11 @@ def dataset_choice():
 
 @app.route('/warming_lvl_choice',  methods=('POST', ))
 def warming_lvl_choice():
+  form_warming_lvl_ref = forms.warming_lvl_refForm(request.form)
+  session['warming_lvl_ref']=form_warming_lvl_ref.warming_lvl_refs.data
+
   form_warming_lvl = forms.warming_lvlForm(request.form)
   session['warming_lvl']=form_warming_lvl.warming_lvls.data
-  # put chosen at beginning of list
-  index=session['warming_lvl_avail'].index(session['warming_lvl'])
-  session['warming_lvl_avail'][index],session['warming_lvl_avail'][0]=session['warming_lvl_avail'][0],session['warming_lvl_avail'][index]
   return redirect(url_for('choices'))
 
 @app.route('/switch_to_periods',  methods=("POST", ))

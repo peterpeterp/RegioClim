@@ -175,11 +175,10 @@ text_dict={'en':{
 	'region_h':'Administrative Region',
 	'region_txt':'Region for which the transient and annual cycle is presented. Use "Merge Regions" function to aggregate several small regions.',
 
-	'period_h':'Administrative period',
-	'period_txt':'Region for which the transient and annual cycle is presented. Use "Merge Regions" function to aggregate several small regions.',
-
 	'warming_lvl_h':'Global Warming Level',
 	'warming_lvl_txt':'Global warming level for which the regional response is presented. (Click on "Use fixed periods" if you want to show projections for a fixed time period)',
+	'future_warming_lvl':'Future warming level',
+	'ref_warming_lvl':'Reference warming level',
 
 	'period_h':'Projection Period',
 	'period_txt':'Time period for which projections are shown. As climate projections depend on emission scenarios, we encourage the user to select global warming levels for which the regional climate response will be displayed (Click on "Use Global Warming Levels").',
@@ -210,6 +209,14 @@ text_dict={'en':{
 	'region_h':'Région administrative',
 	'region_txt':'Région pour laquelle le trajectoire et le cycle annuel sont présentés. Utilisez la fonction "Regrouper des Régions" pour regrouper différentes régions.',
 
+	'warming_lvl_h':'Niveau de Réchauffement Global',
+	'warming_lvl_txt':'Niveau de Réchauffement Global pour lequel la réponse climatique régionale est présentée. (Appuyez sur "Périodes fixes" si vous voulez voir les projections pour une période fixe)',
+	'future_warming_lvl':'Niveau de réchauffement future',
+	'ref_warming_lvl':'Niveau de réchauffement de référence',
+
+	'period_h':'Période de Projection',
+	'period_txt':'Périodes pour lesquelles les projections sont présentées. Comme les projections climatiques dépendent sur les scénarios d´émission, nous recommandons d´utiliser de choisir un niveau de réchauffement global pour lequel la réponse climatique régionale va être présentée (Appuyez sur "Niveaux de Réchauffement Global").',
+
 	'country_h':'Pays',
 	'country_txt':'Pour le moment seulement le Bénin et le Sénégal peuvent être sélectionné. La liste des pays sera bientôt élargie.',
 
@@ -239,7 +246,7 @@ button_dict={'en':{
 
 },'fr':{
 	'use_periods_0':'Périodes fixes',
-	'use_periods_1':'Niveaux de Rechauffement Global',
+	'use_periods_1':'Niveaux de Réchauffement Global',
 	'merge_regions':'Regrouper des Régions',
 	'select_periods':'Choisir ces Périodes',
 	'define_season':'Définir une Saison',
@@ -250,6 +257,24 @@ button_dict={'en':{
 	'save_season':'Garder cette Saison',
 }
 }
+
+warming_lvl_dict={'en':{
+	'0.5':'+0.5°C (1980-2000)',
+	'1.0':'+1.0°C',
+	'1.5':'+1.5°C',
+	'2.0':'+2.0°C',
+	# '2.5':'+2.5°C',
+	# '3.0':'+3.0°C',
+},'fr':{
+	'0.5':'+0.5°C (1980-2000)',
+	'1.0':'+1.0°C',
+	'1.5':'+1.5°C',
+	'2.0':'+2.0°C',
+	# '2.5':'+2.5°C',
+	# '3.0':'+3.0°C',
+}
+}
+
 
 
 print 'done with settings'

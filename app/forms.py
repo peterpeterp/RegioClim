@@ -52,6 +52,10 @@ class warming_lvlForm(Form):
   warming_lvls = SelectField(u'', choices=[],
             validators=[Required("Please select at least one period.")])
 
+class warming_lvl_refForm(Form):
+  warming_lvl_refs = SelectField(u'', choices=[],
+            validators=[Required("Please select at least one period.")])
+
 class PeriodField(Form):
   regex = "[1-2][0-9]{3}-[1-2][0-9]{3}"
 

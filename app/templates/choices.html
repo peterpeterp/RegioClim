@@ -42,7 +42,8 @@
   <form method="POST" action="/warming_lvl_choice" id="warming_lvl_id">
   <h3>{{ warming_lvl_h }}</h3>
   <p class=small>{{ warming_lvl_txt }}</p>
-  {{ form_warming_lvl.warming_lvls.label }}<br> {{ form_warming_lvl.warming_lvls(onchange="change_warming_lvl();") }}
+  {{ future_warming_lvl }}<br> {{ form_warming_lvl.warming_lvls(onchange="change_warming_lvl();") }}
+  {{ ref_warming_lvl }}<br> {{ form_warming_lvl_ref.warming_lvl_refs(onchange="change_warming_lvl();") }}
   </form>
   <form method="POST" action="/switch_to_periods">
     <button type="submit" class="btn">{{use_periods_0}}</button>
