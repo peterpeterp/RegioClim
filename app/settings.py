@@ -71,13 +71,25 @@ ind_dict={
 	'year_RX5':{'unit':'mm','time_step':'yearly'},
 }
 
-lang_dict={'fr':{
+indicator_dict={'fr':{
 	'tas':'Température',
 	'pr':'Précipitation',
 	'RX1':'Extrêmes humides (RX1day)',
 	'TXx':'Extrêmes de chaleur (TXx)',
 	'year_RX5':'Extrêmes humides de 5 jours (RX5day)',
 	'year':'annuel',
+	},
+	'en':{
+	'tas':'Temperature',
+	'pr':'Precipitation',
+	'RX1':'Wet Extremes (RX1day)',
+	'TXx':'Hot Extremes (TXx)',
+	'year_RX5':'5day Wet Extremes (RX5day)',
+	}
+}
+
+season_dict={'fr':{
+	'year':'** Annuel **',
 	'1':'Janvier',
 	'2':'Février',
 	'3':'Mars',
@@ -92,12 +104,7 @@ lang_dict={'fr':{
 	'12':'Décembre',
 	},
 	'en':{
-	'tas':'Temperature',
-	'pr':'Precipitation',
-	'RX1':'Wet Extremes (RX1day)',
-	'TXx':'Hot Extremes (TXx)',
-	'year_RX5':'5day Wet Extremes (RX5day)',
-	'year':'annual',
+	'year':'** Annual **',
 	'1':'January',
 	'2':'Febuary',
 	'3':'March',
@@ -259,17 +266,17 @@ button_dict={'en':{
 }
 
 warming_lvl_dict={'en':{
-	'0.5':'+0.5°C (1980-2000)',
-	'1.0':'+1.0°C',
-	'1.5':'+1.5°C',
-	'2.0':'+2.0°C',
+	'0.5':'+0.5°C GMT (1980-2000)',
+	'1.0':'+1.0°C GMT',
+	'1.5':'+1.5°C GMT',
+	'2.0':'+2.0°C GMT',
 	# '2.5':'+2.5°C',
 	# '3.0':'+3.0°C',
 },'fr':{
-	'0.5':'+0.5°C (1980-2000)',
-	'1.0':'+1.0°C',
-	'1.5':'+1.5°C',
-	'2.0':'+2.0°C',
+	'0.5':'+0.5°C GMT (1980-2000)',
+	'1.0':'+1.0°C GMT',
+	'1.5':'+1.5°C GMT',
+	'2.0':'+2.0°C GMT',
 	# '2.5':'+2.5°C',
 	# '3.0':'+3.0°C',
 }

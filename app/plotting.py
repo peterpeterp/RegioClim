@@ -8,7 +8,7 @@ rc('text', usetex=True)
 plt.rcParams["font.family"] = "sans-serif"
 plt.style.use('classic')
 
-def EWEMBI_plot_func(s,COU,refP,proP,region,periods,lang,indicator_label,lang_dict,out_format,highlight_region=None):
+def EWEMBI_plot_func(s,COU,refP,proP,region,periods,lang,indicator_label,season_dict,refP_longname,out_format,highlight_region=None):
   # EWEMBI map
   ewembi=COU.selection([s['indicator'],'EWEMBI'])
   EWEMBI_plot='app/static/images/'+s['country']+'/'+s['indicator']+'_EWEMBI_ref_'+s['season']+'_'+region+'_'+lang+out_format
@@ -23,7 +23,10 @@ def EWEMBI_plot_func(s,COU,refP,proP,region,periods,lang,indicator_label,lang_di
       season=s['season'],
       color_label=indicator_label,
       )
-    plt.title(refP.replace('to','-')+' '+lang_dict[lang][s['season']],fontsize=10)
+    if s['season']=='year':
+      plt.title(refP_longname,fontsize=10)
+    if s['season']!='year':
+      plt.title(refP_longname+' '+season_dict[lang][s['season']],fontsize=10)
     # # put signature below
     # box = ax.get_position()
     # ax.set_position([box.x0, box.y0+box.height*0.2, box.width, box.height*0.8])
@@ -35,7 +38,7 @@ def EWEMBI_plot_func(s,COU,refP,proP,region,periods,lang,indicator_label,lang_di
     if out_format=='.pdf':plt.savefig(EWEMBI_plot, format='pdf', dpi=1000) 
   return(EWEMBI_plot)
 
-def Projection_plot_func(s,COU,refP,proP,region,periods,lang,indicator_label,lang_dict,out_format,highlight_region=None):
+def Projection_plot_func(s,COU,refP,proP,region,periods,lang,indicator_label,season_dict,refP_longname,proP_longname,out_format,highlight_region=None):
   # projection
   ens_selection=COU.selection([s['indicator'],s['dataset']])
   ens_mean=COU.selection([s['indicator'],s['dataset'],'ensemble_mean'])[0]
@@ -51,16 +54,17 @@ def Projection_plot_func(s,COU,refP,proP,region,periods,lang,indicator_label,lan
       season=s['season'],
       color_label=indicator_label,
       )
-    if len(refP)>3:
-      plt.title(proP.replace('to','-')+' vs '+refP.replace('to','-')+' '+lang_dict[lang][s['season']],fontsize=10)
-    else:
-      plt.title(proP+'°C vs '+refP+'°C '+lang_dict[lang][s['season']],fontsize=10)
+    if s['season']=='year':
+      plt.title(proP_longname+' vs '+refP_longname,fontsize=10)
+    if s['season']!='year':
+      plt.title(proP_longname+' vs '+refP_longname+' '+season_dict[lang][s['season']],fontsize=10)
+
     if out_format=='_small.png':plt.savefig(Projection_plot)
     if out_format=='_large.png':plt.savefig(Projection_plot,dpi=300) 
     if out_format=='.pdf':plt.savefig(Projection_plot, format='pdf', dpi=1000) 
   return(Projection_plot)
 
-def transient_plot_func(s,COU,refP,proP,region,periods,lang,indicator_label,lang_dict,out_format):
+def transient_plot_func(s,COU,refP,proP,region,periods,lang,indicator_label,season_dict,out_format):
   # transient
   ewembi=COU.selection([s['indicator'],'EWEMBI'])
   ens_selection=COU.selection([s['indicator'],s['dataset']])
@@ -79,7 +83,10 @@ def transient_plot_func(s,COU,refP,proP,region,periods,lang,indicator_label,lang
       ax.set_ylabel(indicator_label)
       leg = plt.legend(loc='best',fancybox=True,fontsize=10)
       leg.get_frame().set_alpha(0.3)
-      plt.title(COU._regions[s['region']]+' '+lang_dict[lang][s['season']],fontsize=12)
+      if s['season']=='year':
+        plt.title(COU._regions[s['region']].replace('**',''),fontsize=12)
+      if s['season']!='year':
+        plt.title(COU._regions[s['region']].replace('**','')+' '+season_dict[lang][s['season']],fontsize=12)
       #plt.text(2100,60,'Climate Analytics',horizontalalignment='right',fontsize=7)
       fig.tight_layout()
       if out_format=='_small.png':plt.savefig(transient_plot)
@@ -87,7 +94,7 @@ def transient_plot_func(s,COU,refP,proP,region,periods,lang,indicator_label,lang
       if out_format=='.pdf':plt.savefig(transient_plot, format='pdf', dpi=1000)  
   return(transient_plot)
 
-def annual_cycle_plot_func(s,COU,refP,proP,region,periods,lang,indicator_label,lang_dict,out_format):
+def annual_cycle_plot_func(s,COU,refP,proP,region,periods,lang,indicator_label,season_dict,refP_longname,proP_longname,out_format):
   # annual cycle
   ewembi=COU.selection([s['indicator'],'EWEMBI'])
   ens_selection=COU.selection([s['indicator'],s['dataset']])
@@ -108,10 +115,7 @@ def annual_cycle_plot_func(s,COU,refP,proP,region,periods,lang,indicator_label,l
       ens_mean.plot_annual_cycle(period=refP,region=region,ax=ax[0],title='',ylabel='  ',label='model data',color='green',xlabel=False,shading_range=[0,100])
       leg = ax[0].legend(loc='best',fancybox=True,fontsize=10)
       leg.get_frame().set_alpha(0.3)
-      if len(refP)>3:
-        ax[0].set_title(COU._regions[s['region']]+' '+proP.replace('to','-')+' vs '+refP.replace('to','-'),fontsize=12)
-      else:
-        ax[0].set_title(COU._regions[s['region']]+' '+proP+'°C vs '+refP+'°C',fontsize=12)
+      ax[0].set_title(COU._regions[s['region']].replace('**','')+' '+proP_longname+' vs '+refP_longname,fontsize=12)
 
       ens_mean.plot_annual_cycle(period='diff_'+proP+'-'+refP,region=region,ax=ax[1],title='',ylabel='  ',label='projected change',color='green',shading_range=[0,100])
       ax[1].plot([0,1],[0,0],color='k')
