@@ -69,7 +69,7 @@ def initialize():
   COU.load_data(quiet=True,filename_filter='RX1',load_mask=False,load_raw=True,load_area_averages=True,load_region_polygons=False)
 
   COU._regions[session['country']]='** '+settings.country_names[session['country']]+' **'
-  COU.get_warming_slices(wlcalculator_path=basepath+'wlcalculator/app/',model_real_names={'IPSL':'ipsl-cm5a-lr','HADGEM2':'hadgem2-es','ECEARTH':'ec-earth','MPIESM':'mpi-esm-lr'})
+  COU.get_warming_slices(wlcalculator_path=basepath+'../wlcalculator/app/',model_real_names={'IPSL':'ipsl-cm5a-lr','HADGEM2':'hadgem2-es','ECEARTH':'ec-earth','MPIESM':'mpi-esm-lr'})
   session_cou = open(session['cou_path'], 'wb')
   cPickle.dump(COU, session_cou, protocol=2) ; session_cou.close() 
   
