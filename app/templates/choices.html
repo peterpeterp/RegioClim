@@ -24,52 +24,59 @@
   </form>
 
 
-  <form method="POST" action="/region_choice" id="region_id">
+  <form method="POST" action="/go_to_merging_page">
   <h3>{{ region_h }}</h3>
-  <p class=small>{{ region_txt }}</p>
+  <p class=small>{{ region_txt }}
+  <button type="submit" id="link_button"><font color="blue">{{merge_regions}}</button></font></p>
+  </form>
+  <form method="POST" action="/region_choice" id="region_id">
   {{ form_region.regions(onchange="change_region();") }}
   </form>
   {% if small_region_warning==True %}
-  <h6>{{warning}}</h6>
-  <p class=warn_txt>{{warning_txt}}</p>
-  {% endif %}
   <form method="POST" action="/go_to_merging_page">
-    <button type="submit" class="btn">{{merge_regions}}</button>
+  <h6>{{warning}}</h6>
+  <p class=warn_txt>{{ warning_txt }}
+  <button type="submit" id="link_button"><font color="BlueViolet">{{merge_regions}}</button></font></p>
   </form>
+  {% endif %}
+
 
 
 {% if use_periods==0 %}
-  <form method="POST" action="/warming_lvl_choice" id="warming_lvl_id">
+  <form method="POST" action="/switch_to_periods">
   <h3>{{ warming_lvl_h }}</h3>
-  <p class=small>{{ warming_lvl_txt }}</p>
+  <p class=small>{{ warming_lvl_txt_1 }}
+  <button type="submit" id="link_button"><font color="blue">{{use_periods_0}}</button></font>
+  {{ warming_lvl_txt_2 }}</p>
+  </form>
+  <form method="POST" action="/warming_lvl_choice" id="warming_lvl_id">
   {{ future_warming_lvl }}<br> {{ form_warming_lvl.warming_lvls(onchange="change_warming_lvl();") }}
   {{ ref_warming_lvl }}<br> {{ form_warming_lvl_ref.warming_lvl_refs(onchange="change_warming_lvl();") }}
-  </form>
-  <form method="POST" action="/switch_to_periods">
-    <button type="submit" class="btn">{{use_periods_0}}</button>
   </form>
 {% endif %}
 
 {% if use_periods==1 %}
-  <form method="POST" action="/periodchoice" onsubmit="period_change()" id="period_id">
+  <form method="POST" action="/switch_to_periods">
   <h3>{{ period_h }}</h3>
-  <p class=small>{{ period_txt }}</p>
+  <p class=small>{{ period_txt_1 }}
+  <button type="submit" id="link_button"><font color="blue">{{use_periods_1}}</button></font>
+  {{ period_txt_2 }}</p>
+  </form>
+  <form method="POST" action="/periodchoice" onsubmit="period_change()" id="period_id">
       {{ ref_period }} {{ form_period.ref_period(size=10) }}
       {{ proj_period }} {{ form_period.proj_period(size=10 ) }}
     <button type="submit" class="btn">{{select_periods}}</button>
   </form>
-  <form method="POST" action="/switch_to_periods">
-    <button type="submit" class="btn">{{use_periods_1}}</button>
-  </form>
 {% endif %}  
 
-  <form method="POST" action="/season_choice" id="season_id">
-  <h3>{{ time_scale_h }}</h3>
-  <p class=small>{{ time_scale_txt }}</p>
-  {{ form_season.seasons(onchange="change_season();") }}
-  </form>
+
   <form method="POST" action="/go_to_season_page">
-    <button type="submit" class="btn">{{define_season}}</button>
+  <h3>{{ time_scale_h }}</h3>
+  <p class=small>{{ time_scale_txt }}
+  <button type="submit" id="link_button"><font color="blue">{{define_season}}</font></button></p>
+  </form>
+  <form method="POST" action="/season_choice" id="season_id">
+  {{ form_season.seasons(onchange="change_season();") }}
   </form>
 </div>
 
@@ -78,11 +85,13 @@
 </div>
 
 <div id="LeftPanel" style="width: 35%; height: 100%; float: left;">
+  {% if EWEMBI_plot!='no_plot' %}
     <h3>{{ EWEMBI_plot_title }}</h3>
     <p class=small>{{ EWEMBI_plot_title_txt }}</p>
       <IMG SRC={{ EWEMBI_plot }} ALT=' ' WIDTH=350 HEIGHT=350></IMG>
   <a class="label label-primary" href="/prepare_for_download/EWEMBI_plot**_large.png" target="_blank"  style="margin-right: 5px;">{{download_png}}</a>
   <a class="label label-primary" href="/prepare_for_download/EWEMBI_plot**.pdf" target="_blank"  style="margin-right: 5px;">{{download_pdf}}</a>
+  {% endif %} 
 
     <h3>{{ transient_plot_title }}</h3>
     <p class=small>{{ transient_plot_title_txt }}</p>
@@ -103,11 +112,13 @@
   <a class="label label-primary" href="/prepare_for_download/Projection_plot**_large.png" target="_blank"  style="margin-right: 5px;">{{download_png}}</a>
   <a class="label label-primary" href="/prepare_for_download/Projection_plot**.pdf" target="_blank"  style="margin-right: 5px;">{{download_pdf}}</a>
 
+  {% if annual_cycle_plot!='no_plot' %}
     <h3>{{ annual_cycle_plot_title }}</h3>
     <p class=small>{{ annual_cycle_plot_title_txt }}</p>
       <IMG SRC={{ annual_cycle_plot }} ALT=' ' WIDTH=350 HEIGHT=350></IMG>
   <a class="label label-primary" href="/prepare_for_download/annual_cycle_plot**_large.png" target="_blank"  style="margin-right: 5px;">{{download_png}}</a>
   <a class="label label-primary" href="/prepare_for_download/annual_cycle_plot**.pdf" target="_blank"  style="margin-right: 5px;">{{download_pdf}}</a>
+  {% endif %} 
   </div>
 
 

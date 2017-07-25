@@ -156,10 +156,8 @@ scenarios=['rcp4p5']
 
 
 
-ref_period  = [1986,2005]
-proj_period = [2031,2050]
-periods_beginner	= ['2020-2040','2040-2060']
-periods_advanced	= ['2020-2040','2040-2060','2','1.5']
+ref_period  = [1986,2006]
+proj_period = [2031,2051]
 
 period_dict	= {
 	'2020-2040':'2020-2040',
@@ -170,7 +168,7 @@ period_dict	= {
 
 text_dict={'en':{
 	'warning':'Warning!',
-	'warning_txt':'The chosen region is smaller than 5 grid-cells. Please use the "Merge Region" function to aggregate several small regions.',
+	'warning_txt':'The chosen region is smaller than 5 grid-cells. Please ',
 
 	'merge_page_h':'Add another region',
 	'merge_page_txt':'Select a region you want to add to the chosen region.',
@@ -180,15 +178,17 @@ text_dict={'en':{
 	'season_page_txt':'Select a month that will be added to the season',
 
 	'region_h':'Administrative Region',
-	'region_txt':'Region for which the transient and annual cycle is presented. Use "Merge Regions" function to aggregate several small regions.',
+	'region_txt':'Region for which the transient and annual cycle is presented. You can also ',
 
 	'warming_lvl_h':'Global Warming Level',
-	'warming_lvl_txt':'Global warming level for which the regional response is presented. (Click on "Use fixed periods" if you want to show projections for a fixed time period)',
+	'warming_lvl_txt_1':'Global warming level for which the regional response is presented. Alternatively you can use ',
+	'warming_lvl_txt_2':' for which the regional climate projections will be displayed.',
 	'future_warming_lvl':'Future warming level',
 	'ref_warming_lvl':'Reference warming level',
 
 	'period_h':'Projection Period',
-	'period_txt':'Time period for which projections are shown. As climate projections depend on emission scenarios, we encourage the user to select global warming levels for which the regional climate response will be displayed (Click on "Use Global Warming Levels").',
+	'period_txt_1':'Time period for which projections are shown. As climate projections depend on emission scenarios, we encourage the user to select ',
+	'period_txt_2':'  for which the regional climate response will be displayed.',
 
 	'country_h':'Country',
 	'country_txt':'For the moment only the PAS-PNA countries Benin and Senegal are available. Could be extended',
@@ -197,14 +197,14 @@ text_dict={'en':{
 	'indicator_txt':'Climate indicators based on daily temperature and precipitation. For the moment no drought indicator is included. Please consider monthly precipitation for drought assessments and keep in mind that potential evapotranspiration might increase in a warmer world.',
 
 	'time_scale_h':'Time Scale',
-	'time_scale_txt':'Projected trends might depend on the season. As for different regions the monsoon onset and end differs, use monthly data to estimate seasonal changes.',
+	'time_scale_txt':'Projected trends might depend on the season. As for different regions the monsoon onset and end differs, use monthly data to estimate seasonal changes or ',
 
 	'ref_period':'Reference Period',
 	'proj_period':'Projection Period',
 
 },'fr':{
 	'warning':'Avertissement!',
-	'warning_txt':'La région choisie est plus petite que 5 grilles. Veuillez utiliser la fonction "Regrouper des Régions" pour regrouper différentes régions.',
+	'warning_txt':'La région choisie est plus petite que 5 grilles. Veuillez ',
 
 	'merge_page_h':'Ajoutez une Région',
 	'merge_page_txt':'Choisissez une région qui sera combiné avec la région actuelle.',
@@ -214,15 +214,17 @@ text_dict={'en':{
 	'season_page_txt':'Choisissez un mois qui sera ajouté à la saison',
 
 	'region_h':'Région administrative',
-	'region_txt':'Région pour laquelle le trajectoire et le cycle annuel sont présentés. Utilisez la fonction "Regrouper des Régions" pour regrouper différentes régions.',
+	'region_txt':'Région pour laquelle le trajectoire et le cycle annuel sont présentés. Vous pouvet aussi ',
 
 	'warming_lvl_h':'Niveau de Réchauffement Global',
-	'warming_lvl_txt':'Niveau de Réchauffement Global pour lequel la réponse climatique régionale est présentée. (Appuyez sur "Périodes fixes" si vous voulez voir les projections pour une période fixe)',
+	'warming_lvl_txt_1':'Niveau de Réchauffement Global pour lequel la réponse climatique régionale est présentée. Vous pouvez aussi utiliser des ',
+	'warming_lvl_txt_2':' pour lesquelles les projections climatiques seront projetées.',
 	'future_warming_lvl':'Niveau de réchauffement future',
 	'ref_warming_lvl':'Niveau de réchauffement de référence',
 
 	'period_h':'Période de Projection',
-	'period_txt':'Périodes pour lesquelles les projections sont présentées. Comme les projections climatiques dépendent sur les scénarios d´émission, nous recommandons d´utiliser de choisir un niveau de réchauffement global pour lequel la réponse climatique régionale va être présentée (Appuyez sur "Niveaux de Réchauffement Global").',
+	'period_txt_1':'Périodes pour lesquelles les projections sont présentées. Comme les projections climatiques dépendent sur les scénarios d´émission, nous recommandons d´utiliser un ',
+	'period_txt_2':' pour lequel la réponse climatique régionale va être présentée.',
 
 	'country_h':'Pays',
 	'country_txt':'Pour le moment seulement le Bénin et le Sénégal peuvent être sélectionné. La liste des pays sera bientôt élargie.',
@@ -231,7 +233,7 @@ text_dict={'en':{
 	'indicator_txt':'Indicateurs climatiques basés sur des donnés quotidiennes de température et de précipitation. Pour le moment aucun indicateur de sécheresse est présenté. Veuillez considérer les projection de précipitation pour les analyses de sécheresses en gardant à l`esprit que l`évapotranspiration potentielle pourrait augmenter avec la température.',
 
 	'time_scale_h':'Échelle temporelle',
-	'time_scale_txt':'Les tendances projetés peuvent fortement dépendre de la saison. Veuillez choisir le mois le plus pertinent pour votre analyse ou définir une saison en utilisant la fonction "Définir une Saison".',
+	'time_scale_txt':'Les tendances projetés peuvent fortement dépendre de la saison. Veuillez choisir le mois le plus pertinent pour votre analyse ou ',
 
 	'ref_period':'Période de Référence',
 	'proj_period':'Période de Projection',
@@ -240,11 +242,11 @@ text_dict={'en':{
 }
 
 button_dict={'en':{
-	'use_periods_0':'Use fixed Periods',
-	'use_periods_1':'Use Global Warming Levels',
-	'merge_regions':'Merge regions',
+	'use_periods_0':'fixed time periods',
+	'use_periods_1':'global warming levels',
+	'merge_regions':'merge several regions.',
 	'select_periods':'Select Periods',
-	'define_season':'Define Season',
+	'define_season':'define a season.',
 	'download_png':'Download png',
 	'download_pdf':'Download pdf',
 	'download_data':'Download data',
@@ -252,11 +254,11 @@ button_dict={'en':{
 	'save_season':'Keep this Season',
 
 },'fr':{
-	'use_periods_0':'Périodes fixes',
-	'use_periods_1':'Niveaux de Réchauffement Global',
-	'merge_regions':'Regrouper des Régions',
+	'use_periods_0':'périodes temporelles fixes',
+	'use_periods_1':'niveau de réchauffement global',
+	'merge_regions':'regrouper des régions.',
 	'select_periods':'Choisir ces Périodes',
-	'define_season':'Définir une Saison',
+	'define_season':'définissez une saison.',
 	'download_png':'Télécharger png',
 	'download_pdf':'Télécharger pdf',
 	'download_data':'Télécharger data',
@@ -266,19 +268,13 @@ button_dict={'en':{
 }
 
 warming_lvl_dict={'en':{
-	'0.5':'+0.5°C GMT (1980-2000)',
-	'1.0':'+1.0°C GMT',
+	'ref':'1986-2005 (+0.61°C GMT)',
 	'1.5':'+1.5°C GMT',
 	'2.0':'+2.0°C GMT',
-	# '2.5':'+2.5°C',
-	# '3.0':'+3.0°C',
 },'fr':{
-	'0.5':'+0.5°C GMT (1980-2000)',
-	'1.0':'+1.0°C GMT',
+	'ref':'1986-2005 (+0.61°C GMT)',
 	'1.5':'+1.5°C GMT',
 	'2.0':'+2.0°C GMT',
-	# '2.5':'+2.5°C',
-	# '3.0':'+3.0°C',
 }
 }
 

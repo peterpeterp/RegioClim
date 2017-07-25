@@ -69,7 +69,11 @@ def initialize():
   COU.load_data(quiet=True,filename_filter='RX1',load_mask=False,load_raw=True,load_area_averages=True,load_region_polygons=False)
 
   COU._regions[session['country']]='** '+settings.country_names[session['country']]+' **'
-  COU.get_warming_slices(wlcalculator_path=basepath+'../wlcalculator/app/',model_real_names={'IPSL':'ipsl-cm5a-lr','HADGEM2':'hadgem2-es','ECEARTH':'ec-earth','MPIESM':'mpi-esm-lr'})
+  try:
+    COU.get_warming_slices(wlcalculator_path=basepath+'../wlcalculator/app/',model_real_names={'IPSL':'ipsl-cm5a-lr','HADGEM2':'hadgem2-es','ECEARTH':'ec-earth','MPIESM':'mpi-esm-lr'})
+  except:
+    COU.get_warming_slices(wlcalculator_path=basepath+'wlcalculator/app/',model_real_names={'IPSL':'ipsl-cm5a-lr','HADGEM2':'hadgem2-es','ECEARTH':'ec-earth','MPIESM':'mpi-esm-lr'})
+
   session_cou = open(session['cou_path'], 'wb')
   cPickle.dump(COU, session_cou, protocol=2) ; session_cou.close() 
   
@@ -90,11 +94,11 @@ def index():
   session["ref_period"]   = settings.ref_period
   session["proj_period"]  = settings.proj_period
 
-  session['use_periods'] = False
+  session['use_periods'] = True
 
   session['warming_lvl_avail']=warming_lvl_dict['en'].keys()
   session['warming_lvl']='2.0'
-  session['warming_lvl_ref']='0.5'
+  session['warming_lvl_ref']='ref'
   index=session['warming_lvl_avail'].index(session['warming_lvl'])
   session['warming_lvl_avail'][index],session['warming_lvl_avail'][0]=session['warming_lvl_avail'][0],session['warming_lvl_avail'][index]
 
@@ -163,48 +167,72 @@ def choices():
     form_indicator.indicators.choices = zip(s['indicator_avail'],[indicator_dict[lang][ind] for ind in s['indicator_avail']])
 
     form_warming_lvl = forms.warming_lvlForm(request.form)
-    index=s['warming_lvl_avail'].index(s['warming_lvl'])
-    #s['warming_lvl_avail']=sorted(s['warming_lvl_avail'])
-    s['warming_lvl_avail'][index],s['warming_lvl_avail'][0]=s['warming_lvl_avail'][0],s['warming_lvl_avail'][index]
-    form_warming_lvl.warming_lvls.choices = zip([lvl for lvl in s['warming_lvl_avail'] if float(lvl)>float(s['warming_lvl_ref'])],[warming_lvl_dict[lang][lvl] for lvl in s['warming_lvl_avail'] if float(lvl)>float(s['warming_lvl_ref'])])
+    s['warming_lvl_avail']=[warming_lvl_dict[lang].keys()[warming_lvl_dict[lang].values().index(name)] for name in sorted(warming_lvl_dict[lang].values())]
+    s['warming_lvl_avail']=[s['warming_lvl']]+[sea for sea in s['warming_lvl_avail'] if sea not in [s['warming_lvl'],'ref']]
+    form_warming_lvl.warming_lvls.choices = zip(s['warming_lvl_avail'],[warming_lvl_dict[lang][sea] for sea in s['warming_lvl_avail']])
 
     form_warming_lvl_ref = forms.warming_lvl_refForm(request.form)
-    index=s['warming_lvl_avail'].index(s['warming_lvl_ref'])
-    #s['warming_lvl_avail']=sorted(s['warming_lvl_avail'])
-    s['warming_lvl_avail'][index],s['warming_lvl_avail'][0]=s['warming_lvl_avail'][0],s['warming_lvl_avail'][index]
+    s['warming_lvl_avail']=[warming_lvl_dict[lang].keys()[warming_lvl_dict[lang].values().index(name)] for name in sorted(warming_lvl_dict[lang].values())]
+    s['warming_lvl_avail']=[s['warming_lvl_ref']]+[sea for sea in s['warming_lvl_avail'] if sea not in [s['warming_lvl_ref'],'2.0']]
     form_warming_lvl_ref.warming_lvl_refs.choices = zip(s['warming_lvl_avail'],[warming_lvl_dict[lang][lvl] for lvl in s['warming_lvl_avail']])
 
     form_period = forms.PeriodField(request.form)
-    ref_P = "-".join(str(t) for t in s["ref_period"])
-    proj_P = "-".join(str(t) for t in s["proj_period"])
-  
+    ref_P = str(s["ref_period"][0])+'-'+str(s["ref_period"][1]-1)
+    proj_P = str(s["proj_period"][0])+'-'+str(s["proj_period"][1]-1)
     form_period = forms.PeriodField(request.form, proj_period=proj_P, ref_period=ref_P)
 
     form_season = forms.seasonForm(request.form)
-    s['season_avail']=[season_dict[s['language']].keys()[season_dict[s['language']].values().index(name)] for name in sorted(season_dict[s['language']].values())]
+    s['season_avail']=[season_dict[lang].keys()[season_dict[lang].values().index(name)] for name in sorted(season_dict[lang].values())]
     s['season_avail']=[s['season']]+[sea for sea in s['season_avail'] if sea != s['season']]
     form_season.seasons.choices = zip(s['season_avail'],[season_dict[lang][sea] for sea in s['season_avail']])
 
     if s['use_periods']:
-      refP = "to".join(str(t) for t in s["ref_period"])
-      proP = "to".join(str(t) for t in s["proj_period"])
+      refP = str(s["ref_period"][0])+'to'+str(s["ref_period"][1]-1)
+      refP_longname=str(s["ref_period"][0])+'-'+str(s["ref_period"][1]-1)
+      refP_clim=refP
+      refP_clim_longname=refP_longname
+      proP=str(s["proj_period"][0])+'to'+str(s["proj_period"][1]-1)
+      proP_longname=str(s["proj_period"][0])+'-'+str(s["proj_period"][1]-1)
       periods={refP:s["ref_period"],proP:s["proj_period"]}
-      refP_longname=refP.replace('to','-')
-      proP_longname=proP.replace('to','-')
+      periods_ewembi={refP:s["ref_period"]}
 
     else:
       refP = s['warming_lvl_ref']
-      proP = s['warming_lvl']
-      periods=COU._warming_slices
       refP_longname=warming_lvl_dict[lang][refP]
+      refP_clim = 'ref'
+      refP_clim_longname=warming_lvl_dict[lang]['ref']
+      proP = s['warming_lvl']
       proP_longname=warming_lvl_dict[lang][proP]
+      periods=COU._warming_slices
+      periods_ewembi={'ref':[1986,2006]}
+
+    print periods
 
     indicator_label=indicator_dict[lang][s['indicator']]+' ['+ind_dict[s['indicator']]['unit']+']'
 
-    EWEMBI_plot=EWEMBI_plot_func(s,COU,refP,proP,region,periods,lang,indicator_label,season_dict,refP_longname,'_small.png',highlight_region=region)
-    Projection_plot=Projection_plot_func(s,COU,refP,proP,region,periods,lang,indicator_label,season_dict,refP_longname,proP_longname,'_small.png',highlight_region=region)
-    transient_plot=transient_plot_func(s,COU,refP,proP,region,periods,lang,indicator_label,season_dict,'_small.png')
-    annual_cycle_plot=annual_cycle_plot_func(s,COU,refP,proP,region,periods,lang,indicator_label,season_dict,refP_longname,proP_longname,'_small.png')
+    plot_context={
+      's':s,
+      'COU':COU,
+      'periods':periods,
+      'periods_ewembi':periods_ewembi,
+      'refP':refP,
+      'refP_clim':refP_clim,
+      'proP':proP,
+      'refP_longname':refP_longname,
+      'refP_clim_longname':refP_clim_longname,
+      'proP_longname':proP_longname,
+      'region':region,
+      'lang':lang,
+      'indicator_label':indicator_label,
+      'season_dict':season_dict,
+      'highlight_region':region,
+      'out_format':'_small.png'
+    }
+
+    EWEMBI_plot=EWEMBI_plot_func(**plot_context)
+    Projection_plot=Projection_plot_func(**plot_context)
+    transient_plot=transient_plot_func(**plot_context)
+    annual_cycle_plot=annual_cycle_plot_func(**plot_context)
 
     print 'everything plotted '+str(time.time()-start_time)
 
@@ -224,37 +252,37 @@ def choices():
     plot_txt_dict={'en':{
       'EWEMBI_plot':EWEMBI_plot.replace('app/',''),
       'EWEMBI_plot_title':'Climatology',
-      'EWEMBI_plot_title_txt':indicator_dict[lang][s['indicator']]+' averaged over the reference period '+refP_longname+season_add_on+'. Observations are taken from EWEMBI.',
+      'EWEMBI_plot_title_txt':indicator_dict[lang][s['indicator']]+' averaged over the reference period '+refP_clim_longname+season_add_on+'. Observations are taken from EWEMBI.',
 
       'Projection_plot':Projection_plot.replace('app/',''),
       'Projection_plot_title':'Projected Change',
-      'Projection_plot_title_txt':'Projected change in '+indicator_dict[lang][s['indicator']]+' for '+proP_longname+' compared to the reference period '+refP_longname+season_add_on+'. Here the ensemble mean is displayed, grid-cells for which a model-disagreement is found are colored in gray.',
+      'Projection_plot_title_txt':'Projected change in '+indicator_dict[lang][s['indicator']]+' for '+proP_longname+' compared to the reference period '+refP_longname+season_add_on+'. Here the ensemble mean is displayed, grid-cells for which a model-disagreement is found are colored in gray. The projections are based on the emission scenario RCP4.5.',
 
       'transient_plot':transient_plot.replace('app/',''),
       'transient_plot_title':'Transient',
-      'transient_plot_title_txt':indicator_dict[lang][s['indicator']]+' displayed as 20 year running mean'+season_add_on+'. Observations (EWEMBI) are shown in green for the period 1989-2003. RCM simulations are shown in red for the period 1960-2090. The line represents the ensemble mean while the shaded area represents the model spread. Differences between observations and model data during the period 1989-2003 have to be expected.',
+      'transient_plot_title_txt':indicator_dict[lang][s['indicator']]+' displayed as 20 year running mean'+season_add_on+'. Observations (EWEMBI) are shown in black for the period 1989-2003. RCM simulations are shown in green for the period 1960-2090. The line represents the ensemble mean while the shaded area represents the model spread. Differences between observations and model data during the period 1989-2003 have to be expected. The projections are based on the emission scenario RCP4.5.',
 
       'annual_cycle_plot':annual_cycle_plot.replace('app/',''),
       'annual_cycle_plot_title':'Annual Cycle',
-      'annual_cycle_plot_title_txt':'Annual cycle of '+indicator_dict[lang][s['indicator']]+' for the reference period '+refP_longname+' (top) and changes in the annual cycle projected for '+proP_longname+' compared to the reference period '+refP.replace('to','-')+' (bottom). Observations (EWEMBI) are shown in green, RCM simulations are shown in red. The line represents the ensemble mean while the shaded area represents the model spread.',
+      'annual_cycle_plot_title_txt':'Top: Annual cycle of '+indicator_dict[lang][s['indicator']]+' for the period '+refP_clim_longname+'. Bottom: Changes in the annual cycle projected for '+proP_longname+' compared to the reference period '+refP_longname+' (bottom). Observations (EWEMBI) are shown in green, RCM simulations are shown in green. The line represents the ensemble mean while the shaded area represents the model spread. The projections are based on the emission scenario RCP4.5.',
     },
 
     'fr':{
       'EWEMBI_plot':EWEMBI_plot.replace('app/',''),
       'EWEMBI_plot_title':'Climatologie',
-      'EWEMBI_plot_title_txt':indicator_dict[lang][s['indicator']]+' en moyenne de le période de référence '+refP_longname+' '+s['season']+'. Les observations proviennent de EWEMBI',
+      'EWEMBI_plot_title_txt':indicator_dict[lang][s['indicator']]+' en moyenne de le période de référence '+refP_clim_longname+' '+s['season']+'. Les observations proviennent de EWEMBI',
 
       'Projection_plot':Projection_plot.replace('app/',''),
       'Projection_plot_title':'Changement Projeté',
-      'Projection_plot_title_txt':'Changement projeté en '+indicator_dict[lang][s['indicator']]+' pour '+proP_longname+' par rapport à la période de référence '+refP_longname+' '+s['season']+'. Ici la moyenne de l`ensemble est présentée, les grilles pour lesquelles les différents modèles sont en désaccord sont coloriés en gris.',
+      'Projection_plot_title_txt':'Changement projeté en '+indicator_dict[lang][s['indicator']]+' pour '+proP_longname+' par rapport à la période de référence '+refP_longname+' '+s['season']+'. Ici la moyenne de l`ensemble est présentée, les grilles pour lesquelles les différents modèles sont en désaccord sont coloriés en gris. Les projections sont basées sur le scénario d´émission RCP4.5.',
 
       'transient_plot':transient_plot.replace('app/',''),
       'transient_plot_title':'Trajectoire Projetée',
-      'transient_plot_title_txt':indicator_dict[lang][s['indicator']]+' présenté comme moyenne mobile de 20 années. Observations (EWEMBI) en vert pour la période 1989-2003. Modélisations climatiques régionales en rouge pour la période 1960-2090. La ligne représente la moyenne de l`ensemble et la zone ombragée montre l`écart entre les modèles. Des différences entre observations et la modélisation climatique pendant la période 1989-2003 doivent être attendus.',
+      'transient_plot_title_txt':indicator_dict[lang][s['indicator']]+' présenté comme moyenne mobile de 20 années. Observations (EWEMBI) en noir pour la période 1989-2003. Modélisations climatiques régionales en vert pour la période 1960-2090. La ligne représente la moyenne de l`ensemble et la zone ombragée montre l`écart entre les modèles. Des différences entre observations et la modélisation climatique pendant la période 1989-2003 doivent être attendus. Les projections sont basées sur le scénario d´émission RCP4.5.',
 
       'annual_cycle_plot':annual_cycle_plot.replace('app/',''),
       'annual_cycle_plot_title':'Cycle Annuel',
-      'annual_cycle_plot_title_txt':'Cycle annuel de '+indicator_dict[lang][s['indicator']]+' pour la période de référence '+refP_longname+' (en haut) et différences dans le cycle annuel projetées pour '+proP_longname+ ' par rapport à la période de référence'+refP.replace('to','-')+' (en bas). Observations (EWEMBI) en vert, modélisation climatique régionale en rouge. La ligne représente la moyenne de l`ensemble et la zone ombragée montre l`écart entre les modèles.',
+      'annual_cycle_plot_title_txt':'Cycle annuel de '+indicator_dict[lang][s['indicator']]+' pour la période de référence '+refP_clim_longname+' (en haut) et différences dans le cycle annuel projetées pour '+proP_longname+ ' par rapport à la période de référence'+refP_longname+' (en bas). Observations (EWEMBI) en vert, modélisation climatique régionale en vert. La ligne représente la moyenne de l`ensemble et la zone ombragée montre l`écart entre les modèles. Les projections sont basées sur le scénario d´émission RCP4.5.',
     }
     }
 
@@ -420,7 +448,6 @@ def merging_page():
     print str(e)
     return redirect(url_for("index"))
 
-
 @app.route('/go_to_merging_page',  methods=("POST", ))
 def go_to_merging_page():
   return redirect(url_for("merging_page"))
@@ -434,18 +461,20 @@ def merge_with_region():
   session_cou = open(s['cou_path'], 'rb')
   COU=cPickle.load( session_cou) ; session_cou.close()  
 
-  s['region']=COU.merge_adm_regions([s['region'],to_merge])
+  if s['region']!=s['country']:
+    s['region']=COU.merge_adm_regions([s['region'],to_merge])
 
-  area=COU.get_region_area(s['region'])['latxlon']*4
-  if area<4:
-    s['small_region_warning']=True
+    area=COU.get_region_area(s['region'])['latxlon']*4
+    if area<4:
+      s['small_region_warning']=True
+    else:
+      s['small_region_warning']=False
+
+    session_cou = open(session['cou_path'], 'wb')
+    cPickle.dump(COU, session_cou, protocol=2) ; session_cou.close()  
+
   else:
-    s['small_region_warning']=False
-
-  session_cou = open(session['cou_path'], 'wb')
-  cPickle.dump(COU, session_cou, protocol=2) ; session_cou.close()  
-
-
+    s['region']=to_merge
 
   return redirect(url_for('merging_page'))
 
@@ -507,8 +536,8 @@ def switch_to_periods():
 @app.route('/periodchoice',  methods=("POST", ))
 def add_periodchoice():
   form_period = forms.PeriodField(request.form)
-  session["ref_period"]   = [int(t) for t in form_period.ref_period.data.split("-")]
-  session["proj_period"]  = [int(t) for t in form_period.proj_period.data.split("-")]
+  session["ref_period"]   = [int(form_period.ref_period.data.split("-")[0]),int(form_period.ref_period.data.split("-")[1])+1]
+  session["proj_period"]  = [int(form_period.proj_period.data.split("-")[0]),int(form_period.proj_period.data.split("-")[1])+1]
 
   return redirect(url_for("choices"))
 
@@ -595,6 +624,7 @@ def prepare_for_download(plot_request):
     refP = "to".join(str(t) for t in s["ref_period"])
     proP = "to".join(str(t) for t in s["proj_period"])
     periods={refP:s["ref_period"],proP:s["proj_period"]}
+    periods_ewembi={refP:s["ref_period"]}
     refP_longname=refP.replace('to','-')
     proP_longname=proP.replace('to','-')
 
@@ -602,6 +632,7 @@ def prepare_for_download(plot_request):
     refP = s['warming_lvl_ref']
     proP = s['warming_lvl']
     periods=COU._warming_slices
+    periods_ewembi={'1.5':[2200,2220],'ref':[1986,2006]}
     refP_longname=warming_lvl_dict[lang][refP]
     proP_longname=warming_lvl_dict[lang][proP]
 
@@ -613,10 +644,10 @@ def prepare_for_download(plot_request):
 
   indicator_label=indicator_dict[lang][s['indicator']]+' ['+ind_dict[s['indicator']]['unit']+']'
 
-  if request_type=='EWEMBI_plot':  filename=EWEMBI_plot_func(s,COU,refP,proP,region,periods,lang,indicator_label,season_dict,refP_longname,plot_format)
+  if request_type=='EWEMBI_plot':  filename=EWEMBI_plot_func(s,COU,refP,proP,region,periods_ewembi,lang,indicator_label,season_dict,refP_longname,plot_format)
   if request_type=='Projection_plot':  filename=Projection_plot_func(s,COU,refP,proP,region,periods,lang,indicator_label,season_dict,refP_longname,proP_longname,plot_format)
   if request_type=='transient_plot':  filename=transient_plot_func(s,COU,refP,proP,region,periods,lang,indicator_label,season_dict,plot_format)
-  if request_type=='annual_cycle_plot':  filename=annual_cycle_plot_func(s,COU,refP,proP,region,periods,lang,indicator_label,season_dict,refP_longname,proP_longname,plot_format)
+  if request_type=='annual_cycle_plot':  filename=annual_cycle_plot_func(s,COU,refP,proP,region,periods,periods_ewembi,lang,indicator_label,season_dict,refP_longname,proP_longname,plot_format)
 
   if request_type=='get_data':  
     curretn_path=os.getcwd()

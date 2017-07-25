@@ -129,7 +129,7 @@ h4
     </thead>
     <tbody>
       <tr><td>MPIESM</td><td>REMO</td></tr>
-      <tr><td>HADGEM4</td><td>CCLM4</td></tr>
+      <tr><td>HADGEM2</td><td>CCLM4</td></tr>
       <tr><td>ECEARTH</td><td>RACMO</td></tr>
       <tr><td>IPSL</td><td>RCA</td></tr>
     </tbody>
@@ -140,7 +140,28 @@ h4
 <div id="outline-container-1" class="outline-2">
 <h3 id="sec-1.3"><span class="section-number-2"> Choice of the scenario </h3>
 <div class="outline-text-2" id="text-1">
-<p>Future climate projections strongly depend on future greenhouse gas emissions. Instead of presenting projections for the different emission scenarios we encourage the user to select global warming levels as indicators for future climate change.</p>
+<p>Climate projections are shown for the emission scenario RCP4.5, which is in between the emission scenario meeting leading to a 2°C global warming (RCP2.6) and the buisness as susual scenario (RCP8.5).<br>
+Instead of using fixed time periods and different emission scnearios, one can look at time periods for which a certain global warming level is reached. For each model we estimate the twenty year time period reaching a certain warming level. When presenting the ensemble mean projections for differences between warming levels, different periods are used for the different models:</p>
+<div id="LeftPanel" style="width: 20%; height: 100%; float: left;"><p class=white>bla</p></div>
+<div id="LeftPanel" style="width: 40%; height: 100%; float: left;">
+    <table class="table">
+    <thead>
+      <tr>
+        <th>Model</th>
+        <th>1.5°C (GMT)</th>
+        <th>2.0°C (GMT)</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td>MPIESM-REMO</td><td>2023-2042</td><td>2054-2053</td></tr>
+      <tr><td>HADGEM2-CCLM4</td><td>2013-2032</td><td>2028-2047</td></tr>
+      <tr><td>ECEARTH-RACMO</td><td>2024-2043</td><td>2046-2065</td></tr>
+      <tr><td>IPSL-RCA</td><td>2019-2038</td><td>2034-2053</td></tr>
+    </tbody>
+    </table>
+</div>
+<div id="LeftPanel" style="width: 40%; height: 100%; float: left;"><p class=white>bla</p></div>
+<p>The warming levels were computed using the <a href="http://wlcalc.climateanalytics.org">Warming Attribution Calculator</a></p>
 
 <div id="outline-container-1" class="outline-2">
 <h3 id="sec-1.4"><span class="section-number-2"> Bias Correction </h3>
