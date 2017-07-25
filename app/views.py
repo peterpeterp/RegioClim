@@ -348,8 +348,6 @@ def save_this_season():
   for lang in ['en','fr']:
     season_dict[lang][season_name]='+'.join([season_dict[lang][str(sea)] for sea in session['new_season']])
 
-  settings.seasons.append(season_name)
-
   session['season_avail']+=[season_name]
 
   session_cou = open(session['cou_path'], 'rb')
