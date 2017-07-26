@@ -58,8 +58,6 @@ button_dict=settings.button_dict
 warming_lvl_dict=settings.warming_lvl_dict
 
 
-#COUs=settings.COUs
-
 languages={'en':'English','fr':'Français'}
 
 def initialize():
@@ -206,8 +204,6 @@ def choices():
       periods=COU._warming_slices
       periods_ewembi={'ref':[1986,2006]}
 
-    print periods
-
     indicator_label=indicator_dict[lang][s['indicator']]+' ['+ind_dict[s['indicator']]['unit']+']'
 
     plot_context={
@@ -233,6 +229,7 @@ def choices():
     Projection_plot=Projection_plot_func(**plot_context)
     transient_plot=transient_plot_func(**plot_context)
     annual_cycle_plot=annual_cycle_plot_func(**plot_context)
+    plt.clf()
 
     print 'everything plotted '+str(time.time()-start_time)
 
@@ -260,7 +257,7 @@ def choices():
 
       'transient_plot':transient_plot.replace('app/',''),
       'transient_plot_title':'Transient',
-      'transient_plot_title_txt':indicator_dict[lang][s['indicator']]+' displayed as 20 year running mean'+season_add_on+'. Observations (EWEMBI) are shown in black for the period 1989-2003. RCM simulations are shown in green for the period 1960-2090. The line represents the ensemble mean while the shaded area represents the model spread. Differences between observations and model data during the period 1989-2003 have to be expected. The projections are based on the emission scenario RCP4.5.',
+      'transient_plot_title_txt':indicator_dict[lang][s['indicator']]+' displayed as 20 year running mean'+season_add_on+'. Observations (EWEMBI) are shown in black for the period 1989-2003. RCM simulations are shown in green for the period 1960-2090. The line represents the ensemble mean while the shaded area represents the model spread. Small differences between observations and model data during the period 1989-2003 have to be expected. The projections are based on the emission scenario RCP4.5.',
 
       'annual_cycle_plot':annual_cycle_plot.replace('app/',''),
       'annual_cycle_plot_title':'Annual Cycle',
@@ -642,12 +639,52 @@ def prepare_for_download(plot_request):
   COU.load_data(quiet=True,filename_filter=s['indicator'],load_mask=False,load_raw=True,load_area_averages=True,load_region_polygons=False)
   COU.unit_conversions()
 
+  if s['use_periods']:
+    refP = str(s["ref_period"][0])+'to'+str(s["ref_period"][1]-1)
+    refP_longname=str(s["ref_period"][0])+'-'+str(s["ref_period"][1]-1)
+    refP_clim=refP
+    refP_clim_longname=refP_longname
+    proP=str(s["proj_period"][0])+'to'+str(s["proj_period"][1]-1)
+    proP_longname=str(s["proj_period"][0])+'-'+str(s["proj_period"][1]-1)
+    periods={refP:s["ref_period"],proP:s["proj_period"]}
+    periods_ewembi={refP:s["ref_period"]}
+
+  else:
+    refP = s['warming_lvl_ref']
+    refP_longname=warming_lvl_dict[lang][refP]
+    refP_clim = 'ref'
+    refP_clim_longname=warming_lvl_dict[lang]['ref']
+    proP = s['warming_lvl']
+    proP_longname=warming_lvl_dict[lang][proP]
+    periods=COU._warming_slices
+    periods_ewembi={'ref':[1986,2006]}
+
+
   indicator_label=indicator_dict[lang][s['indicator']]+' ['+ind_dict[s['indicator']]['unit']+']'
 
-  if request_type=='EWEMBI_plot':  filename=EWEMBI_plot_func(s,COU,refP,proP,region,periods_ewembi,lang,indicator_label,season_dict,refP_longname,plot_format)
-  if request_type=='Projection_plot':  filename=Projection_plot_func(s,COU,refP,proP,region,periods,lang,indicator_label,season_dict,refP_longname,proP_longname,plot_format)
-  if request_type=='transient_plot':  filename=transient_plot_func(s,COU,refP,proP,region,periods,lang,indicator_label,season_dict,plot_format)
-  if request_type=='annual_cycle_plot':  filename=annual_cycle_plot_func(s,COU,refP,proP,region,periods,periods_ewembi,lang,indicator_label,season_dict,refP_longname,proP_longname,plot_format)
+  plot_context={
+    's':s,
+    'COU':COU,
+    'periods':periods,
+    'periods_ewembi':periods_ewembi,
+    'refP':refP,
+    'refP_clim':refP_clim,
+    'proP':proP,
+    'refP_longname':refP_longname,
+    'refP_clim_longname':refP_clim_longname,
+    'proP_longname':proP_longname,
+    'region':region,
+    'lang':lang,
+    'indicator_label':indicator_label,
+    'season_dict':season_dict,
+    'highlight_region':region,
+    'out_format':plot_format
+  }
+
+  if request_type=='EWEMBI_plot':  filename=EWEMBI_plot_func(**plot_context)
+  if request_type=='Projection_plot':  filename=Projection_plot_func(**plot_context)
+  if request_type=='transient_plot':  filename=transient_plot_func(**plot_context)
+  if request_type=='annual_cycle_plot':  filename=annual_cycle_plot=annual_cycle_plot_func(**plot_context)
 
   if request_type=='get_data':  
     curretn_path=os.getcwd()

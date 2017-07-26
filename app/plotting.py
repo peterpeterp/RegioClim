@@ -36,6 +36,7 @@ def EWEMBI_plot_func(s,COU,refP,refP_clim,proP,refP_longname,refP_clim_longname,
       if out_format=='_small.png':plt.savefig(EWEMBI_plot)
       if out_format=='_large.png':plt.savefig(EWEMBI_plot,dpi=300) 
       if out_format=='.pdf':plt.savefig(EWEMBI_plot, format='pdf', dpi=1000) 
+  plt.clf()
   return(EWEMBI_plot)
       
 
@@ -63,6 +64,7 @@ def Projection_plot_func(s,COU,refP,refP_clim,proP,refP_longname,refP_clim_longn
     if out_format=='_small.png':plt.savefig(Projection_plot)
     if out_format=='_large.png':plt.savefig(Projection_plot,dpi=300) 
     if out_format=='.pdf':plt.savefig(Projection_plot, format='pdf', dpi=1000) 
+  plt.clf()
   return(Projection_plot)
 
 def transient_plot_func(s,COU,refP,refP_clim,proP,refP_longname,refP_clim_longname,proP_longname,region,highlight_region,periods,periods_ewembi,lang,indicator_label,season_dict,out_format):
@@ -93,6 +95,7 @@ def transient_plot_func(s,COU,refP,refP_clim,proP,refP_longname,refP_clim_longna
       if out_format=='_small.png':plt.savefig(transient_plot)
       if out_format=='_large.png':plt.savefig(transient_plot,dpi=300)  
       if out_format=='.pdf':plt.savefig(transient_plot, format='pdf', dpi=1000)  
+  plt.clf()
   return(transient_plot)
 
 def annual_cycle_plot_func(s,COU,refP,refP_clim,proP,refP_longname,refP_clim_longname,proP_longname,region,highlight_region,periods,periods_ewembi,lang,indicator_label,season_dict,out_format):
@@ -141,6 +144,7 @@ def annual_cycle_plot_func(s,COU,refP,refP_clim,proP,refP_longname,refP_clim_lon
       if out_format=='_small.png':plt.savefig(annual_cycle_plot)
       if out_format=='_large.png':plt.savefig(annual_cycle_plot,dpi=300)
       if out_format=='.pdf':plt.savefig(annual_cycle_plot, format='pdf', dpi=1000)  
+  plt.clf()
   return(annual_cycle_plot)
 
       
