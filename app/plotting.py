@@ -113,6 +113,7 @@ def annual_cycle_plot_func(s,COU,refP,refP_clim,proP,refP_longname,refP_clim_lon
       COU.unit_conversions()
 
       COU.annual_cycle(periods=periods_ewembi,selection=ewembi,regions=[region])
+      COU.annual_cycle(periods=periods_ewembi,selection=ens_selection,ref_name=refP,regions=[region])
       COU.annual_cycle(periods=periods,selection=ens_selection,ref_name=refP,regions=[region])
       COU.annual_cycle_ensemble_mean(regions=[region])
 
@@ -121,7 +122,7 @@ def annual_cycle_plot_func(s,COU,refP,refP_clim,proP,refP_longname,refP_clim_lon
       if np.isnan(np.nanmean(ewembi[0].annual_cycle['lat_weighted'][region][refP_clim]))==False:
         ewembi[0].plot_annual_cycle(period=refP_clim,region=region,ax=ax[0],title='',ylabel='  ',label='observations (EWEMBI)',color='black',xlabel=False)
 
-      ens_mean.plot_annual_cycle(period=refP,region=region,ax=ax[0],title='',ylabel='  ',label='model data',color='green',xlabel=False,shading_range=[0,100])
+      ens_mean.plot_annual_cycle(period=refP_clim,region=region,ax=ax[0],title='',ylabel='  ',label='model data',color='green',xlabel=False,shading_range=[0,100])
       leg = ax[0].legend(loc='best',fancybox=True,fontsize=10)
       leg.get_frame().set_alpha(0.3)
 
