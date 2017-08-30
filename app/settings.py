@@ -167,7 +167,11 @@ period_dict	= {
 }
 
 text_dict={'en':{
-	'warning':'Warning!',
+
+	'country_h':'Country',
+	'country_txt':'',
+
+	'warning':'Warning: ',
 	'warning_txt':'The chosen region is smaller than 5 grid-cells. Please ',
 
 	'merge_page_h':'Add another region',
@@ -181,7 +185,7 @@ text_dict={'en':{
 	'region_txt':'Region for which the transient and annual cycle is presented. You can also ',
 
 	'warming_lvl_h':'Global Warming Level',
-	'warming_lvl_txt_1':'Global warming level for which the regional response is presented. Alternatively you can use ',
+	'warming_lvl_txt_1':'Global warming level above preindustrial for which the regional response is presented. Alternatively you can use ',
 	'warming_lvl_txt_2':' for which the regional climate projections will be displayed.',
 	'future_warming_lvl':'Future warming level',
 	'ref_warming_lvl':'Reference warming level',
@@ -190,14 +194,11 @@ text_dict={'en':{
 	'period_txt_1':'Time period for which projections are shown. As climate projections depend on emission scenarios, we encourage the user to select ',
 	'period_txt_2':'  for which the regional climate response will be displayed.',
 
-	'country_h':'Country',
-	'country_txt':'For the moment only the PAS-PNA countries Benin and Senegal are available. Could be extended',
-
 	'indicator_h':'Climate Indicator',
-	'indicator_txt':'Climate indicators based on daily temperature and precipitation. For the moment no drought indicator is included. Please consider monthly precipitation for drought assessments and keep in mind that potential evapotranspiration might increase in a warmer world.',
+	'indicator_txt':'Climate indicators based on daily temperature and precipitation. Please find more information about the indicators ',
 
 	'time_scale_h':'Time Scale',
-	'time_scale_txt':'Projected trends might depend on the season. As for different regions the monsoon onset and end differs, use monthly data to estimate seasonal changes or ',
+	'time_scale_txt':'Select annual or monthly time scale or ',
 
 	'ref_period':'Reference Period',
 	'proj_period':'Projection Period',
@@ -268,13 +269,13 @@ button_dict={'en':{
 }
 
 warming_lvl_dict={'en':{
-	'ref':'1986-2005 (+0.61°C GMT)',
-	'1.5':'+1.5°C GMT',
-	'2.0':'+2.0°C GMT',
+	'ref':'1986-2005 (+0.61°C)',
+	'1.5':'+1.5°C',
+	'2.0':'+2.0°C',
 },'fr':{
-	'ref':'1986-2005 (+0.61°C GMT)',
-	'1.5':'+1.5°C GMT',
-	'2.0':'+2.0°C GMT',
+	'ref':'1986-2005 (+0.61°C)',
+	'1.5':'+1.5°C',
+	'2.0':'+2.0°C',
 }
 }
 

@@ -75,8 +75,8 @@ def transient_plot_func(s,COU,refP,refP_clim,proP,refP_longname,refP_clim_longna
   transient_plot='app/static/images/'+s['country']+'/'+s['indicator']+'_'+s["dataset"]+'_'+region+'_'+s['season']+'_transient'+'_'+lang+out_format
   if os.path.isfile(transient_plot)==False:
 
-    if region != s['country']:COU.create_mask_admin(ewembi[0].raw_file,s['indicator'],regions=[region])
-    COU.area_average('lat_weighted',overwrite=False,selection=ens_selection+ewembi,regions=[region])
+    if region != s['country']:COU.create_mask_admin(ens_mean.raw_file,s['indicator'],regions=[region])
+    COU.area_average('lat_weighted',overwrite=False,selection=ens_selection,regions=[region])#+ewembi
     COU.unit_conversions()
 
     fig,ax=plt.subplots(nrows=1,ncols=1,figsize=(5,4))
@@ -84,8 +84,8 @@ def transient_plot_func(s,COU,refP,refP_clim,proP,refP_longname,refP_clim_longna
     message=ewembi[0].plot_transients(season=s['season'],region=region,running_mean_years=20,ax=ax,title='',ylabel=None,label='observations (EWEMBI)',color='black',x_range=[1960,2090])
     if message==1:
       ax.set_ylabel(indicator_label)
-      leg = plt.legend(loc='best',fancybox=True,fontsize=10)
-      leg.get_frame().set_alpha(0.3)
+      #leg = plt.legend(loc='best',fancybox=True,fontsize=10)
+      #leg.get_frame().set_alpha(0.3)
       if s['season']=='year':
         plt.title(COU._regions[s['region']].replace('**','')+' RCP4.5',fontsize=12)
       if s['season']!='year':

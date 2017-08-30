@@ -72,6 +72,7 @@ def initialize():
   except:
     COU.get_warming_slices(wlcalculator_path=basepath+'wlcalculator/app/',model_real_names={'IPSL':'ipsl-cm5a-lr','HADGEM2':'hadgem2-es','ECEARTH':'ec-earth','MPIESM':'mpi-esm-lr'})
 
+  print COU._warming_slices
   session_cou = open(session['cou_path'], 'wb')
   cPickle.dump(COU, session_cou, protocol=2) ; session_cou.close() 
   
@@ -106,7 +107,7 @@ def index():
   session["dataset_avail"]   = settings.datasets
   session["dataset"]   = settings.datasets[0]
 
-  session["indicator_avail"]   = settings.ind_dict.keys()
+  session["indicator_avail"]   = ['tas','TXx','pr','RX1','year_RX5']
   session["indicator"]   = 'tas'
   index=session['indicator_avail'].index(session['indicator'])
   session['indicator_avail'][index],session['indicator_avail'][0]=session['indicator_avail'][0],session['indicator_avail'][index]
@@ -180,7 +181,7 @@ def choices():
     form_period = forms.PeriodField(request.form, proj_period=proj_P, ref_period=ref_P)
 
     form_season = forms.seasonForm(request.form)
-    s['season_avail']=[season_dict[lang].keys()[season_dict[lang].values().index(name)] for name in sorted(season_dict[lang].values())]
+    s['season_avail']=['year']+ [sea for sea in sorted(season_dict[lang].keys()) if (sea not in ['year','10','11','12']) & ('+' not in sea)]+['10','11','12']+[sea for sea in sorted(season_dict[lang].keys()) if '+' in sea]
     s['season_avail']=[s['season']]+[sea for sea in s['season_avail'] if sea != s['season']]
     form_season.seasons.choices = zip(s['season_avail'],[season_dict[lang][sea] for sea in s['season_avail']])
 
@@ -349,7 +350,7 @@ def season_page():
     print str(e)
     return redirect(url_for("index"))
 
-@app.route('/go_to_season_page',  methods=("POST", ))
+@app.route('/go_to_season_page')# ,  methods=("POST", )
 def go_to_season_page():
   session['new_season']=[]
   return redirect(url_for("season_page"))
@@ -516,7 +517,7 @@ def warming_lvl_choice():
   session['warming_lvl']=form_warming_lvl.warming_lvls.data
   return redirect(url_for('choices'))
 
-@app.route('/switch_to_periods',  methods=("POST", ))
+@app.route('/switch_to_periods')#,  methods=("POST", )
 def switch_to_periods():
   session['use_periods']=abs(session['use_periods']-1)
   if session['use_periods']:
@@ -549,8 +550,10 @@ def indicator_choice():
   form_indicator = forms.indicatorForm(request.form)
   session['indicator']=form_indicator.indicators.data
   # put chosen at beginning of list
-  index=session['indicator_avail'].index(session['indicator'])
-  session['indicator_avail'][index],session['indicator_avail'][0]=session['indicator_avail'][0],session['indicator_avail'][index]
+  session['indicator_avail']=['tas','TXx','pr','RX1','year_RX5']
+  session['indicator_avail']=[session['indicator']]+[ind for ind in ['tas','TXx','pr','RX1','year_RX5'] if ind!=session['indicator']]
+  #index=session['indicator_avail'].index(session['indicator'])
+  #session['indicator_avail'][index],session['indicator_avail'][0]=session['indicator_avail'][0],session['indicator_avail'][index]
   if ind_dict[session['indicator']]['time_step']=='yearly':  session["season_avail"]=['year']
   if ind_dict[session['indicator']]['time_step']=='monthly':  session["season_avail"]=settings.seasons.keys()
   if session["season"] not in session["season_avail"]: session["season"] = 'year'

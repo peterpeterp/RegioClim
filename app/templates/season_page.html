@@ -9,7 +9,7 @@
       <h3>{{ season_page_h }}</h3>
   	<p class=small>{{ season_page_txt }}</p>
   <form method="POST" action="/add_month" id="month_id">
-  {{ form_season.seasons.label }} {{ form_season.seasons(rows=10, size=7, onchange="month_to_new_season();") }}
+  {{ form_season.seasons.label }} {{ form_season.seasons(rows=10, size=12, onchange="month_to_new_season();") }}
   </form>
 
 <form method="POST" action="/save_this_season"  onsubmit="save_this_season()" id="save_season_id">
@@ -27,9 +27,6 @@
 </div>
 
 </div>
-
-
-
 
 
 {% endblock %}

@@ -29,39 +29,83 @@ table#myTable td
 	padding: 2px;
 	
 }
-</style>
 
-<style> 
 p
 {
     width:600px; 
     word-wrap:break-word;
     margin-left: 100px
 }
-</style>
-<style> 
+
+ul.list
+{
+    width:600px; 
+    word-wrap:break-word;
+    margin-left: 100px;
+    list-style-type:square;
+}
+
+section {
+    padding-top: 60px;
+    margin-top: -60px;
+}
+
 h2
 {
     width:600px; 
     word-wrap:break-word;
     margin-left: 40px
 }
-</style>
-<style> 
+ 
 h3
 {
     width:600px; 
     word-wrap:break-word;
     margin-left: 60px
 }
-</style>
-<style> 
+
 h4
 {
     width:600px; 
     word-wrap:break-word;
     margin-left: 80px
 }
+
+#parent {
+    width:100%;
+    height:100%;
+}
+
+#sidebar {
+    padding-top:50px; /* padding-top must be the same as header height */
+    width:300px;
+    height:100%;
+    /*background-color: blue;*/
+    box-sizing:border-box;
+    position: fixed;
+    z-index:99;
+}
+
+#main-content {
+    position: relative;
+    width: 100%;
+    padding-left:300px; /* padding-left must be the same as sidebar width */
+    /*height: 300px;  This could be anything, content should scroll vertical */
+    /*background: green;*/
+    box-sizing:border-box;
+    padding-top: 50px; /* padding-top must be the same as header height */
+    padding-bottom: 150px;
+    height: 100%;
+    overflow: auto;
+}
+
+.anchor{
+   display:block;
+   height:60px; /* this is the height of your header */
+   margin-top:-60px; /* this is again negative value of the height of your header */
+   visibility:hidden;
+}
+
 </style>
 
 
@@ -72,153 +116,263 @@ h4
 <!-- End HEAD content -->
 
 
-
-<div id="content">
-<h1 class="title">Climate Projections on the National and Sub-national Scale</h1>
-<h2>Table of Contents</h2>
-<div id="LeftPanel" style="width: 5%; height: 100%; float: left;"><p class=white>bla</p></div>
-<div id="LeftPanel" style="width: 70%; height: 100%; float: left;">
-<div id="table-of-contents">
-<div id="text-table-of-contents">
-<ul>
-<li><a href="#sec-1">Data Sources </a>
-<ul>
-<li><a href="#sec-1.1">Regional Climate Models</a></li>
-<li><a href="#sec-1.2">Choice of the ensemble</a></li>
-<li><a href="#sec-1.3">Choice of climate scenarios</a></li>
-<li><a href="#sec-1.4">Bias Correction</a></li>
-<li><a href="#sec-1.5">Observations (EWEMBI)</a></li>
-</ul>
-<li><a href="#sec-2">Presentation of the projections</a>
-<ul>
-<li><a href="#sec-2.1">Climatology</a></li>
-<li><a href="#sec-2.2">Projection Map</a></li>
-<li><a href="#sec-2.3">Regionally averaged transients</a></li>
-<li><a href="#sec-2.4">Annual Cycle</a></li>
-</ul>
-<li><a href="#sec-3">Climate Data Tool (Python)</a>
-<li><a href="#sec-4">Acknowledgements</a>
-<li><a href="#sec-5">References</a>
-</div>
-</div>
-</div>
-<div id="LeftPanel" style="width: 20%; height: 100%; float: left;"><p class=white>bla</p></div>
-
-<div id="outline-container-1" class="outline-2">
-<h2 id="sec-1"><span class="section-number-2"> Data Sources </h2>
-<div class="outline-text-2" id="text-1">
-<div id="outline-container-1" class="outline-2">
-<h3 id="sec-1.1"><span class="section-number-2"> Regional Climate Models </h3>
-<div class="outline-text-2" id="text-1">
-<p>Analysing climate projections on the national scale requires high resolution data, which isn't provided by global climate models (GCM). Regional climate models (RCM) provide high resolution climate projections for a restricted region. RCMs model local impacts of changes in global greenhouse gas concentrations. Therefore RCMs require global climate simulations of GCMs as input. Thus RCM climate projections are always the result of the combination of a GCM with a RCM.</p>
-
-<div id="outline-container-1" class="outline-2">
-<h3 id="sec-1.2"><span class="section-number-2"> Choice of the ensemble </h3>
-<div class="outline-text-2" id="text-1">
-<p>The studied ensemble includes four combinations of RCMs and GCMs. Although more combinations would be possible, we restrict ourself to a smaller set in which each model appears only once in order to avoid biases towards one of the models.</p>
-<div id="LeftPanel" style="width: 20%; height: 100%; float: left;"><p class=white>bla</p></div>
-<div id="LeftPanel" style="width: 40%; height: 100%; float: left;">
-    <table class="table">
-    <thead>
-      <tr>
-        <th>GCM forcing</th>
-        <th>RCM</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr><td>MPIESM</td><td>REMO</td></tr>
-      <tr><td>HADGEM2</td><td>CCLM4</td></tr>
-      <tr><td>ECEARTH</td><td>RACMO</td></tr>
-      <tr><td>IPSL</td><td>RCA</td></tr>
-    </tbody>
-    </table>
-</div>
-<div id="LeftPanel" style="width: 40%; height: 100%; float: left;"><p class=white>bla</p></div>
-
-<div id="outline-container-1" class="outline-2">
-<h3 id="sec-1.3"><span class="section-number-2"> Choice of the scenario </h3>
-<div class="outline-text-2" id="text-1">
-<p>Climate projections are shown for the emission scenario RCP4.5, which is in between the emission scenario meeting leading to a 2°C global warming (RCP2.6) and the buisness as susual scenario (RCP8.5).<br>
-Instead of using fixed time periods and different emission scnearios, one can look at time periods for which a certain global warming level is reached. For each model we estimate the twenty year time period reaching a certain warming level. When presenting the ensemble mean projections for differences between warming levels, different periods are used for the different models:</p>
-<div id="LeftPanel" style="width: 20%; height: 100%; float: left;"><p class=white>bla</p></div>
-<div id="LeftPanel" style="width: 40%; height: 100%; float: left;">
-    <table class="table">
-    <thead>
-      <tr>
-        <th>Model</th>
-        <th>1.5°C (GMT)</th>
-        <th>2.0°C (GMT)</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr><td>MPIESM-REMO</td><td>2023-2042</td><td>2054-2073</td></tr>
-      <tr><td>HADGEM2-CCLM4</td><td>2013-2032</td><td>2028-2047</td></tr>
-      <tr><td>ECEARTH-RACMO</td><td>2024-2043</td><td>2046-2065</td></tr>
-      <tr><td>IPSL-RCA</td><td>2019-2038</td><td>2034-2053</td></tr>
-    </tbody>
-    </table>
-</div>
-<div id="LeftPanel" style="width: 40%; height: 100%; float: left;"><p class=white>bla</p></div>
-<p>The warming levels were computed using the <a href="http://wlcalc.climateanalytics.org">Warming Attribution Calculator</a></p>
-
-<div id="outline-container-1" class="outline-2">
-<h3 id="sec-1.4"><span class="section-number-2"> Bias Correction </h3>
-<div class="outline-text-2" id="text-1">
-<p>A trend-preserving bias correction technique is applied to the RCM climate projections. This bias correction technique adjusts climate simulations to observations over a reference periods without influencing projected trends (Hempel 2013). The EWEMBI dataset (described below) is used as reference for the bias correction (Lange 2016). </p>
-
-<div id="outline-container-1" class="outline-2">
-<h3 id="sec-1.5"><span class="section-number-2"> Observations (EWEMBI) </h3>
-<div class="outline-text-2" id="text-1">
-<p>The EWEMBI is a product of several reanalysis and observation datasets (Lange 2016). It has global coverage on a 0.5°x0.5° grid. EWEMBI data is used for bias correction as well as for the representation of the reference climatology. </p>
-
-
-
-<div id="outline-container-1" class="outline-2">
-<h2 id="sec-2"><span class="section-number-2"> Presentation of Climate Projections </h2>
-<div class="outline-text-2" id="text-1">
-
-<div id="outline-container-1" class="outline-2">
-<h3 id="sec-2.1"><span class="section-number-2"> Climatology Map </h3>
-<div class="outline-text-2" id="text-1">
-<p>For each indicator, a map of the climatology is presented. This map is a time average over the reference period of the EWEMBI dataset. For temperature indicators, hotter regions are darker than cooler regions. For precipitation indicators, wetter regions are darker than drier regions.</p>
-
-<div id="outline-container-1" class="outline-2">
-<h3 id="sec-2.2"><span class="section-number-2"> Projection Map </h3>
-<div class="outline-text-2" id="text-1">
-<p>Changes in climate indicators are presented as the difference between the climatology of the projection period and the climatology of the reference period. These differences are calculated individually for each model. In the map, the ensemble mean change is presented. Grid cells for which the sign of the projected change of two models differs from the the ensemble mean are coloured in grey as models disagree on how the future climate might change in this cell. Changes towards warmer or drier conditions are coloured in red, changes towards cooler or wetter conditions are coloured in blue.</p>
-
-
-<div id="outline-container-1" class="outline-2">
-<h3 id="sec-2.3"><span class="section-number-2"> Transients </h3>
-<div class="outline-text-2" id="text-1">
-<p>For the transient plots, the regional average is taken at each time step (grid-points are weighted by the fraction of the grid-point belonging to the region). The evolution of this area-average is shown for the EWEMBI dataset as well as for RCM projections. The ensemble mean of RCM projections are shown by a thick green line while the model spread is represented by green shading. When choosing a month of the year or a defined season, only the time steps corresponding to the month (months in season) are considered. Results are presented as a 20 year running mean.</p>
-
-<div id="outline-container-1" class="outline-2">
-<h3 id="sec-2.4"><span class="section-number-2"> Annual Cycle </h3>
-<div class="outline-text-2" id="text-1">
-<p>In the upper panel, the annual cycle is shown for the reference period for EWEMBI and RCM simulations. In the lower panel the projected change in the annual cycle is shown. This projected change is computed as the difference between the annual cycle of the projection period and the annual cycle of the reference period. As for the transients the regional average is presented. The ensemble mean of RCM projections are shown by a thick green line while the model spread is represented by green shading.</p>
-
-<div id="outline-container-1" class="outline-2">
-<h2 id="sec-3"><span class="section-number-2"> Climate Data Tool (Python) </h2>
-<div class="outline-text-2" id="text-1">
-<p>This website is based on a climate data tool developed for the analysis of regional climate information. The core functionality of the tool is to compute area-averages from gridded data. For each grid-cell, the tool computes the fraction of the grid-cell area which lies within a certain region. This fraction can be used as weighting factor for area averages. Additionally, several useful functionalities such as plot routines, evaluation of model agreement, possibility to merge regions, seasonal averages etc. are included.<br>
-We encourage the user to use this tool for more sophisticated analysis. The open source code and a documentation of the tool can be found on github/wo_denn?/</p>
-
-<div id="outline-container-1" class="outline-2">
-<h2 id="sec-4"><span class="section-number-2"> Acknowledgements </h2>
-<div class="outline-text-2" id="text-1">
-<p>We acknowledge the World Climate Research Programme's Working Group on Regional Climate, and the Working Group on Coupled Modelling, former coordinating body of CORDEX and responsible panel for CMIP5. We also thank the climate modelling groups (listed in Table XX of this paper) for producing and making available their model output. We also acknowledge the Earth System Grid Federation infrastructure an international effort led by the U.S. Department of Energy's Program for Climate Model Diagnosis and Intercomparison, the European Network for Earth System Modelling and other partners in the Global Organisation for Earth System Science Portals (GO-ESSP).</p>
-
-<div id="outline-container-1" class="outline-2">
-<h2 id="sec-5"><span class="section-number-2"> References </h2>
-<div class="outline-text-2" id="text-1">
-<p><small>
-Hempel, Sabrina, et al. "A trend-preserving bias correction–the ISI-MIP approach." Earth System Dynamics 4.2 (2013): 219-236.<br>
-Lange, Stefan (2016): EartH2Observe, WFDEI and ERA-Interim data Merged and Bias-corrected for ISIMIP (EWEMBI). GFZ Data Services. http://doi.org/10.5880/pik.2016.004<br>
-</small></p>
-
+<div id="sidebar">
+  <div id="table-of-contents">
+    <div id="text-table-of-contents">
+    <a href="#doc_start">Documentation</a>
+      <ul>
+        <li><a href="#doc_data_source">Data Sources </a></li>
+        <ul>
+          <li><a href="#doc_RCM">Regional Climate Models</a></li>
+          <li><a href="#doc_ensemble">Choice of the ensemble</a></li>
+          <li><a href="#doc_scenario">Choice of climate scenarios</a></li>
+          <li><a href="#doc_bias_correction">Bias Correction</a></li>
+          <li><a href="#doc_EWEMBI">Observations (EWEMBI)</a></li>
+        </ul>
+        <li><a href="#doc_plot_explanation">Presentation of the projections</a></li>
+        <ul>
+          <li><a href="#doc_plot_climatology">Climatology</a></li>
+          <li><a href="#doc_plot_projection">Projection Map</a></li>
+          <li><a href="#doc_plot_transient">Regionally averaged transients</a></li>
+          <li><a href="#doc_plot_annual_cylce">Annual Cycle</a></li>
+        </ul>
+        <li><a href="#doc_indicators">Climate Indicators</a></li>
+        <li><a href="#doc_limitations">Limitations</a></li>
+        <li><a href="#doc_tool">Climate Data Tool (Python)</a></li>
+        <li><a href="#doc_acknowledgements">Acknowledgements</a></li>
+        <li><a href="#doc_references">References</a></li>
+      </ul>
+    </div>
+  </div>
 </div>
 
 
+<div id="main-content">
+    
+  <h1 class="title" id="doc_start">Documentation</h1>
 
+  <span class=anchor id=doc_intro></span>
+  <div id="outline-container-1" class="outline-2">
+  <h2><span class="section-number-2"> Introduction </span></h2>
+  <div class="outline-text-2" id="text-1"></div>
+  </div>
+
+  <span class=anchor id=doc_purpose></span>
+  <div id="outline-container-1" class="outline-2">
+  <h3><span class="section-number-2"> Purpose </span></h3>
+  <div class="outline-text-2" id="text-1">
+  <p>We created this tool to facilitate the access to state of the art regional climate projections to a wider public. The used data is publicly available and the scripts developed for this website are based on open source code. Our contribution here is to constrain the information to some basic graphics that can easily be interpreted and reused for reports involving climate change.    
+  </p>
+  </div>
+  </div>
+
+  <span class=anchor id=doc_key_functionalities></span>
+  <div id="outline-container-1" class="outline-2">
+  <h3><span class="section-number-2"> Methods </span></h3>
+  <div class="outline-text-2" id="text-1">
+  <p>
+  The four graphics described in <a href='#doc_plot_explanation'>presentation of the projections</a> are based on four basic functionalities:
+  <ul class=list>
+  <span class=anchor id=doc_meth_period></span>
+  <li><b>Period averages </b>are used in overview maps as the <a href='#doc_plot_climatology'>climatology map</a> and the <a href='#doc_plot_projection'>projection map</a>. As inter-annual variability might be larger than the climate change signal the future climate as well as the current climate have to be treated as period averages (we suggest 30 years). For each grid-cell the time average of all monthly values (of the chosen months) for the years within the chosen period is computed. </li>
+  <span class=anchor id=doc_meth_area></span>
+  <li><b>Area averages </b>are used for the <a href='#doc_plot_transient'>transient plot</a> and the <a href='#doc_plot_annual_cycle'>annual cycle plot</a>. The area average is computed at each time step as the average of all grid-cells touched by the region. Grid-cells are weighted by the fraction of the area of the region covered by the grid-cell. </li> 
+  <span class=anchor id=doc_meth_ens_mean></span>
+  <li>We display the <b>ensemble mean</b> of the model projections instead of showing the results separately for each model. The ensemble mean is the mean value of the 4 models computed at each grid-cell or at each time step depending on the plot. </li>
+  <span class=anchor id=doc_meth_disagreement></span>
+  <li> Only showing the ensemble mean hides information about the discrepancies between models and the uncertainty of the projections. In the <a href='#doc_plot_projection'>projection map</a> we therefore show <b>model disagreement</b> to reintroduce some of the uncertainty information. Here we say that models disagree on the projected change if at least two of the four models project a change that differs in sign from the ensemble mean. </li> 
+  </ul></p>
+  </div>
+  </div>
+
+  <span class=anchor id=doc_limitations></span>
+  <div id="outline-container-1" class="outline-2">
+  <h3><span class="section-number-2"> Limitations </span></h3>
+  <div class="outline-text-2" id="text-1">
+  <p>
+  <ul class=list>
+    <li><b>Small Ensemble: </b>Model projections are shown for the ensemble mean of 4 regional climate models. The choice of the ensemble is documented in <a href=#doc_ensemble>ensemble choice</a>.  </li>
+    <li><b>Precipitation Projections: </b>There is a high uncertainty concerning precipitation projections in most parts of Africa. This a partly due to the sparse network of meteorological stations in most parts of Africa. Observations are required for model calibration </li>
+    <li><b>Performance of models to reproduce extreme events: </b>Although <a href=#doc_bias_correction>bias correction</a> techniques have been applied to overcome systematic biases found in model simulations, for some regions climate change indicators as <a href='#doc_TXx'>hot extremes (TXx)</a> or <a href='#doc_RX1'>wet extremes (RX1day)</a> are over- or under estimated by models. See <a href=#doc_bias_correction>bias correction</a> for more details. </li>
+  </ul>  
+  </p>
+  </div></div>
+
+
+  <span class=anchor id=doc_data_source></span>
+  <div id="outline-container-1" class="outline-2">
+  <h2><span class="section-number-2"> Data Sources </span></h2>
+  <div class="outline-text-2" id="text-1"></div>
+  </div>
+
+  <span class=anchor id=doc_RCM></span>
+  <div id="outline-container-1" class="outline-2">
+  <h3><span class="section-number-2"> Regional Climate Models </span></h3>
+  <div class="outline-text-2" id="text-1">
+  <p>Analysing climate projections on the national scale requires high resolution data, which isn't provided by global climate models (GCM). Regional climate models (RCM) provide high resolution climate projections for a restricted region. RCMs model local impacts of changes in global greenhouse gas concentrations. Therefore RCMs require global climate simulations of GCMs as input. Thus RCM climate projections are always the result of the combination of a GCM with a RCM.</p>
+  </div>
+  </div>
+
+
+  <span class=anchor id=doc_ensemble></span>
+  <div id="outline-container-1" class="outline-2">
+  <h3><span class="section-number-2"> Choice of the ensemble </span></h3>
+  <div class="outline-text-2" id="text-1">
+  <p>The studied ensemble includes four combinations of RCMs and GCMs. Although more combinations would be possible, we restrict ourself to a smaller set in which each model appears only once in order to avoid biases towards one of the models.</p>
+  <div rows>
+  <div id="LeftPanel" style="width: 40%; height: 100%; float: left; padding-left: 20%; padding-right: 40%;">
+      <table class="table">
+      <thead>
+        <tr>
+          <th>GCM forcing</th>
+          <th>RCM</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>MPIESM</td><td>REMO</td></tr>
+        <tr><td>HADGEM2</td><td>CCLM4</td></tr>
+        <tr><td>ECEARTH</td><td>RACMO</td></tr>
+        <tr><td>IPSL</td><td>RCA</td></tr>
+      </tbody>
+      </table>
+  </div>
+  </div>
+  </div>
+  </div>
+
+
+  <span class=anchor id=doc_scenario></span>
+  <div id="outline-container-1" class="outline-2">
+  <h3><span class="section-number-2"> Choice of the scenario </span></h3>
+  <div class="outline-text-2" id="text-1">
+  <p>Climate projections are shown for the emission scenario RCP4.5, which is in between the emission scenario meeting leading to a 2°C global warming (RCP2.6) and the buisness as susual scenario (RCP8.5).<br>
+  Instead of using fixed time periods and different emission scnearios, one can look at time periods for which a certain global warming level is reached. For each model we estimate the twenty year time period reaching a certain warming level. When presenting the ensemble mean projections for differences between warming levels, different periods are used for the different models:</p>
+  <div id="LeftPanel" style="width: 40%; height: 100%; float: left; padding-left: 20%; padding-right: 40%;">
+      <table class="table">
+      <thead>
+        <tr>
+          <th>Model</th>
+          <th>1.5°C (GMT)</th>
+          <th>2.0°C (GMT)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>MPIESM-REMO</td><td>2023-2042</td><td>2054-2073</td></tr>
+        <tr><td>HADGEM2-CCLM4</td><td>2013-2032</td><td>2028-2047</td></tr>
+        <tr><td>ECEARTH-RACMO</td><td>2024-2043</td><td>2046-2065</td></tr>
+        <tr><td>IPSL-RCA</td><td>2019-2038</td><td>2034-2053</td></tr>
+      </tbody>
+      </table>
+  </div>
+  </div>
+  <p>The warming levels were computed using the <a href="http://wlcalc.climateanalytics.org">Warming Attribution Calculator</a></p>
+  </div>
+
+
+  <span class=anchor id=doc_EWEMBI></span>
+  <div id="outline-container-1" class="outline-2">
+  <h3><span class="section-number-2"> Observations (EWEMBI) </span></h3>
+  <div class="outline-text-2" id="text-1">
+  <p>The EWEMBI is a product of several reanalysis and observation datasets (Lange 2016). It has global coverage on a 0.5°x0.5° grid. EWEMBI data is used for bias correction as well as for the representation of the reference climatology. </p>
+  </div></div>
+
+  <span class=anchor id=doc_bias_correction></span>
+  <div id="outline-container-1" class="outline-2">
+  <h3><span class="section-number-2"> Bias Correction </span></h3>
+  <div class="outline-text-2" id="text-1">
+  <p>A trend-preserving bias correction technique is applied to the RCM climate projections. This bias correction technique adjusts climate simulations to observations over a reference periods without influencing projected trends (Hempel 2013). The EWEMBI dataset (described above) is used as reference for the bias correction (Lange 2016). </p>
+  <p>The following figures show the results of bias correction for Senegal. Non-bias corrected <a href='#doc_RCM'>regional climate model</a> data is shown in grey, bias corrected <a href='#doc_RCM'>regional climate model</a> data in magenta and bias corrected general circulation model data from <a href='https://www.isimip.org/gettingstarted/#input-data-bias-correction'>ISIMIP</a> in green and <a href='#doc_EWEMBI'>EWEMBI</a> in black. As for the <a href='#doc_plot_transient'>transient plots</a> the ensemble mean is represented by the thick line while the ensemble spread is shown by the shading. Th data has been smoothed with a 20 year running mean. </p>
+  <IMG SRC='static/images/bias_correction/tas_transients.png ' ALT=' ' WIDTH=350 HEIGHT=350></IMG>
+  <IMG SRC='static/images/bias_correction/tasmax_transients.png ' ALT=' ' WIDTH=350 HEIGHT=350></IMG>
+  <IMG SRC='static/images/bias_correction/TXx_transients.png ' ALT=' ' WIDTH=350 HEIGHT=350></IMG>
+  <IMG SRC='static/images/bias_correction/transients_legend.png ' ALT=' ' WIDTH=350 HEIGHT=350></IMG>
+  <p>The model spread of the bias corrected data is smaller than for the non-bias corrected data. axfasdf</p>
+  <IMG SRC='static/images/bias_correction/pr_transients.png ' ALT=' ' WIDTH=350 HEIGHT=350></IMG>
+  <IMG SRC='static/images/bias_correction/RX1_transients.png ' ALT=' ' WIDTH=350 HEIGHT=350></IMG>
+  <IMG SRC='static/images/bias_correction/RX5_transients.png ' ALT=' ' WIDTH=350 HEIGHT=350></IMG>
+  <IMG SRC='static/images/bias_correction/transients_legend.png ' ALT=' ' WIDTH=350 HEIGHT=350></IMG>
+  </div></div>
+
+  <span class=anchor id=doc_indicators></span>
+  <div id="outline-container-1" class="outline-2">
+  <h2><span class="section-number-2"> Climate Indicators </span></h2>
+  <div class="outline-text-2" id="text-1">
+  <p>
+  Besides monthly mean temperature and monthly cumulated precipitation three <a href='http://etccdi.pacificclimate.org/list_27_indices.shtml'>climate change indices</a> can be analysed:</p>
+  <ul style="width:600px; word-wrap:break-word; margin-left: 100px; list-style-type:square;">
+    <span class=anchor id=doc_TXx></span>
+    <li><b>TXx, Monthly maximum value of daily maximum temperature: </b><br> Let TXx be the daily maximum temperatures in month k, period j. The maximum daily maximum temperature each month is then:
+    TXx<sub>kj</sub>=max(TXx<sub>kj</sub>) </li>
+    <span class=anchor id=doc_RX1></span>
+    <li><b>Rx1day, Monthly maximum 1-day precipitation: </b><br> Let RR<sub>ij</sub> be the daily precipitation amount on day i in period j. The maximum 1-day value for period j are: Rx1day<sub>j</sub> = max (RR<sub>ij</sub>) </li>
+     <span class=anchor id=doc_RX5q></span>
+   <li><b>Rx5day, Monthly maximum consecutive 5-day precipitation: </b><br> Let RR<sub>kj</sub> be the precipitation amount for the 5-day interval ending k, period j. Then maximum 5-day values for period j are: Rx5day<sub>j</sub> = max (RR<sub>kj</sub>) </li> 
+  </ul>
+  <p>
+  Please find more information about these indicators on <a href='http://etccdi.pacificclimate.org'>http://etccdi.pacificclimate.org</a>.</p>
+  </div></div>
+
+
+  <span class=anchor id=doc_plot_explanation></span>
+  <div id="outline-container-1" class="outline-2">
+  <h2><span class="section-number-2"> Presentation of Climate Projections </span></h2>
+  <div class="outline-text-2" id="text-1"></div></div>
+
+  <span class=anchor id=doc_plot_climatology></span>
+  <div id="outline-container-1" class="outline-2">
+  <h3><span class="section-number-2"> Climatology Map </span></h3>
+  <div class="outline-text-2" id="text-1">
+  <p>For each indicator, a map of the climatology is presented. This map is a <a href='#doc_meth_period'>period average</a> over the reference period of the EWEMBI dataset. For temperature indicators, hotter regions are darker than cooler regions. For precipitation indicators, wetter regions are darker than drier regions.</p>
+  </div></div>
+
+  <span class=anchor id=doc_plot_projection></span>
+  <div id="outline-container-1" class="outline-2">
+  <h3><span class="section-number-2"> Projection Map </span></h3>
+  <div class="outline-text-2" id="text-1">
+  <p>
+  Changes in climate indicators are presented as the difference between the <a href='#doc_meth_period'>period average</a> of the projection period and the <a href='#doc_meth_period'>period average</a> of the reference period. These differences are calculated individually for each model. In the map, the <a href='#doc_meth_ens_mean'>ensemble mean</a> change is presented. Grid cells for which the sign of the projected change of two models differs from the the ensemble mean are coloured in grey as <a href='#doc_meth_disagreement'>models disagree</a> on how the future climate might change in this cell. Changes towards warmer or drier conditions are coloured in red, changes towards cooler or wetter conditions are coloured in blue.
+  </p>
+  </div></div>
+
+  <span class=anchor id=doc_plot_transient></span>
+  <div id="outline-container-1" class="outline-2">
+  <h3><span class="section-number-2"> Transients </span></h3>
+  <div class="outline-text-2" id="text-1">
+  <p>For the transient plots, the <a href='#doc_meth_area'>regional average</a> is taken at each time step (grid-points are weighted by the fraction of the grid-point belonging to the region). The evolution of this <a href='#doc_meth_area'>area average</a> is shown for the EWEMBI dataset as well as for RCM projections. The <a href='#doc_meth_ens_mean'>ensemble mean</a> of RCM projections are shown by a thick green line while the model spread is represented by green shading. When choosing a month of the year or a defined season, only the time steps corresponding to the month (months in season) are considered. Results are presented as a 20 year running mean.</p>
+  </div></div>
+
+  <span class=anchor id=doc_plot_annual_cycle></span>
+  <div id="outline-container-1" class="outline-2">
+  <h3><span class="section-number-2"> Annual Cycle </span></h3>
+  <div class="outline-text-2" id="text-1">
+  <p>In the upper panel, the annual cycle is shown for the reference period for EWEMBI and RCM simulations. In the lower panel the projected change in the annual cycle is shown. This projected change is computed as the difference between the annual cycle of the projection period and the annual cycle of the reference period. As for the transients the <a href='#doc_meth_area'>regional average</a> is presented. The <a href='#doc_meth_ens_mean'>ensemble mean</a> of RCM projections are shown by a thick green line while the model spread is represented by green shading.</p>
+  </div></div>
+
+
+  <span class=anchor id=doc_tool></span>
+  <div id="outline-container-1" class="outline-2">
+  <h2><span class="section-number-2"> Climate Data Tool (Python) </span></h2>
+  <div class="outline-text-2" id="text-1">
+  <p>This website is based on a climate data tool developed for the analysis of regional climate information. The core functionality of the tool is to compute area-averages from gridded data. For each grid-cell, the tool computes the fraction of the grid-cell area which lies within a certain region. This fraction can be used as weighting factor for area averages. Additionally, several useful functionalities such as plot routines, evaluation of model agreement, possibility to merge regions, seasonal averages etc. are included.<br>
+  We encourage the user to use this tool for more sophisticated analysis. The open source code and a documentation of the tool can be found on github/wo_denn?/</p>
+  </div></div>
+
+  <span class=anchor id=doc_acknowledgements></span>
+  <div id="outline-container-1" class="outline-2">
+  <h2><span class="section-number-2"> Acknowledgements </span></h2>
+  <div class="outline-text-2" id="text-1">
+  <p>We acknowledge the World Climate Research Programme's Working Group on Regional Climate, and the Working Group on Coupled Modelling, former coordinating body of CORDEX and responsible panel for CMIP5. We also thank the climate modelling groups (listed in Table XX of this paper) for producing and making available their model output. We also acknowledge the Earth System Grid Federation infrastructure an international effort led by the U.S. Department of Energy's Program for Climate Model Diagnosis and Intercomparison, the European Network for Earth System Modelling and other partners in the Global Organisation for Earth System Science Portals (GO-ESSP).</p>
+  </div></div>
+
+  <span class=anchor id=doc_references></span>
+  <div id="outline-container-1" class="outline-2">
+  <h2><span class="section-number-2"> References </span></h2>
+  <div class="outline-text-2" id="text-1">
+  <p><small>
+  Hempel, Sabrina, et al. "A trend-preserving bias correction–the ISI-MIP approach." Earth System Dynamics 4.2 (2013): 219-236.<br>
+  Lange, Stefan (2016): EartH2Observe, WFDEI and ERA-Interim data Merged and Bias-corrected for ISIMIP (EWEMBI). GFZ Data Services. http://doi.org/10.5880/pik.2016.004<br>
+  </small></p>
+  </div></div>
+
+</div>
 {% endblock %}
