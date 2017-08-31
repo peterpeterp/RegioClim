@@ -17,30 +17,20 @@
   </form>
 
   <form method="POST" action="/indicator_choice" id="indicator_id">
-  <h3>{{ indicator_h }}</h3><a href="documentation#doc_indicators"><IMG SRC='static/images/question-mark-button.png' ALT=' ' WIDTH=7 HEIGHT=7></IMG></a>
-  <p class=small>{{ indicator_txt }}
-  <a href="documentation#doc_indicators">here</a>
+  <h3>{{ indicator_h }} <a href="documentation#doc_indicators"><IMG SRC='static/images/question-mark-button.png' ALT=' ' WIDTH=12 HEIGHT=12></IMG></a></h3>
+  <!-- <p class=small>{{ indicator_txt }} -->
+  <!-- <a href="documentation#doc_indicators">here</a> -->
   </p>
   {{ form_indicator.indicators(onchange="change_indicator();") }}
   <a class="label label-primary" href="/prepare_for_download/get_data**bla" target="_blank"  style="margin-right: 5px;">{{download_data }}</a>
   </form>
 
-  <form method="POST" action="/region_choice" id="region_id">
-  <h3>{{ region_h }}</h3>
-  <p class=small>{{ region_txt }}
-  <a href="merging_page">{{merge_regions}}</a>
-  </p>
-  {{ form_region.regions(onchange="change_region();") }}
-  {% if small_region_warning==True %}
-  <p class=warn_txt><b>{{ warning }}</b>{{ warning_txt }}
-  <a href="merging_page"><font color="BlueViolet">{{merge_regions}}</font></a></p>
-  {% endif %}
-  </form>
+
 
 
 {% if use_periods==0 %}
   <form method="POST" action="/warming_lvl_choice" id="warming_lvl_id">
-  <h3>{{ warming_lvl_h }}</h3>
+  <h3>{{ warming_lvl_h }} <a href="documentation#doc_scenario"><IMG SRC='static/images/question-mark-button.png' ALT=' ' WIDTH=12 HEIGHT=12></IMG></a></h3>
   <p class=small>{{ warming_lvl_txt_1 }}
   <a href="switch_to_periods">{{use_periods_0}}</a>
   {{ warming_lvl_txt_2 }}</p>
@@ -54,7 +44,7 @@
   <h3>{{ period_h }}</h3>
   <p class=small>{{ period_txt_1 }} 
   <a href="switch_to_periods">{{use_periods_1}}</a>  
-  {{ period_txt_2 }}</p>
+  {{ period_txt_2 }} <a href="documentation#doc_scenario"><IMG SRC='static/images/question-mark-button.png' ALT=' ' WIDTH=12 HEIGHT=12></IMG></a></p>
       {{ ref_period }} {{ form_period.ref_period(size=10) }}
       {{ proj_period }} {{ form_period.proj_period(size=10 ) }}
     <button type="submit" class="btn">{{select_periods}}</button>
@@ -69,22 +59,37 @@
   <a href="go_to_season_page">{{define_season}}</a> 
   {{ form_season.seasons(onchange="change_season();") }}
   </form>
+
+
+  <form method="POST" action="/region_choice" id="region_id">
+  <h3>{{ region_h }} <a href="documentation#doc_shapefiles"><IMG SRC='static/images/question-mark-button.png' ALT=' ' WIDTH=12 HEIGHT=12></IMG></a></h3>
+  <p class=small>{{ region_txt }}
+  <a href="merging_page">{{merge_regions}}</a>
+  </p>
+  {{ form_region.regions(onchange="change_region();") }}
+  {% if small_region_warning==True %}
+  <p class=warn_txt><b>{{ warning }}</b>{{ warning_txt }}
+  <a href="merging_page"><font color="BlueViolet">{{merge_regions}}</font></a></p>
+  {% endif %}
+  <IMG SRC={{ overview_plot }} ALT=' ' WIDTH=350 HEIGHT=350></IMG>
+  </form>
+
 </div>
 
-<div id="LeftPanel" style="width: 5%; height: 100%; float: left;">
-  <p class=white>bla</p>
-</div>
-
-<div id="LeftPanel" style="width: 35%; height: 100%; float: left;">
-  {% if EWEMBI_plot!='no_plot' %}
-    <h3>{{ EWEMBI_plot_title }}</h3>
-    <p class=small>{{ EWEMBI_plot_title_txt }}</p>
+<div id="LeftPanel" style="width: 35%; height: 100%; float: left; padding-left: 5%;">
+  {% if EWEMBI_plot!='no_plot' %} 
+    <figure>
+      <caption><h3>{{ EWEMBI_plot_title }} 
+      <a href="documentation#doc_plot_climatology"><IMG SRC='static/images/question-mark-button.png' ALT=' ' WIDTH=12 HEIGHT=12></IMG></a>
+      </h3></caption>
       <IMG SRC={{ EWEMBI_plot }} ALT=' ' WIDTH=350 HEIGHT=350></IMG>
+      <figcaption>{{ EWEMBI_plot_title_txt }}</figcaption>
+    </figure>
   <a class="label label-primary" href="/prepare_for_download/EWEMBI_plot**_large.png" target="_blank"  style="margin-right: 5px;">{{download_png}}</a>
   <a class="label label-primary" href="/prepare_for_download/EWEMBI_plot**.pdf" target="_blank"  style="margin-right: 5px;">{{download_pdf}}</a>
   {% endif %} 
 
-    <h3>{{ transient_plot_title }}</h3>
+    <h3>{{ transient_plot_title }} <a href="documentation#doc_plot_transient"><IMG SRC='static/images/question-mark-button.png' ALT=' ' WIDTH=12 HEIGHT=12></IMG></a></h3>
     <p class=small>{{ transient_plot_title_txt }}</p>
       <IMG SRC={{ transient_plot }} ALT=' ' WIDTH=350 HEIGHT=350></IMG>
   <a class="label label-primary" href="/prepare_for_download/transient_plot**_large.png" target="_blank"  style="margin-right: 5px;">{{download_png}}</a>
@@ -92,19 +97,19 @@
 
 </div>
 
-<div id="LeftPanel" style="width: 5%; height: 100%; float: left;">
-  <p class=white>bla</p>
-</div>
-
-<div id="LeftPanel" style="width: 35%; height: 100%; float: left;">
-    <h3>{{ Projection_plot_title }}</h3>
-    <p class=small>{{ Projection_plot_title_txt }}</p>
+<div id="LeftPanel" style="width: 35%; height: 100%; float: left; padding-left: 5%;">
+  <figure>
+    <caption><h3>{{ Projection_plot_title }} 
+    <a href="documentation#doc_plot_projection"><IMG SRC='static/images/question-mark-button.png' ALT=' ' WIDTH=12 HEIGHT=12></IMG></a>
+    </h3></caption>
       <IMG SRC={{ Projection_plot }} ALT=' ' WIDTH=350 HEIGHT=350></IMG>
+    <figcaption>{{ Projection_plot_title_txt }}</figcaption>
+  </figure>
   <a class="label label-primary" href="/prepare_for_download/Projection_plot**_large.png" target="_blank"  style="margin-right: 5px;">{{download_png}}</a>
   <a class="label label-primary" href="/prepare_for_download/Projection_plot**.pdf" target="_blank"  style="margin-right: 5px;">{{download_pdf}}</a>
 
   {% if annual_cycle_plot!='no_plot' %}
-    <h3>{{ annual_cycle_plot_title }}</h3>
+    <h3>{{ annual_cycle_plot_title }} <a href="documentation#doc_plot_annual_cycle"><IMG SRC='static/images/question-mark-button.png' ALT=' ' WIDTH=12 HEIGHT=12></IMG></a></h3>
     <p class=small>{{ annual_cycle_plot_title_txt }}</p>
       <IMG SRC={{ annual_cycle_plot }} ALT=' ' WIDTH=350 HEIGHT=350></IMG>
   <a class="label label-primary" href="/prepare_for_download/annual_cycle_plot**_large.png" target="_blank"  style="margin-right: 5px;">{{download_png}}</a>

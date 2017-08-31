@@ -186,13 +186,13 @@ text_dict={'en':{
 
 	'warming_lvl_h':'Global Warming Level',
 	'warming_lvl_txt_1':'Global warming level above preindustrial for which the regional response is presented. Alternatively you can use ',
-	'warming_lvl_txt_2':' for which the regional climate projections will be displayed.',
+	'warming_lvl_txt_2':'',
 	'future_warming_lvl':'Future warming level',
 	'ref_warming_lvl':'Reference warming level',
 
 	'period_h':'Projection Period',
-	'period_txt_1':'Time period for which projections are shown. As climate projections depend on emission scenarios, we encourage the user to select ',
-	'period_txt_2':'  for which the regional climate response will be displayed.',
+	'period_txt_1':'Time period for which projections are shown. Alternatively you can select ',
+	'period_txt_2':'  for which the regional climate response will be displayed',
 
 	'indicator_h':'Climate Indicator',
 	'indicator_txt':'Climate indicators based on daily temperature and precipitation. Please find more information about the indicators ',
@@ -279,6 +279,7 @@ warming_lvl_dict={'en':{
 }
 }
 
+above_preindustrial={'en':'above preindustrial','fr':'au-dessus des niveaux préindustriels'}
 
 
 print 'done with settings'

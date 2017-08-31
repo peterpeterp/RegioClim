@@ -114,6 +114,9 @@ def index():
 
   session['small_region_warning']=False
 
+  session['ref_period_warning']='ok'
+  session['proj_period_warning']='ok'
+
   session["season_avail"]   = settings.seasons.keys()
   session["season"]   = 'year'
 
@@ -153,8 +156,8 @@ def choices():
 
     form_region = forms.regionForm(request.form)
     s["region_avail"]   = [COU._regions.keys()[COU._regions.values().index(name)] for name in sorted(COU._regions.values())]
-    s['region_avail']=[s['region']]+[sea for sea in s['region_avail'] if sea != s['region']]
-    form_region.regions.choices = zip(s['region_avail'],[COU._regions[reg] for reg in s['region_avail']])
+    s['region_avail']=[s['region']]+[reg for reg in s['region_avail'] if reg != s['region']]
+    form_region.regions.choices = zip(s['region_avail'],[COU._regions[reg].replace('_',' ') for reg in s['region_avail']])
 
     form_scenario = forms.scenarioForm(request.form)
     form_scenario.scenarios.choices = zip(s['scenario_avail'],s['scenario_avail'])
@@ -230,6 +233,7 @@ def choices():
     Projection_plot=Projection_plot_func(**plot_context)
     transient_plot=transient_plot_func(**plot_context)
     annual_cycle_plot=annual_cycle_plot_func(**plot_context)
+    overview_plot=localisation_overview(**plot_context)
     plt.clf()
 
     print 'everything plotted '+str(time.time()-start_time)
@@ -237,51 +241,30 @@ def choices():
     if s['user_type']=='advanced': advanced_col='white'
     if s['user_type']=='beginner':  advanced_col='gray'
 
+
     plot_dict={
       'EWEMBI_plot':EWEMBI_plot.replace('app/',''),
       'Projection_plot':Projection_plot.replace('app/',''),
       'transient_plot':transient_plot.replace('app/',''),
       'annual_cycle_plot':annual_cycle_plot.replace('app/',''),
+      'overview_plot':overview_plot.replace('app/',''),
     }
 
     if s['season']=='year':season_add_on=''
     if s['season']!='year':season_add_on=' in '+season_dict[lang][s['season']]
 
-    plot_txt_dict={'en':{
-      'EWEMBI_plot':EWEMBI_plot.replace('app/',''),
-      'EWEMBI_plot_title':'Climatology',
-      'EWEMBI_plot_title_txt':indicator_dict[lang][s['indicator']]+' averaged over the reference period '+refP_clim_longname+season_add_on+'. Observations are taken from EWEMBI.',
+    if s['use_periods']==False: 
+      refP_clim_longname=refP_clim_longname.replace('°C','°C '+settings.above_preindustrial[lang])
+      refP_longname=refP_longname.replace('°C','°C '+settings.above_preindustrial[lang])
+      proP_longname=proP_longname.replace('°C','°C '+settings.above_preindustrial[lang])
 
-      'Projection_plot':Projection_plot.replace('app/',''),
-      'Projection_plot_title':'Projected Change',
-      'Projection_plot_title_txt':'Projected change in '+indicator_dict[lang][s['indicator']]+' for '+proP_longname+' compared to the reference period '+refP_longname+season_add_on+'. Here the ensemble mean is displayed, grid-cells for which a model-disagreement is found are colored in gray. The projections are based on the emission scenario RCP4.5.',
 
-      'transient_plot':transient_plot.replace('app/',''),
-      'transient_plot_title':'Transient',
-      'transient_plot_title_txt':indicator_dict[lang][s['indicator']]+' displayed as 20 year running mean'+season_add_on+'. Observations (EWEMBI) are shown in black for the period 1989-2003. RCM simulations are shown in green for the period 1960-2090. The line represents the ensemble mean while the shaded area represents the model spread. Small differences between observations and model data during the period 1989-2003 have to be expected. The projections are based on the emission scenario RCP4.5.',
-
-      'annual_cycle_plot':annual_cycle_plot.replace('app/',''),
-      'annual_cycle_plot_title':'Annual Cycle',
-      'annual_cycle_plot_title_txt':'Top: Annual cycle of '+indicator_dict[lang][s['indicator']]+' for the period '+refP_clim_longname+'. Bottom: Changes in the annual cycle projected for '+proP_longname+' compared to the reference period '+refP_longname+' (bottom). Observations (EWEMBI) are shown in green, RCM simulations are shown in green. The line represents the ensemble mean while the shaded area represents the model spread. The projections are based on the emission scenario RCP4.5.',
-    },
-
-    'fr':{
-      'EWEMBI_plot':EWEMBI_plot.replace('app/',''),
-      'EWEMBI_plot_title':'Climatologie',
-      'EWEMBI_plot_title_txt':indicator_dict[lang][s['indicator']]+' en moyenne de le période de référence '+refP_clim_longname+' '+s['season']+'. Les observations proviennent de EWEMBI',
-
-      'Projection_plot':Projection_plot.replace('app/',''),
-      'Projection_plot_title':'Changement Projeté',
-      'Projection_plot_title_txt':'Changement projeté en '+indicator_dict[lang][s['indicator']]+' pour '+proP_longname+' par rapport à la période de référence '+refP_longname+' '+s['season']+'. Ici la moyenne de l`ensemble est présentée, les grilles pour lesquelles les différents modèles sont en désaccord sont coloriés en gris. Les projections sont basées sur le scénario d´émission RCP4.5.',
-
-      'transient_plot':transient_plot.replace('app/',''),
-      'transient_plot_title':'Trajectoire Projetée',
-      'transient_plot_title_txt':indicator_dict[lang][s['indicator']]+' présenté comme moyenne mobile de 20 années. Observations (EWEMBI) en noir pour la période 1989-2003. Modélisations climatiques régionales en vert pour la période 1960-2090. La ligne représente la moyenne de l`ensemble et la zone ombragée montre l`écart entre les modèles. Des différences entre observations et la modélisation climatique pendant la période 1989-2003 doivent être attendus. Les projections sont basées sur le scénario d´émission RCP4.5.',
-
-      'annual_cycle_plot':annual_cycle_plot.replace('app/',''),
-      'annual_cycle_plot_title':'Cycle Annuel',
-      'annual_cycle_plot_title_txt':'Cycle annuel de '+indicator_dict[lang][s['indicator']]+' pour la période de référence '+refP_clim_longname+' (en haut) et différences dans le cycle annuel projetées pour '+proP_longname+ ' par rapport à la période de référence'+refP_longname+' (en bas). Observations (EWEMBI) en vert, modélisation climatique régionale en vert. La ligne représente la moyenne de l`ensemble et la zone ombragée montre l`écart entre les modèles. Les projections sont basées sur le scénario d´émission RCP4.5.',
-    }
+    plot_text_dict={
+      'indicator':indicator_dict[lang][s['indicator']],
+      'season_add_on':season_add_on,
+      'refP_longname':refP_longname,
+      'proP_longname':proP_longname,
+      'refP_clim_longname':refP_clim_longname,
     }
 
     other_dict={
@@ -290,6 +273,8 @@ def choices():
       'use_periods':s['use_periods'],
       'user_type':s['user_type'],
       'small_region_warning':s['small_region_warning'],
+      'ref_period_warning':s['ref_period_warning'],
+      'proj_period_warning':s['proj_period_warning'],
       'language_flag':languages[s['language']],
     }
 
@@ -308,12 +293,12 @@ def choices():
     context=form_dict.copy()
     context.update(other_dict)
     context.update(plot_dict)
-    context.update(plot_txt_dict[lang])
+    context.update(plot_text_dict)
     context.update(text_dict[lang])
     context.update(button_dict[lang])
 
     session['location']='choices'
-    return render_template('choices.html',**context)
+    return render_template('choices_'+lang+'.html',**context)
 
   except Exception,e: 
     print str(e)
@@ -419,8 +404,10 @@ def merging_page():
         color_bar=False,
         ax=ax,
         show_all_adm_polygons=True,
-        highlight_region=s['region'],
+        #highlight_region=s['region'],
         title=COU._regions[s['region']])
+      patch = PolygonPatch(COU._adm_polygons[s['region']], facecolor='orange', edgecolor=[0,0,0], alpha=0.7, zorder=2)
+      ax.add_patch(patch)
       plt.savefig(regions_plot,dpi=300)
 
     print 'plotted'
@@ -534,8 +521,23 @@ def switch_to_periods():
 @app.route('/periodchoice',  methods=("POST", ))
 def add_periodchoice():
   form_period = forms.PeriodField(request.form)
-  session["ref_period"]   = [int(form_period.ref_period.data.split("-")[0]),int(form_period.ref_period.data.split("-")[1])+1]
-  session["proj_period"]  = [int(form_period.proj_period.data.split("-")[0]),int(form_period.proj_period.data.split("-")[1])+1]
+  ref_period=[int(form_period.ref_period.data.split("-")[0]),int(form_period.ref_period.data.split("-")[1])+1]
+  session["ref_period"]   = ref_period
+  proj_period=[int(form_period.proj_period.data.split("-")[0]),int(form_period.proj_period.data.split("-")[1])+1]
+  session["proj_period"]  = proj_period
+
+  session['ref_period_warning']='ok' 
+  if ref_period[1]-ref_period[0]<20:  session['ref_period_warning']='small'
+  if ref_period[0]>ref_period[1]:  session['ref_period_warning']='strange' 
+  if ref_period[1]>2006:  session['ref_period_warning']='out_range' 
+  if ref_period[0]<1979:  session['ref_period_warning']='out_range' 
+
+  session['proj_period_warning']='ok' 
+  if proj_period[1]-proj_period[0]<20:  session['proj_period_warning']='small'
+  if proj_period[0]>proj_period[1]:  session['proj_period_warning']='strange' 
+  if proj_period[1]>2100:  session['proj_period_warning']='out_range' 
+  if proj_period[0]<1950:  session['proj_period_warning']='out_range'
+
 
   return redirect(url_for("choices"))
 
