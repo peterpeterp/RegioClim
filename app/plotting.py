@@ -70,14 +70,15 @@ def Projection_plot_func(s,COU,refP,refP_clim,proP,refP_longname,refP_clim_longn
 def transient_plot_func(s,COU,refP,refP_clim,proP,refP_longname,refP_clim_longname,proP_longname,region,highlight_region,periods,periods_ewembi,lang,indicator_label,season_dict,out_format):
   # transient
   #ewembi=COU.selection([s['indicator'],'EWEMBI'])
-  ens_selection=COU.selection([s['indicator'],s['dataset']])
-  ens_mean=COU.selection([s['indicator'],s['dataset'],'ensemble_mean'])[0]
+
   transient_plot='app/static/COU_images/'+s['country']+'/'+s['indicator']+'_'+s["dataset"]+'_'+region+'_'+s['season']+'_transient'+'_'+lang+out_format
   if os.path.isfile(transient_plot)==False:
+    ens_selection=COU.selection([s['indicator'],s['dataset']])
+    ens_mean=COU.selection([s['indicator'],s['dataset'],'ensemble_mean'])[0]
 
     if region != s['country']:COU.create_mask_admin(ens_mean.raw_file,s['indicator'],regions=[region])
     COU.area_average('lat_weighted',overwrite=False,selection=ens_selection,regions=[region])#+ewembi
-    COU.unit_conversions()
+    COU.unit_conversions(ens_selection)
 
     fig,ax=plt.subplots(nrows=1,ncols=1,figsize=(5,4))
     message=ens_mean.plot_transients(season=s['season'],region=region,running_mean_years=20,ax=ax,title='',ylabel=None,label='model data',color='green',shading_range=[0,100],x_range=[1960,2090],show_all_models=False)
@@ -110,7 +111,7 @@ def annual_cycle_plot_func(s,COU,refP,refP_clim,proP,refP_longname,refP_clim_lon
     else:
       if region != s['country']:COU.create_mask_admin(ewembi[0].raw_file,s['indicator'],regions=[region])
       COU.area_average('lat_weighted',overwrite=False,selection=ens_selection+ewembi,regions=[region])
-      COU.unit_conversions()
+      COU.unit_conversions(ens_selection+ewembi)
 
       COU.annual_cycle(periods=periods_ewembi,selection=ewembi,regions=[region])
       COU.annual_cycle(periods=periods_ewembi,selection=ens_selection,ref_name=refP,regions=[region])

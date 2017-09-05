@@ -89,6 +89,7 @@ def index():
 
   session["country_avail"]   = sorted(settings.country_names.keys())
   session['country']   = session["country_avail"][0]
+  session['country']   = 'SEN'
 
   session["ref_period"]   = settings.ref_period
   session["proj_period"]  = settings.proj_period
@@ -329,7 +330,7 @@ def season_page():
     context.update(button_dict[s['language']])
 
     session['location']='season_page'
-    return render_template('season_page.html',**context)
+    return render_template('season_page_'+s['language']+'.html',**context)
 
   except Exception,e: 
     print str(e)
@@ -394,40 +395,91 @@ def merging_page():
 
     print COU._regions
 
-    regions_plot='app/static/images/'+s['country']+'/'+s['region']+'.png'
-    if os.path.isfile(regions_plot)==False:
-      empty_object=COU.selection([s['indicator'],s['dataset'],'ensemble_mean'])[0]
+    empty_object=COU.selection([s['indicator'],s['dataset'],'ensemble_mean'])[0]
+
+    regions_plot='app/static/COU_images/'+s['country']+'/'+s['region']+'.png'
+    if os.path.isfile(regions_plot+'asdas')==False:
+
       asp=(float(len(empty_object.lon))/float(len(empty_object.lat)))**0.5
-      fig,ax=plt.subplots(nrows=1,ncols=1,figsize=(6*asp,6/asp+1)) 
+
+
+      fig = plt.figure(frameon=False)
+      ax = plt.Axes(fig, [0., 0., 1., 1.])
+      fig.set_size_inches(6*asp,6/asp)
+      fig.add_axes(ax)
+
+      # fig,ax=plt.subplots(nrows=1,ncols=1,figsize=(6*asp,6/asp+1)) 
       empty_object.plot_map(to_plot='empty',
         show_region_names=True,
         color_bar=False,
         ax=ax,
-        show_all_adm_polygons=True,
-        #highlight_region=s['region'],
-        title=COU._regions[s['region']])
+        show_all_adm_polygons=True)
+        #title=COU._regions[s['region']])
       patch = PolygonPatch(COU._adm_polygons[s['region']], facecolor='orange', edgecolor=[0,0,0], alpha=0.7, zorder=2)
       ax.add_patch(patch)
+      ax.set_axis_off()
+
       plt.savefig(regions_plot,dpi=300)
+
+      bbox = ax.get_window_extent().transformed(fig.dpi_scale_trans.inverted())
+      width, height = bbox.width, bbox.height
+      
 
     print 'plotted'
 
-    choosable_regions=[reg for reg in s['region_avail'][:] if reg!=s['country']]
+    choosable_regions=[reg for reg in s['region_avail'][:] if reg!=s['country'] and len(reg.split('+'))<2]
     form_region = forms.regionForm(request.form)
-    form_region.regions.choices = zip(choosable_regions,[COU._regions[reg] for reg in choosable_regions])
-    form_region.regions.label = 'Add another region'
+    form_region.regions.choices = zip(choosable_regions,[COU._regions[reg].replace('_',' ') for reg in choosable_regions])
+
+    half_lon_step=abs(np.diff(empty_object.lon.copy(),1)[0]/2)
+    half_lat_step=abs(np.diff(empty_object.lat.copy(),1)[0]/2)
+
+    xmin,xmax=min(empty_object.lon)-half_lon_step,max(empty_object.lon)+half_lon_step
+    ymin,ymax=min(empty_object.lat)-half_lat_step,max(empty_object.lat)+half_lat_step
+
+    x_w=500*asp
+    y_h=500/asp
+
+    clickable=[]
+
+    for region in choosable_regions:
+      poly=COU._adm_polygons[region]
+      if poly.geom_type == 'MultiPolygon':
+        area=[]
+        for subpoly in poly:
+          area.append(subpoly.area)
+        x,y=poly[area.index(max(area))].simplify(0.1).exterior.xy
+
+      elif poly.geom_type == 'Polygon':
+        x,y=poly.simplify(0.1).exterior.xy
+
+      point_list=''
+      for xx,yy in zip(x,y):
+        point_list+=str((xx-xmin)/(xmax-xmin)*x_w)+', '
+        point_list+=str(y_h-(yy-ymin)/(ymax-ymin)*y_h)+', '
+
+      clickable.append({'poly':point_list[:-2],'name':region})
+
+
+    
 
     context = { 
       'form_region':form_region,
       'regions_plot':regions_plot.replace('app/',''),
       'small_region_warning':s['small_region_warning'],
-      'language':get_language_tag()
+      'language':get_language_tag(),
+      'regions':clickable,
+      'x_width':x_w,
+      'y_height':y_h,
     }
+
+    context.update(clickable)
+
     context.update(text_dict[s['language']])
     context.update(button_dict[s['language']])
 
     session['location']='merging_page'
-    return render_template('merging_page.html',**context)
+    return render_template('merging_page_'+s['language']+'.html',**context)
 
   except Exception,e: 
     print str(e)
@@ -441,6 +493,31 @@ def go_to_merging_page():
 def merge_with_region():
   form_region = forms.regionForm(request.form)
   to_merge=form_region.regions.data
+  s=session
+
+  session_cou = open(s['cou_path'], 'rb')
+  COU=cPickle.load( session_cou) ; session_cou.close()  
+
+  if s['region']!=s['country']:
+    s['region']=COU.merge_adm_regions([s['region'],to_merge])
+
+    area=COU.get_region_area(s['region'])['latxlon']*4
+    if area<4:
+      s['small_region_warning']=True
+    else:
+      s['small_region_warning']=False
+
+    session_cou = open(session['cou_path'], 'wb')
+    cPickle.dump(COU, session_cou, protocol=2) ; session_cou.close()  
+
+  else:
+    s['region']=to_merge
+
+  return redirect(url_for('merging_page'))
+
+@app.route('/merge_with_region_click/<region>',  methods=('POST', 'GET',))
+def merge_with_region_click(region):
+  to_merge=region
   s=session
 
   session_cou = open(s['cou_path'], 'rb')

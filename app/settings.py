@@ -55,7 +55,7 @@ all_isos=['AGO', 'DZA', 'EGY', 'GNQ', 'BEN', 'NGA', 'NER', 'ZWE', 'NAM', 'GNB', 
 
 country_names={}
 for iso in all_isos:
-	if os.path.isdir('app/static/images/'+iso)==False:os.system('mkdir app/static/images/'+iso)
+	if os.path.isdir('app/static/COU_images/'+iso)==False:os.system('mkdir app/static/COU_images/'+iso)
 	country_names[iso]=pycountry.countries.get(alpha_3=iso).name
 
 
@@ -185,7 +185,7 @@ text_dict={'en':{
 	'region_txt':'Region for which the transient and annual cycle is presented. You can also ',
 
 	'warming_lvl_h':'Global Warming Level',
-	'warming_lvl_txt_1':'Global warming level above preindustrial for which the regional response is presented. Alternatively you can use ',
+	'warming_lvl_txt_1':'Global warming level above pre-industrial for which the regional response is presented. Alternatively you can use ',
 	'warming_lvl_txt_2':'',
 	'future_warming_lvl':'Future warming level',
 	'ref_warming_lvl':'Reference warming level',

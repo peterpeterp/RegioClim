@@ -145,10 +145,10 @@ h4
 
         <li><a href="#doc_plot_explanation">Presentation of the projections</a></li>
         <ul>
-          <li><a href="#doc_plot_climatology">Climatology</a></li>
+          <li><a href="#doc_plot_climatology">Reference Period Map</a></li>
           <li><a href="#doc_plot_projection">Projection Map</a></li>
-          <li><a href="#doc_plot_transient">Regionally averaged transient</a></li>
-          <li><a href="#doc_plot_annual_cycle">Annual Cycle</a></li>
+          <li><a href="#doc_plot_transient">Regionally Averaged Transient</a></li>
+          <li><a href="#doc_plot_annual_cycle">Regionally Averaged Annual Cycle</a></li>
         </ul>
         <li><a href="#doc_indicators">Climate Indicators</a></li>
         <li><a href="#doc_limitations">Limitations</a></li>
@@ -259,26 +259,28 @@ h4
   <div id="outline-container-1" class="outline-2">
   <h3><span class="section-number-2"> Choice of the scenario </span></h3>
   <div class="outline-text-2" id="text-1">
-  <p>Climate projections are shown for the emission scenario RCP4.5, which is in between the emission scenario meeting leading to a 2°C global warming (RCP2.6) and the buisness as susual scenario (RCP8.5).<br>
-  Instead of using <b>fixed time periods</b> and different emission scnearios, one can look at time periods for which a certain <b>global warming level</b> is reached. For each model we estimate the twenty year time period reaching a certain warming level. When presenting the ensemble mean projections for differences between warming levels, different periods are used for the different models:</p>
+  <p>Climate projections are shown for the emission scenario RCP4.5, which is in between the emission scenario meeting leading to a 2°C global warming above pre-industrial (RCP2.6) and the business as usual scenario (RCP8.5).<br>
+  Instead of using <b>fixed time periods</b> and different emission scenarios, one can look at time periods for which a certain <b>global warming level above pre-industrial</b> is reached. For each model we estimate the twenty year time period reaching a certain warming level. When presenting the ensemble mean projections for differences between warming levels, different periods are used for the different models:</p>
   <div id="LeftPanel" style="width: 40%; height: 100%; float: left; padding-left: 20%; padding-right: 40%;">
       <table class="table">
       <thead>
         <tr>
           <th>Model</th>
-          <th>1.5°C (GMT)</th>
-          <th>2.0°C (GMT)</th>
+          <th>+1.5°C</th>
+          <th>+2.0°C</th>
+          <th>Reference +0.61°C</th>
         </tr>
       </thead>
       <tbody>
-        <tr><td>MPIESM-REMO</td><td>2023-2042</td><td>2054-2073</td></tr>
-        <tr><td>HADGEM2-CCLM4</td><td>2013-2032</td><td>2028-2047</td></tr>
-        <tr><td>ECEARTH-RACMO</td><td>2024-2043</td><td>2046-2065</td></tr>
-        <tr><td>IPSL-RCA</td><td>2019-2038</td><td>2034-2053</td></tr>
+        <tr><td>MPIESM-REMO</td><td>2023-2042</td><td>2054-2073</td><td>1986-2006</td></tr>
+        <tr><td>HADGEM2-CCLM4</td><td>2013-2032</td><td>2028-2047</td><td>1986-2006</td></tr>
+        <tr><td>ECEARTH-RACMO</td><td>2024-2043</td><td>2046-2065</td><td>1986-2006</td></tr>
+        <tr><td>IPSL-RCA</td><td>2019-2038</td><td>2034-2053</td><td>1986-2006</td></tr>
       </tbody>
       </table>
   </div>
   </div>
+
   <p>The warming levels were computed using the <a href="http://wlcalc.climateanalytics.org">Warming Attribution Calculator</a></p>
   </div>
 
@@ -336,6 +338,7 @@ h4
   </ul>
   <p>
   Please find more information about these indicators on <a href='http://etccdi.pacificclimate.org'>http://etccdi.pacificclimate.org</a>.</p>
+  <p>In the current version now drought indicators are included. One can draw basic assumptions about changes in drought risk by analysing monthly precipitation changes in combination with changes in monthly mean temperature assuming that potential evapotranspiration increases with higher temperatures.</p>
   </div></div>
 
 
@@ -346,9 +349,9 @@ h4
 
   <span class=anchor id=doc_plot_climatology></span>
   <div id="outline-container-1" class="outline-2">
-  <h3><span class="section-number-2"> Climatology Map </span></h3>
+  <h3><span class="section-number-2"> Reference Period Map </span></h3>
   <div class="outline-text-2" id="text-1">
-  <p>For each indicator, a map of the climatology is presented. This map is a <a href='#doc_meth_period'>period average</a> over the reference period of the EWEMBI dataset. For temperature indicators, hotter regions are darker than cooler regions. For precipitation indicators, wetter regions are darker than drier regions.</p>
+  <p>For each indicator, a map of the climatology is presented. This map is a <a href='#doc_meth_period'>period average</a> over the reference period for the EWEMBI dataset. For temperature indicators, hotter regions are darker than cooler regions. For precipitation indicators, wetter regions are darker than drier regions.</p>
   </div></div>
 
   <span class=anchor id=doc_plot_projection></span>
@@ -362,14 +365,14 @@ h4
 
   <span class=anchor id=doc_plot_transient></span>
   <div id="outline-container-1" class="outline-2">
-  <h3><span class="section-number-2">Regionally averaged transient</span></h3>
+  <h3><span class="section-number-2">Regionally Averaged Transient</span></h3>
   <div class="outline-text-2" id="text-1">
   <p>For the transient plots, the <a href='#doc_meth_area'>regional average</a> is taken at each time step (grid-points are weighted by the fraction of the grid-point belonging to the region). The evolution of this <a href='#doc_meth_area'>area average</a> is shown for the EWEMBI dataset as well as for RCM projections. The <a href='#doc_meth_ens_mean'>ensemble mean</a> of RCM projections are shown by a thick green line while the model spread is represented by green shading. When choosing a month of the year or a defined season, only the time steps corresponding to the month (months in season) are considered. Results are presented as a 20 year running mean.</p>
   </div></div>
 
   <span class=anchor id=doc_plot_annual_cycle></span>
   <div id="outline-container-1" class="outline-2">
-  <h3><span class="section-number-2"> Annual Cycle </span></h3>
+  <h3><span class="section-number-2">Regionally Averaged Annual Cycle </span></h3>
   <div class="outline-text-2" id="text-1">
   <p>In the upper panel, the annual cycle is shown for the reference period for EWEMBI and RCM simulations. In the lower panel the projected change in the annual cycle is shown. This projected change is computed as the difference between the annual cycle of the projection period and the annual cycle of the reference period. As for the transients the <a href='#doc_meth_area'>regional average</a> is presented. The <a href='#doc_meth_ens_mean'>ensemble mean</a> of RCM projections are shown by a thick green line while the model spread is represented by green shading.</p>
   </div></div>
