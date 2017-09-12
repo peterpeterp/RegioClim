@@ -121,6 +121,9 @@ def index():
   session["season_avail"]   = settings.seasons.keys()
   session["season"]   = 'year'
 
+  session['new_season_name']=''
+  session['new_season_name_auto']=True
+
   session['id']=str(int((time.time()-int(time.time()))*10000))+str(int(random.random()*100000))
   session['cou_path']='app/static/COU_sessions/'+session['id']+'_'+session['country']+'.pkl'
   
@@ -129,6 +132,10 @@ def index():
 
   session["region_avail"]   = [COU._regions.keys()[COU._regions.values().index(name)] for name in sorted(COU._regions.values())]
   session['region']   = session["region_avail"][0]
+  
+  session['new_region_name']=''
+  session['new_region_name_auto']=True
+
 
   session['location']='index'
   return redirect(url_for("choices"))
@@ -156,9 +163,9 @@ def choices():
     print 'loaded session and data '+str(time.time()-start_time)
 
     form_region = forms.regionForm(request.form)
-    s["region_avail"]   = [COU._regions.keys()[COU._regions.values().index(name)] for name in sorted(COU._regions.values())]
-    s['region_avail']=[s['region']]+[reg for reg in s['region_avail'] if reg != s['region']]
-    form_region.regions.choices = zip(s['region_avail'],[COU._regions[reg].replace('_',' ') for reg in s['region_avail']])
+    sorted_regions = [reg for reg in [COU._regions.keys()[COU._regions.values().index(name)] for name in sorted(COU._regions.values())] if reg in s['region_avail']]
+    sorted_regions=[s['region']]+[reg for reg in sorted_regions if (reg != s['region']) & ('+' in reg)]+[reg for reg in sorted_regions if (reg != s['region']) & ('+' not in reg)]
+    form_region.regions.choices = zip(sorted_regions,[COU._regions[reg].replace('_',' ') for reg in sorted_regions])
 
     form_scenario = forms.scenarioForm(request.form)
     form_scenario.scenarios.choices = zip(s['scenario_avail'],s['scenario_avail'])
@@ -316,27 +323,45 @@ def season_page():
   try:
     s=session
 
+    if s['new_season_name']=='' and s['new_season_name_auto']: s['new_season']=[]
+
     form_season = forms.seasonForm(request.form)
     form_season.seasons.choices = zip([str(sea) for sea in range(1,13)],[season_dict[s['language']][str(sea)] for sea in range(1,13)])
 
-    new_season_name='+'.join([season_dict[s['language']][str(sea)] for sea in session['new_season']])
+    form_NewSeason = forms.NewSeasonForm(request.form)
+    form_NewSeason = forms.NewSeasonForm(request.form, season_name=session['new_season_name'])
 
     context = { 
       'form_season':form_season,
-      'new_season_name':new_season_name,
-      'language':get_language_tag()
+      'form_NewSeason':form_NewSeason,
+      'new_season_name':s['new_season_name'],
+      'language':get_language_tag(),
+      'months':[season_dict[s['language']][str(sea)] for sea in range(1,13) if str(sea) in session['new_season']],
     }
     context.update(text_dict[s['language']])
     context.update(button_dict[s['language']])
 
     session['location']='season_page'
+
+    print context
+    print s['new_season']
+
     return render_template('season_page_'+s['language']+'.html',**context)
 
   except Exception,e: 
     print str(e)
     return redirect(url_for("index"))
 
-@app.route('/go_to_season_page')# ,  methods=("POST", )
+@app.route('/given_season_name',  methods=("POST", ))
+def given_season_name():
+  form_NewSeason = forms.NewSeasonForm(request.form)
+  session['new_season_name']=form_NewSeason.season_name.data
+  form_NewSeason = forms.NewSeasonForm(request.form, season_name=session['new_season_name'])
+  session['new_season_name_auto']=False
+
+  return redirect(url_for("season_page"))
+
+@app.route('/go_to_season_page')
 def go_to_season_page():
   session['new_season']=[]
   return redirect(url_for("season_page"))
@@ -346,7 +371,9 @@ def add_month():
   form_season = forms.seasonForm(request.form)
   session['new_season']+=[form_season.seasons.data]
   session['new_season']=sorted(set(session['new_season']))
-  #update_keywords()
+
+  if session['new_season_name_auto']: session['new_season_name']='+'.join([season_dict[session['language']][str(sea)] for sea in range(1,13) if str(sea) in session['new_season']])
+
   return redirect(url_for('season_page'))
 
 @app.route('/save_this_season',  methods=("POST", ))
@@ -372,6 +399,12 @@ def save_this_season():
   index=session['season_avail'].index(session['season'])
   session['season_avail'][index],session['season_avail'][0]=session['season_avail'][0],session['season_avail'][index]
 
+  season_dict['en'][session['season']]=session['new_season_name']
+  season_dict['fr'][session['season']]=session['new_season_name']
+
+  session['new_season_name_auto']=True 
+  session['new_season_name']=''
+
   return redirect(url_for("choices"))
 
 
@@ -393,15 +426,13 @@ def merging_page():
     COU=cPickle.load( session_cou) ; session_cou.close()  
     COU.load_data(quiet=True,filename_filter=s['indicator'],load_mask=False,load_raw=True,load_area_averages=False,load_region_polygons=False)
 
-    print COU._regions
-
     empty_object=COU.selection([s['indicator'],s['dataset'],'ensemble_mean'])[0]
+    asp=(float(len(empty_object.lon))/float(len(empty_object.lat)))**0.5
 
     regions_plot='app/static/COU_images/'+s['country']+'/'+s['region']+'.png'
-    if os.path.isfile(regions_plot+'asdas')==False:
+    if os.path.isfile(regions_plot)==False:
 
-      asp=(float(len(empty_object.lon))/float(len(empty_object.lat)))**0.5
-
+      
 
       fig = plt.figure(frameon=False)
       ax = plt.Axes(fig, [0., 0., 1., 1.])
@@ -415,21 +446,20 @@ def merging_page():
         ax=ax,
         show_all_adm_polygons=True)
         #title=COU._regions[s['region']])
-      patch = PolygonPatch(COU._adm_polygons[s['region']], facecolor='orange', edgecolor=[0,0,0], alpha=0.7, zorder=2)
-      ax.add_patch(patch)
-      ax.set_axis_off()
+
+      if s['region']!=s['country']:
+        patch = PolygonPatch(COU._adm_polygons[s['region']], facecolor='orange', edgecolor=[0,0,0], alpha=0.7, zorder=2)
+        ax.add_patch(patch)
+        ax.set_axis_off()
 
       plt.savefig(regions_plot,dpi=300)
-
-      bbox = ax.get_window_extent().transformed(fig.dpi_scale_trans.inverted())
-      width, height = bbox.width, bbox.height
-      
-
-    print 'plotted'
 
     choosable_regions=[reg for reg in s['region_avail'][:] if reg!=s['country'] and len(reg.split('+'))<2]
     form_region = forms.regionForm(request.form)
     form_region.regions.choices = zip(choosable_regions,[COU._regions[reg].replace('_',' ') for reg in choosable_regions])
+
+    form_NewRegion = forms.NewRegionForm(request.form)
+    form_NewRegion = forms.NewRegionForm(request.form, region_name=session['new_region_name'])
 
     half_lon_step=abs(np.diff(empty_object.lon.copy(),1)[0]/2)
     half_lat_step=abs(np.diff(empty_object.lat.copy(),1)[0]/2)
@@ -461,10 +491,9 @@ def merging_page():
       clickable.append({'poly':point_list[:-2],'name':region})
 
 
-    
-
     context = { 
       'form_region':form_region,
+      'form_NewRegion':form_NewRegion,
       'regions_plot':regions_plot.replace('app/',''),
       'small_region_warning':s['small_region_warning'],
       'language':get_language_tag(),
@@ -485,8 +514,23 @@ def merging_page():
     print str(e)
     return redirect(url_for("index"))
 
-@app.route('/go_to_merging_page',  methods=("POST", ))
-def go_to_merging_page():
+@app.route('/given_region_name',  methods=("POST", ))
+def given_region_name():
+  form_NewRegion = forms.NewRegionForm(request.form)
+  session['new_region_name']=form_NewRegion.region_name.data
+  form_NewRegion = forms.NewRegionForm(request.form, region_name=session['new_region_name'])
+  session['new_region_name_auto']=False
+
+  return redirect(url_for("merging_page"))
+
+# @app.route('/go_to_merging_page',  methods=("POST", ))
+# def go_to_merging_page():
+#   session['region']=session['country']
+#   return redirect(url_for("merging_page"))
+
+@app.route('/clear_selection',  methods=("POST", ))
+def clear_selection():
+  session['region']=session['country']
   return redirect(url_for("merging_page"))
 
 @app.route('/merge_with_region',  methods=('POST', ))
@@ -513,6 +557,8 @@ def merge_with_region():
   else:
     s['region']=to_merge
 
+  if s['new_region_name_auto']:s['new_region_name']=s['region']
+
   return redirect(url_for('merging_page'))
 
 @app.route('/merge_with_region_click/<region>',  methods=('POST', 'GET',))
@@ -538,15 +584,28 @@ def merge_with_region_click(region):
   else:
     s['region']=to_merge
 
+  if s['new_region_name_auto']:s['new_region_name']=s['region']
+
   return redirect(url_for('merging_page'))
 
 @app.route('/save_this_region',  methods=("POST", ))
 def save_this_region():
 
+  session_cou = open(session['cou_path'], 'rb')
+  COU=cPickle.load( session_cou) ; session_cou.close()  
+
+  COU._regions[session['region']]=session['new_region_name']
+
   if session['region'] not in session['region_avail']:
     session['region_avail']+=[session['region']]
     index=session['region_avail'].index(session['region'])
     session['region_avail'][index],session['region_avail'][0]=session['region_avail'][0],session['region_avail'][index]
+
+  session_cou = open(session['cou_path'], 'wb')
+  cPickle.dump(COU, session_cou, protocol=2) ; session_cou.close() 
+
+  session['new_region_name_auto']=True 
+  session['new_region_name']=''
 
   return redirect(url_for("choices"))
 

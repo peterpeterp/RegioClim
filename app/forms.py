@@ -62,3 +62,9 @@ class PeriodField(Form):
   ref_period    = TextField(u'', validators=[Regexp(regex, message="Please use YYYY-YYYY format.")])
   proj_period   = TextField(u'', validators=[Regexp(regex, message="Please use YYYY-YYYY format.")])
 
+class NewRegionForm(Form):
+  region_name    = TextField(u'region', validators=[Required()])
+
+class NewSeasonForm(Form):
+  season_name    = TextField(u'season', validators=[Required()])
+

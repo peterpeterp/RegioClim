@@ -133,9 +133,9 @@ h4
 
         <li><a href="#doc_data_source">Data Sources</a></li>
         <ul>
-          <li><a href="#doc_RCM">Regional Climate Models</a></li>
+          <li><a href="#doc_RCM">Regional Climate Models (RCM)</a></li>
           <li><a href="#doc_ensemble">Choice of the ensemble</a></li>
-          <li><a href="#doc_scenario">Choice of climate scenarios</a></li>
+          <li><a href="#doc_scenario">Choice of emission scenarios</a></li>
           <li><a href="#doc_EWEMBI">EWEMBI (observations and reanalysis)</a></li>
           <li><a href="#doc_bias_correction">Bias Correction</a></li>
           <li><a href="#doc_shapefiles">Regional shapefiles</a></li>
@@ -150,8 +150,6 @@ h4
           <li><a href="#doc_plot_transient">Regionally Averaged Transient</a></li>
           <li><a href="#doc_plot_annual_cycle">Regionally Averaged Annual Cycle</a></li>
         </ul>
-        <li><a href="#doc_indicators">Climate Indicators</a></li>
-        <li><a href="#doc_limitations">Limitations</a></li>
         <li><a href="#doc_tool">Climate Data Tool (Python)</a></li>
         <li><a href="#doc_acknowledgements">Acknowledgements</a></li>
         <li><a href="#doc_references">References</a></li>
@@ -205,9 +203,9 @@ h4
   <div class="outline-text-2" id="text-1">
   <p>
   <ul class=list>
-    <li><b>Small Ensemble: </b>Model projections are shown for the ensemble mean of 4 regional climate models. The choice of the ensemble is documented in <a href=#doc_ensemble>ensemble choice</a>.  </li>
-    <li><b>Precipitation Projections: </b>There is a high uncertainty concerning precipitation projections in most parts of Africa. This a partly due to the sparse network of meteorological stations in most parts of Africa. Observations are required for model calibration </li>
-    <li><b>Performance of models to reproduce extreme events: </b>Although <a href=#doc_bias_correction>bias correction</a> techniques have been applied to overcome systematic biases found in model simulations, for some regions climate change indicators as <a href='#doc_TXx'>hot extremes (TXx)</a> or <a href='#doc_RX1'>wet extremes (RX1day)</a> are over- or under estimated by models. See <a href=#doc_bias_correction>bias correction</a> for more details. </li>
+    <li><b>Small Ensemble: </b>Model projections are shown for the ensemble mean of four regional climate models. We argue that larger ensembles might not improve the projection quality due to biases resulting from reusing the same general circulation models (see <a href=#doc_ensemble>ensemble choice</a>). However, an ensemble of four models is rather small and an additional comparison of our 4-model ensemble to larger ensembles would improve the credibility of our projections. </li>
+    <li><b>Precipitation Projections: </b>Although regional climate models have improved precipitation simulations over Africa, substantial biases remain. This is partly due to the sparse network of meteorological stations in most parts of Africa <a href=#ref_kim2014>(Kim 2014)</a>.</li>
+    <li><b>Performance of models to reproduce extreme events: </b> <a href=#doc_bias_correction>Bias correction</a> techniques have been applied to overcome systematic biases found in model simulations. However for some regions, climate change indicators as <a href='#doc_TXx'>hot extremes (TXx)</a> or <a href='#doc_RX1'>wet extremes (RX1day)</a> are over- or under estimated by models. See <a href=#doc_bias_correction>bias correction</a> for more details. </li>
   </ul>  
   </p>
   </div></div>
@@ -257,7 +255,7 @@ h4
 
   <span class=anchor id=doc_scenario></span>
   <div id="outline-container-1" class="outline-2">
-  <h3><span class="section-number-2"> Choice of the scenario </span></h3>
+  <h3><span class="section-number-2"> Choice of the emission scenario </span></h3>
   <div class="outline-text-2" id="text-1">
   <p>Climate projections are shown for the emission scenario RCP4.5, which is in between the emission scenario meeting leading to a 2°C global warming above pre-industrial (RCP2.6) and the business as usual scenario (RCP8.5).<br>
   Instead of using <b>fixed time periods</b> and different emission scenarios, one can look at time periods for which a certain <b>global warming level above pre-industrial</b> is reached. For each model we estimate the twenty year time period reaching a certain warming level. When presenting the ensemble mean projections for differences between warming levels, different periods are used for the different models:</p>
@@ -382,8 +380,8 @@ h4
   <div id="outline-container-1" class="outline-2">
   <h2><span class="section-number-2"> Climate Data Tool (Python) </span></h2>
   <div class="outline-text-2" id="text-1">
-  <p>This website is based on a climate data tool developed for the analysis of regional climate information. The core functionality of the tool is to compute area-averages from gridded data. For each grid-cell, the tool computes the fraction of the grid-cell area which lies within a certain region. This fraction can be used as weighting factor for area averages. Additionally, several useful functionalities such as plot routines, evaluation of model agreement, possibility to merge regions, seasonal averages etc. are included.<br>
-  We encourage the user to use this tool for more sophisticated analysis. The open source code and a documentation of the tool can be found on github/wo_denn?/</p>
+  <p>This website is based on a climate data tool developed for the analysis of regional climate information. Besides the functions to compute <a href='#doc_meth_period'>period averages</a>, <a href='#doc_meth_period'>period averages</a> and <a href='#doc_meth_ens_mean'>ensemble means</a> the tool has several additional that could be useful for for more sophisticated analysis.<br>
+  The open source code and a documentation of the tool will be published soon.</p>
   </div></div>
 
   <span class=anchor id=doc_acknowledgements></span>
@@ -401,6 +399,7 @@ h4
   <span class=anchor id=ref_hempel2013></span>Hempel, Sabrina, et al. "A trend-preserving bias correction–the ISI-MIP approach." Earth System Dynamics 4.2 (2013): 219-236.<br>
   <span class=anchor id=ref_lange2016></span>Lange, Stefan (2016): EartH2Observe, WFDEI and ERA-Interim data Merged and Bias-corrected for ISIMIP (EWEMBI). GFZ Data Services. http://doi.org/10.5880/pik.2016.004<br>
   <span class=anchor id=ref_sippel2016></span>Sippel, Sebastian, et al. "A novel bias correction methodology for climate impact simulations." Earth System Dynamics 7.1 (2016): 71.<br>
+  <span class=anchor id=ref_kim2014></span>Kim, J., et al. "Evaluation of the CORDEX-Africa multi-RCM hindcast: systematic model errors." Climate dynamics 42.5-6 (2014): 1189-1202.<br>
   </small></p>
   </div></div>
 

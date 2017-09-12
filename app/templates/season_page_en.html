@@ -17,13 +17,16 @@
 </form>
 </div>
 
-<div id="LeftPanel" style="width: 10%; height: 100%; float: left;">
-  <p class=white>bla</p>
-</div>
 
-<div id="LeftPanel" style="width: 50%; height: 100%; float: left;">
-<p class=white>bla<br>bla<br></p>
-  {{new_season_name}}
+<div id="LeftPanel" style="width: 50%; height: 100%; float: left; padding-left: 10%; padding-top: 80px;">
+  <form method="POST" action="/given_season_name">
+  	{% for mon in months %}
+  	{{mon}}<br>
+  	{% endfor %}
+  	<br><br>
+    Name {{ form_NewSeason.season_name(size=10) }}
+   <button type="submit" class="btn">Save Name</button>
+ </form>
 </div>
 
 </div>

@@ -50,7 +50,7 @@
   <form method="POST" action="/season_choice" id="season_id">
   <h3>Time Scale</h3>
   <p class=small>Select annual or monthly time scale or 
-  <a href="go_to_season_page">{{define_season}}</a> 
+  <a href="season_page">{{define_season}}</a> 
   {{ form_season.seasons(onchange="change_season();") }}
   </form>
 
@@ -83,7 +83,7 @@
         </span> </h3>
         </caption>
         <IMG SRC={{ EWEMBI_plot }} ALT=' ' WIDTH=100%></IMG>
-        <figcaption class=small>{{indicator}} averaged over the reference period {{refP_clim_longname}} {{season_add_on}}. The climatology of the reference period is based on the <a href=documentation#doc_EWEMBI>EWEMBI</a> dataset.</figcaption>
+        <figcaption class=small>{{indicator}}{{season_add_on}} averaged over the reference period {{refP_clim_longname}}. The climatology of the reference period is based on the <a href=documentation#doc_EWEMBI>EWEMBI</a> dataset.</figcaption>
       </figure>
     {% endif %} 
   </div>
@@ -98,7 +98,7 @@
         </span> </h3>
         </caption>
         <IMG SRC={{ Projection_plot }} ALT=' ' WIDTH=100%></IMG>
-      <figcaption class=small>Projected change in {{indicator}} for {{proP_longname}} compared to the reference period {{refP_longname}}{{season_add_on}}. Here the <a href=documentation#doc_meth_ens_mean>ensemble mean</a> is displayed, grid-cells for which a <a href=documentation#doc_meth_disagreement>model-disagreement</a> is found are colored in gray. The projections are based on the <a href=documentation#doc_scenario>emission scenario RCP4.5</a>.</figcaption>
+      <figcaption class=small>Projected change in {{indicator}}{{season_add_on}} for {{proP_longname}} compared to the reference period {{refP_longname}}. Here the <a href=documentation#doc_meth_ens_mean>ensemble mean</a> is displayed, grid-cells for which a <a href=documentation#doc_meth_disagreement>model-disagreement</a> is found are colored in gray. The projections are based on the <a href=documentation#doc_scenario>emission scenario RCP4.5</a>.</figcaption>
       </figure>
     {% endif %} 
   </div>
