@@ -287,14 +287,14 @@ h4
   <div id="outline-container-1" class="outline-2">
   <h3><span class="section-number-2">EWEMBI (observations and reanalysis)</span></h3>
   <div class="outline-text-2" id="text-1">
-  <p>The EWEMBI is a product of several reanalysis and observation datasets <a href=#ref_lange2016>(Lange 2016)</a>. It has global coverage on a 0.5°x0.5° grid. EWEMBI data is used for bias correction as well as for the representation of the reference climatology. Please find more information on <a href=https://www.isimip.org/gettingstarted/details/27>https://www.isimip.org/gettingstarted/details/27/</a></p>
+  <p>EWEMBI is a product of several reanalysis and observation datasets <a href=#ref_lange2016>(Lange 2016)</a>. It has global coverage on a 0.5°x0.5° grid. EWEMBI data is used for bias correction as well as for the representation of the <a href=#doc_plot_climatology>reference climatology</a>. Please find more information on <a href=https://www.isimip.org/gettingstarted/details/27>https://www.isimip.org/gettingstarted/details/27/</a></p>
   </div></div>
 
   <span class=anchor id=doc_bias_correction></span>
   <div id="outline-container-1" class="outline-2">
   <h3><span class="section-number-2"> Bias Correction </span></h3>
   <div class="outline-text-2" id="text-1">
-  <p>A trend-preserving bias correction technique is applied to the RCM climate projections. This bias correction technique adjusts climate simulations to observations over a reference periods without influencing projected trends <a href=#ref_hempel2013>(Hempel 2013)</a>. The EWEMBI dataset (described above) is used as reference for the bias correction <a href=#ref_lange2016>(Lange 2016)</a>. </p>
+  <p>A trend-preserving bias correction technique is applied to the RCM climate projections. This bias correction technique adjusts climate simulations to a reference dataset (<a href=doc_EWEMBI>EWEMBI</a>) over a reference periods without influencing projected trends <a href=#ref_hempel2013>(Hempel 2013)</a>.</p>
   <div id="LeftPanel" style="width: 95%; height: 100%; float: left; padding-left: 5%; padding-right: 0%;">
     <figure>
     <IMG SRC='static/images/bias_correction/tas_transients.png ' ALT=' ' WIDTH=350 HEIGHT=350></IMG>
@@ -303,11 +303,11 @@ h4
     <IMG SRC='static/images/bias_correction/RX1_transients.png ' ALT=' ' WIDTH=350 HEIGHT=350></IMG>
     <IMG SRC='static/images/bias_correction/RX5_transients.png ' ALT=' ' WIDTH=350 HEIGHT=350></IMG>
     <IMG SRC='static/images/bias_correction/transients_legend.png ' ALT=' ' WIDTH=350 HEIGHT=350></IMG>
-    <figcaption><b>Fig 1</b> Climate model projections for Senegal. Non-bias corrected <a href='#doc_RCM'>regional climate models (RCM)</a> in grey, bias corrected <a href='#doc_RCM'>regional climate models (RCM)</a> in magenta, <a href='#doc_EWEMBI'>EWEMBI</a> in black and bias corrected global circulation models (GCM) in green. The GCM ensemble includes the five models used as input for the ISIMIP project (see <a href='https://www.isimip.org/gettingstarted/#input-data-bias-correction'>https://www.isimip.org</a>). The ensemble mean is represented by the thick line while the ensemble spread is shown by the shading. The data has been smoothed with a 20 year running mean (see <a href='#doc_plot_transient'>transient plots</a> for more information). </figcaption>
+    <figcaption><b>Fig 1</b> Climate model projections for Senegal. Non-bias corrected <a href='#doc_RCM'>regional climate models (RCM)</a> in grey, bias corrected <a href='#doc_RCM'>regional climate models (RCM)</a> in magenta, <a href='#doc_EWEMBI'>EWEMBI</a> in black and bias corrected global circulation models (GCM) in green. The GCM ensemble includes the five models used as input for the ISIMIP project (see <a href='https://www.isimip.org/gettingstarted/#input-data-bias-correction'>https://www.isimip.org</a>). The ensemble mean is represented by the thick line while the ensemble spread is shown by the shading. The data has been smoothed with a 20 year running mean (see <a href='#doc_plot_transient'>regionally averaged transients</a>). </figcaption>
     </figure>
   </div>
-  <p>For monthly mean temperature and monthly precipitation bias correction largely improves the quality of simulations. The model spread is reduced and the ensemble mean is close to the <a href='#doc_EWEMBI'>EWEMBI</a> data. Note that the used bias correction method does not aim at correcting trends towards observations and therefore the difference in trends between EWEMBI and the model data is not related to the bias correction technique but to the limited quality of climate models.</p>
-  <p>For extreme values as <a href=#doc_TXx>hot extremes (TXx)</a>, <a href=#doc_RX1>wet extremes (RX1day)</a> and <a href=#doc_RX5>5day wet extremes (RX5day)</a> differences between <a href='#doc_EWEMBI'>EWEMBI</a> data and model projections remain after bias correction. Bias correction mainly reduces the model spread but partly fails to correct the ensemble mean towards <a href='#doc_EWEMBI'>EWEMBI</a>. Shortcomings of the used bias correction method for weather extremes have been reported by Sippel et al. <a href=#ref_sippel2016>(Sippel 2016)</a>.
+  <p>For monthly mean temperature and monthly precipitation bias correction largely improves the quality of simulations. The model spread is reduced and the <a href=#doc_meth_ens_mean>ensemble mean</a> is close to the <a href='#doc_EWEMBI'>EWEMBI</a> data. Note that the used bias correction method does not aim at correcting trends towards observations and therefore the difference in trends between <a href='#doc_EWEMBI'>EWEMBI</a> and the model data is not related to the bias correction technique but to the limited quality of climate models.</p>
+  <p>For extreme values as <a href=#doc_TXx>hot extremes (TXx)</a>, <a href=#doc_RX1>wet extremes (RX1day)</a> and <a href=#doc_RX5>5day wet extremes (RX5day)</a> differences between <a href='#doc_EWEMBI'>EWEMBI</a> data and model projections remain after bias correction. Bias correction mainly reduces the model spread but partly fails to correct the <a href=#doc_meth_ens_mean>ensemble mean</a> towards <a href='#doc_EWEMBI'>EWEMBI</a>. Shortcomings of the used bias correction method for weather extremes have been reported by Sippel et al. <a href=#ref_sippel2016>(Sippel 2016)</a>.
   </p>
   </div></div>
 
@@ -349,7 +349,7 @@ h4
   <div id="outline-container-1" class="outline-2">
   <h3><span class="section-number-2"> Reference Period Map </span></h3>
   <div class="outline-text-2" id="text-1">
-  <p>For each indicator, a map of the climatology is presented. This map is a <a href='#doc_meth_period'>period average</a> over the reference period for the EWEMBI dataset. For temperature indicators, hotter regions are darker than cooler regions. For precipitation indicators, wetter regions are darker than drier regions.</p>
+  <p>For each indicator, a map of the climatology is presented. This map is a <a href='#doc_meth_period'>period average</a> over the reference period for the <a href='#doc_EWEMBI'>EWEMBI</a> dataset. For temperature indicators, hotter regions are darker than cooler regions. For precipitation indicators, wetter regions are darker than drier regions.</p>
   </div></div>
 
   <span class=anchor id=doc_plot_projection></span>
@@ -365,14 +365,14 @@ h4
   <div id="outline-container-1" class="outline-2">
   <h3><span class="section-number-2">Regionally Averaged Transient</span></h3>
   <div class="outline-text-2" id="text-1">
-  <p>For the transient plots, the <a href='#doc_meth_area'>regional average</a> is taken at each time step (grid-points are weighted by the fraction of the grid-point belonging to the region). The evolution of this <a href='#doc_meth_area'>area average</a> is shown for the EWEMBI dataset as well as for RCM projections. The <a href='#doc_meth_ens_mean'>ensemble mean</a> of RCM projections are shown by a thick green line while the model spread is represented by green shading. When choosing a month of the year or a defined season, only the time steps corresponding to the month (months in season) are considered. Results are presented as a 20 year running mean.</p>
+  <p>For the transient plots, the <a href='#doc_meth_area'>regional average</a> is taken at each time step (grid-points are weighted by the fraction of the region covered by the grid-cell). The evolution of this <a href='#doc_meth_area'>area average</a> is shown for <a href='#doc_RCM'>RCM projections</a>. The <a href='#doc_meth_ens_mean'>ensemble mean</a> of RCM projections are shown by a thick green line while the model spread is represented by green shading. When choosing a month of the year or a defined season, only the time steps corresponding to the month (months in season) are considered. Results are presented as a 20 year running mean.</p>
   </div></div>
 
   <span class=anchor id=doc_plot_annual_cycle></span>
   <div id="outline-container-1" class="outline-2">
   <h3><span class="section-number-2">Regionally Averaged Annual Cycle </span></h3>
   <div class="outline-text-2" id="text-1">
-  <p>In the upper panel, the annual cycle is shown for the reference period for EWEMBI and RCM simulations. In the lower panel the projected change in the annual cycle is shown. This projected change is computed as the difference between the annual cycle of the projection period and the annual cycle of the reference period. As for the transients the <a href='#doc_meth_area'>regional average</a> is presented. The <a href='#doc_meth_ens_mean'>ensemble mean</a> of RCM projections are shown by a thick green line while the model spread is represented by green shading.</p>
+  <p>In the upper panel, the annual cycle is shown for the reference period for <a href='#doc_EWEMBI'>EWEMBI</a> and <a href='#doc_RCM'>RCM projections</a>. In the lower panel the projected change in the annual cycle is shown. This projected change is computed as the difference between the annual cycle of the projection period and the annual cycle of the reference period. As for the transients the <a href='#doc_meth_area'>regional average</a> is presented. The <a href='#doc_meth_ens_mean'>ensemble mean</a> of RCM projections are shown by a thick green line while the model spread is represented by green shading.</p>
   </div></div>
 
 
