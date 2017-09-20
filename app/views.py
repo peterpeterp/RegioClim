@@ -18,7 +18,7 @@
 # along with wacalc; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-import os,glob,sys,time,random,cPickle
+import os,glob,sys,time,random,cPickle,string
 from app import app
 from flask import redirect, render_template, url_for, request, flash, get_flashed_messages, g, session, jsonify, Flask, send_from_directory
 from collections import OrderedDict
@@ -174,7 +174,7 @@ def choices():
     form_dataset.datasets.choices = zip(s['dataset_avail'],s['dataset_avail'])
 
     form_indicator = forms.indicatorForm(request.form)
-    form_indicator.indicators.choices = zip(s['indicator_avail'],[indicator_dict[lang][ind] for ind in s['indicator_avail']])
+    form_indicator.indicators.choices = zip(s['indicator_avail'],[indicator_dict[lang][ind][0].upper()+indicator_dict[lang][ind][1:] for ind in s['indicator_avail']])
 
     form_warming_lvl = forms.warming_lvlForm(request.form)
     s['warming_lvl_avail']=[warming_lvl_dict[lang].keys()[warming_lvl_dict[lang].values().index(name)] for name in sorted(warming_lvl_dict[lang].values())]
@@ -231,7 +231,7 @@ def choices():
       'proP_longname':proP_longname,
       'region':region,
       'lang':lang,
-      'indicator_label':indicator_label,
+      'indicator_label':indicator_label[0].upper()+indicator_label[1:],
       'season_dict':season_dict,
       'highlight_region':region,
       'out_format':'_small.png'
@@ -533,10 +533,7 @@ def clear_selection():
   session['region']=session['country']
   return redirect(url_for("merging_page"))
 
-@app.route('/merge_with_region',  methods=('POST', ))
-def merge_with_region():
-  form_region = forms.regionForm(request.form)
-  to_merge=form_region.regions.data
+def merge_with_region(to_merge):
   s=session
 
   session_cou = open(s['cou_path'], 'rb')
@@ -545,47 +542,31 @@ def merge_with_region():
   if s['region']!=s['country']:
     s['region']=COU.merge_adm_regions([s['region'],to_merge])
 
-    area=COU.get_region_area(s['region'])['latxlon']*4
-    if area<4:
-      s['small_region_warning']=True
-    else:
-      s['small_region_warning']=False
-
-    session_cou = open(session['cou_path'], 'wb')
+    session_cou = open(s['cou_path'], 'wb')
     cPickle.dump(COU, session_cou, protocol=2) ; session_cou.close()  
-
   else:
     s['region']=to_merge
 
+  area=COU.get_region_area(s['region'])['latxlon']*4
+  if area<4:
+    s['small_region_warning']=True
+  else:
+    s['small_region_warning']=False
+
   if s['new_region_name_auto']:s['new_region_name']=s['region']
 
+  
+
+
+@app.route('/merge_with_region_from_form',  methods=('POST', ))
+def merge_with_region_from_form():
+  form_region = forms.regionForm(request.form)
+  merge_with_region(form_region.regions.data)
   return redirect(url_for('merging_page'))
 
 @app.route('/merge_with_region_click/<region>',  methods=('POST', 'GET',))
 def merge_with_region_click(region):
-  to_merge=region
-  s=session
-
-  session_cou = open(s['cou_path'], 'rb')
-  COU=cPickle.load( session_cou) ; session_cou.close()  
-
-  if s['region']!=s['country']:
-    s['region']=COU.merge_adm_regions([s['region'],to_merge])
-
-    area=COU.get_region_area(s['region'])['latxlon']*4
-    if area<4:
-      s['small_region_warning']=True
-    else:
-      s['small_region_warning']=False
-
-    session_cou = open(session['cou_path'], 'wb')
-    cPickle.dump(COU, session_cou, protocol=2) ; session_cou.close()  
-
-  else:
-    s['region']=to_merge
-
-  if s['new_region_name_auto']:s['new_region_name']=s['region']
-
+  merge_with_region(region)
   return redirect(url_for('merging_page'))
 
 @app.route('/save_this_region',  methods=("POST", ))
@@ -705,6 +686,8 @@ def region_choice():
     #COU=COUs[session['country']]
     session_cou = open(session['cou_path'], 'rb')
     COU=cPickle.load( session_cou) ; session_cou.close()
+    if session['region']==session['country']:  
+      session['small_region_warning']=False
     if session['region']!=session['country']:  
       area=COU.get_region_area(session['region'])['latxlon']*4
       if area<4:

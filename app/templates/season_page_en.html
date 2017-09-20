@@ -13,7 +13,7 @@
   </form>
 
 <form method="POST" action="/save_this_season"  onsubmit="save_this_season()" id="save_season_id">
-  <button type="submit" class="btn">{{save_season}}</button>
+  <button type="submit" class="btn">Save this season</button>
 </form>
 </div>
 
@@ -24,7 +24,7 @@
   	{{mon}}<br>
   	{% endfor %}
   	<br><br>
-    Name {{ form_NewSeason.season_name(size=10) }}
+    Name {{ form_NewSeason.season_name(size=10) }}<br>
    <button type="submit" class="btn">Save Name</button>
  </form>
 </div>

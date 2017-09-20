@@ -30,17 +30,17 @@
 {% if use_periods==1 %}
   <form method="POST" action="/periodchoice" onsubmit="period_change()" id="period_id">
   <h3>{{ period_h }}</h3>
-  <p class=small>Time period for which projections are shown. Alternatively you can select  
+  <p class=small>Time periods for which projections are shown. Alternatively you can select  
   <a href="switch_to_periods">{{use_periods_1}}</a>  
   {{ period_txt_2 }} <a href="documentation#doc_scenario"><IMG SRC='static/images/question-mark-button.png' ALT=' ' WIDTH=12 HEIGHT=12></IMG></a></p>
-    {{ ref_period }} {{ form_period.ref_period(size=10) }}
+    Reference Period{{ form_period.ref_period(size=10) }}
       {% if ref_period_warning=='small' %}<p class=warn_txt><b>Warning: </b>We suggest to select periods of at least 20 years!</p>{% endif %}  
       {% if ref_period_warning=='strange' %}<p class=warn_txt><b>Warning: </b>The first year of the period should be earlier than the last year!</p>{% endif %}   
       {% if ref_period_warning=='out_range' %}<p class=warn_txt><b>Warning: </b>Please choose a reference period lying within 1979-2005!</p>{% endif %}   
-    {{ proj_period }} {{ form_period.proj_period(size=10 ) }}
+    Projection Period{{ form_period.proj_period(size=10 ) }}
       {% if proj_period_warning=='small' %}<p class=warn_txt><b>Warning: </b>We suggest to select periods of at least 20 years!</p>{% endif %}   
       {% if proj_period_warning=='strange' %}<p class=warn_txt><b>Warning: </b>The first year of the period should be earlier than the last year!</p>{% endif %}   
-      {% if proj_period_warning=='out_range' %}<p class=warn_txt><b>Warning: </b>Please choose a reference period lying within 1979-2005!</p>{% endif %}   
+      {% if proj_period_warning=='out_range' %}<p class=warn_txt><b>Warning: </b>Please choose a projection period lying within 1950-2099!</p>{% endif %}   
   <button type="submit" class="btn">{{select_periods}}</button>
   </form>
 {% endif %}  
@@ -49,20 +49,17 @@
  
   <form method="POST" action="/season_choice" id="season_id">
   <h3>Time Scale</h3>
-  <p class=small>Select annual or monthly time scale or 
-  <a href="season_page">{{define_season}}</a> 
+  <p class=small>Select annual or monthly time scale or <a href="season_page">define a season</a>.</p>
   {{ form_season.seasons(onchange="change_season();") }}
   </form>
 
 
   <form method="POST" action="/region_choice" id="region_id">
   <h3>Administrative Region <a href="documentation#doc_shapefiles"><IMG SRC='static/images/question-mark-button.png' ALT=' ' WIDTH=12 HEIGHT=12></IMG></a></h3>
-  <p class=small>Region for which the transient and annual cycle is presented. You can also 
-  <a href="merging_page">{{merge_regions}}</a>
-  </p>
+  <p class=small>Region for which the transient and annual cycle is presented. You can also <a href="merging_page">merge regions</a>.</p>
   {{ form_region.regions(onchange="change_region();") }}
   {% if small_region_warning==True %}
-  <p class=warn_txt><b>{{ warning }}</b>{{ warning_txt }}
+  <p class=warn_txt><b>Warning: </b>{{ warning_txt }}
   <a href="merging_page"><font color="BlueViolet">{{merge_regions}}</font></a></p>
   {% endif %}
   <IMG SRC={{ overview_plot }} ALT=' ' WIDTH=350 HEIGHT=350></IMG>
@@ -75,7 +72,7 @@
   <div id="LeftPanel" style="width: 50%; height: 100%; float: left;">
     {% if EWEMBI_plot!='no_plot' %} 
       <figure>
-        <caption><h3>Referecnce Period
+        <caption><h3>Reference Period
         <a href="documentation#doc_plot_climatology"><IMG SRC='static/images/question-mark-button.png' ALT=' ' WIDTH=12 HEIGHT=12></IMG></a>
         <span style="float:right;"> 
           <a class="label label-primary" href="/prepare_for_download/EWEMBI_plot**_large.png" target="_blank"  style="margin-right: 5px;">png</a>
@@ -83,7 +80,7 @@
         </span> </h3>
         </caption>
         <IMG SRC={{ EWEMBI_plot }} ALT=' ' WIDTH=100%></IMG>
-        <figcaption class=small>{{indicator}}{{season_add_on}} averaged over the reference period {{refP_clim_longname}}. The climatology of the reference period is based on the <a href=documentation#doc_EWEMBI>EWEMBI</a> dataset.</figcaption>
+        <figcaption class=small>{{indicator[0].upper()+indicator[1:]}}{{season_add_on}} averaged over the reference period {{refP_clim_longname}}. This map is based on the <a href=documentation#doc_EWEMBI>EWEMBI</a> dataset.</figcaption>
       </figure>
     {% endif %} 
   </div>
@@ -98,7 +95,7 @@
         </span> </h3>
         </caption>
         <IMG SRC={{ Projection_plot }} ALT=' ' WIDTH=100%></IMG>
-      <figcaption class=small>Projected change in {{indicator}}{{season_add_on}} for {{proP_longname}} compared to the reference period {{refP_longname}}. Here the <a href=documentation#doc_meth_ens_mean>ensemble mean</a> is displayed, grid-cells for which a <a href=documentation#doc_meth_disagreement>model-disagreement</a> is found are colored in gray. The projections are based on the <a href=documentation#doc_scenario>emission scenario RCP4.5</a>.</figcaption>
+      <figcaption class=small>Projected change in {{indicator}}{{season_add_on}} for {{proP_longname}} compared to the reference period {{refP_longname}}. Here the <a href=documentation#doc_meth_ens_mean>ensemble mean</a> of <a href=documentation#doc_RCM>regional climate model</a> projections is displayed. Grid-cells for which a <a href=documentation#doc_meth_disagreement>model-disagreement</a> is found are colored in gray. The projections are based on the <a href=documentation#doc_scenario>emission scenario RCP4.5</a>.</figcaption>
       </figure>
     {% endif %} 
   </div>
@@ -132,7 +129,7 @@
         </span> </h3>
         </caption>
         <IMG SRC={{ annual_cycle_plot }} ALT=' ' WIDTH=100%></IMG>
-      <figcaption class=small>Top: Annual cycle of {{indicator}} for the period {{refP_clim_longname}}. Bottom: Changes in the annual cycle projected for {{proP_longname}} compared to the reference period {{refP_longname}} (bottom). <a href=documentation#doc_EWEMBI>EWEMBI</a> data is shown in black, <a href=documentation#doc_RCM>RCM</a> simulations in green. The line represents the <a href=documentation#doc_meth_ens_mean>ensemble mean</a> while the shaded area represents the model spread. The projections are based on the <a href=documentation#doc_scenario>emission scenario RCP4.5</a>.</figcaption>
+      <figcaption class=small>Top: Annual cycle of {{indicator}} for the period {{refP_clim_longname}}. Bottom: Changes in annual cycle projected for {{proP_longname}} compared to the reference period {{refP_longname}}. <a href=documentation#doc_EWEMBI>EWEMBI</a> data is shown in black, <a href=documentation#doc_RCM>regional climate model</a> simulations in green. The green line represents the <a href=documentation#doc_meth_ens_mean>ensemble mean</a> while the shaded area represents the model spread. The projections are based on the <a href=documentation#doc_scenario>emission scenario RCP4.5</a>.</figcaption>
       </figure>
     {% endif %} 
   </div>

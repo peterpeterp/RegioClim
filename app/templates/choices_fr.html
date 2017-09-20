@@ -1,26 +1,18 @@
 {% extends "index.html" %}
 {% block content %}
 
-<div id="loading"><div id="overlay"></div><div id="overlay_image"></div></div>
-
-
-
-
+<div id="loading"><div id="overlay"></div><div id='overlay_text'><h1>Loading ... </h1></div></div>
 <div id="content">
 
 <div id="LeftPanel" style="width: 20%; height: 100%; float: left;">
 
   <form method="POST" action="/country_choice" id="country_id">
-  <h3>{{ country_h }}</h3>
-  <p class=small>{{ country_txt }}</p>
+  <h3>Pays</h3>
   {{ form_country.countrys(onchange="change_country();") }}
   </form>
 
   <form method="POST" action="/indicator_choice" id="indicator_id">
-  <h3>{{ indicator_h }} <a href="documentation#doc_indicators"><IMG SRC='static/images/question-mark-button.png' ALT=' ' WIDTH=12 HEIGHT=12></IMG></a></h3>
-  <!-- <p class=small>{{ indicator_txt }} -->
-  <!-- <a href="documentation#doc_indicators">here</a> -->
-  </p>
+  <h3>Indicateur Climatique <a href="documentation#doc_indicators"><IMG SRC='static/images/question-mark-button.png' ALT=' ' WIDTH=12 HEIGHT=12></IMG></a></h3>
   {{ form_indicator.indicators(onchange="change_indicator();") }}
   <a class="label label-primary" href="/prepare_for_download/get_data**bla" target="_blank"  style="margin-right: 5px;">{{download_data }}</a>
   </form>
@@ -30,23 +22,28 @@
 
 {% if use_periods==0 %}
   <form method="POST" action="/warming_lvl_choice" id="warming_lvl_id">
-  <h3>{{ warming_lvl_h }} <a href="documentation#doc_scenario"><IMG SRC='static/images/question-mark-button.png' ALT=' ' WIDTH=12 HEIGHT=12></IMG></a></h3>
-  <p class=small>{{ warming_lvl_txt_1 }}
-  <a href="switch_to_periods">{{use_periods_0}}</a>
-  {{ warming_lvl_txt_2 }}</p>
-  {{ future_warming_lvl }}<br> {{ form_warming_lvl.warming_lvls(onchange="change_warming_lvl();") }}
-  {{ ref_warming_lvl }}<br> {{ form_warming_lvl_ref.warming_lvl_refs(onchange="change_warming_lvl();") }}
+  <h3>Niveau de Réchauffement Global <a href="documentation#doc_scenario"><IMG SRC='static/images/question-mark-button.png' ALT=' ' WIDTH=12 HEIGHT=12></IMG></a></h3>
+  <p class=small>Niveau de réchauffement global au-dessus des niveaux préindustriels pour lesquelles les projections climatiques régionale sont présentées. Alternativement vous pouvez choisir des
+  <a href="switch_to_periods">périodes temporelles fixes</a></p>
+  Niveau de réchauffement future<br> {{ form_warming_lvl.warming_lvls(onchange="change_warming_lvl();") }}
+  Niveau de réchauffement de référence<br> {{ form_warming_lvl_ref.warming_lvl_refs(onchange="change_warming_lvl();") }}
   </form>
 {% endif %}
 
 {% if use_periods==1 %}
   <form method="POST" action="/periodchoice" onsubmit="period_change()" id="period_id">
-  <h3>{{ period_h }}</h3>
-  <p class=small>{{ period_txt_1 }} 
-  <a href="switch_to_periods">{{use_periods_1}}</a>  
-  {{ period_txt_2 }} <a href="documentation#doc_scenario"><IMG SRC='static/images/question-mark-button.png' ALT=' ' WIDTH=12 HEIGHT=12></IMG></a></p>
-      {{ ref_period }} {{ form_period.ref_period(size=10) }}
-      {{ proj_period }} {{ form_period.proj_period(size=10 ) }}
+  <h3>Période de Projection </h3>
+  <p class=small>Périodes temporelles pour lesquelles les projections sont présentées. Alternativement vous pouvez choisir un 
+  <a href="switch_to_periods">niveau de réchauffement global</a>  pour lequel la projection climatique régionale sera présentée 
+  <a href="documentation#doc_scenario"><IMG SRC='static/images/question-mark-button.png' ALT=' ' WIDTH=12 HEIGHT=12></IMG></a></p>
+      Période de Référence{{ form_period.ref_period(size=10) }}
+      {% if ref_period_warning=='small' %}<p class=warn_txt><b>Attention: </b>Nous suggérons d'utiliser des périodes d'au moins 20 années!</p>{% endif %}  
+      {% if ref_period_warning=='strange' %}<p class=warn_txt><b>Attention: </b>La première année de la période doit être avant la seconde année!?!</p>{% endif %}   
+      {% if ref_period_warning=='out_range' %}<p class=warn_txt><b>Attention: </b>Veuillez choisir une période de référence entre 1979 et 2005!</p>{% endif %}   
+      Période de Projection{{ form_period.proj_period(size=10 ) }}
+      {% if ref_period_warning=='small' %}<p class=warn_txt><b>Attention: </b>Nous suggérons d'utiliser des périodes d'au moins 20 années!</p>{% endif %}  
+      {% if ref_period_warning=='strange' %}<p class=warn_txt><b>Attention: </b>La première année de la période doit être avant la seconde année!?!</p>{% endif %}   
+      {% if ref_period_warning=='out_range' %}<p class=warn_txt><b>Attention: </b>Veuillez choisir une période de projection entre 1950 et 2099!</p>{% endif %}   
     <button type="submit" class="btn">{{select_periods}}</button>
   </form>
 {% endif %}  
@@ -54,21 +51,18 @@
 
  
   <form method="POST" action="/season_choice" id="season_id">
-  <h3>{{ time_scale_h }}</h3>
-  <p class=small>{{ time_scale_txt }}
-  <a href="go_to_season_page">{{define_season}}</a> 
+  <h3>Échelle Temporelle</h3>
+  <p class=small>Choisissez annuel, mensuel ou <a href="go_to_season_page">définissez une saison</a>.</p> 
   {{ form_season.seasons(onchange="change_season();") }}
   </form>
 
 
   <form method="POST" action="/region_choice" id="region_id">
-  <h3>{{ region_h }} <a href="documentation#doc_shapefiles"><IMG SRC='static/images/question-mark-button.png' ALT=' ' WIDTH=12 HEIGHT=12></IMG></a></h3>
-  <p class=small>{{ region_txt }}
-  <a href="merging_page">{{merge_regions}}</a>
-  </p>
+  <h3>Région Administrative <a href="documentation#doc_shapefiles"><IMG SRC='static/images/question-mark-button.png' ALT=' ' WIDTH=12 HEIGHT=12></IMG></a></h3>
+  <p class=small>Région pour laquelle la trajectoire et le cycle annuel sont présentés. Vous pouvez aussi <a href="merging_page">regrouper des régions</a>.</p>
   {{ form_region.regions(onchange="change_region();") }}
   {% if small_region_warning==True %}
-  <p class=warn_txt><b>{{ warning }}</b>{{ warning_txt }}
+  <p class=warn_txt><b>Attention: </b>{{ warning_txt }}
   <a href="merging_page"><font color="BlueViolet">{{merge_regions}}</font></a></p>
   {% endif %}
   <IMG SRC={{ overview_plot }} ALT=' ' WIDTH=350 HEIGHT=350></IMG>
@@ -80,46 +74,72 @@
 
 
 
-<div id="LeftPanel" style="width: 35%; height: 100%; float: left; padding-left: 5%;">
-  {% if EWEMBI_plot!='no_plot' %} 
-    <figure>
-      <caption><h3>Reference Period
-      <a href="documentation#doc_plot_climatology"><IMG SRC='static/images/question-mark-button.png' ALT=' ' WIDTH=12 HEIGHT=12></IMG></a>
-      </h3></caption>
-      <IMG SRC={{ EWEMBI_plot }} ALT=' ' WIDTH=350 HEIGHT=350></IMG>
-      <figcaption>{{ EWEMBI_plot_title_txt }}</figcaption>
-    </figure>
-  <a class="label label-primary" href="/prepare_for_download/EWEMBI_plot**_large.png" target="_blank"  style="margin-right: 5px;">{{download_png}}</a>
-  <a class="label label-primary" href="/prepare_for_download/EWEMBI_plot**.pdf" target="_blank"  style="margin-right: 5px;">{{download_pdf}}</a>
-  {% endif %} 
-
-    <h3>{{ transient_plot_title }} <a href="documentation#doc_plot_transient"><IMG SRC='static/images/question-mark-button.png' ALT=' ' WIDTH=12 HEIGHT=12></IMG></a></h3>
-    <p class=small>{{ transient_plot_title_txt }}</p>
-      <IMG SRC={{ transient_plot }} ALT=' ' WIDTH=350 HEIGHT=350></IMG>
-  <a class="label label-primary" href="/prepare_for_download/transient_plot**_large.png" target="_blank"  style="margin-right: 5px;">{{download_png}}</a>
-  <a class="label label-primary" href="/prepare_for_download/transient_plot**.pdf" target="_blank"  style="margin-right: 5px;">{{download_pdf}}</a>
-
+<div id="LeftPanel" style="width: 75%; height: 100%; float: left; padding-left: 5%;">
+  <div id="LeftPanel" style="width: 50%; height: 100%; float: left;">
+    {% if EWEMBI_plot!='no_plot' %} 
+      <figure>
+      <caption><h3>Période de Référence
+        <a href="documentation#doc_plot_climatology"><IMG SRC='static/images/question-mark-button.png' ALT=' ' WIDTH=12 HEIGHT=12></IMG></a>
+        <span style="float:right;"> 
+          <a class="label label-primary" href="/prepare_for_download/EWEMBI_plot**_large.png" target="_blank"  style="margin-right: 5px;">png</a>
+          <a class="label label-primary" href="/prepare_for_download/EWEMBI_plot**.pdf" target="_blank"  style="margin-right: 5px;">pdf</a>
+        </span> </h3>
+        </caption>
+        <IMG SRC={{ EWEMBI_plot }} ALT=' ' WIDTH=100%></IMG>
+        <figcaption class=small>{{indicator[0].upper()+indicator[1:]}}{{season_add_on}} en tant que moyenne de la période de référence {{refP_clim_longname}}. Cette carte est basée sur les données <a href=documentation#doc_EWEMBI>EWEMBI</a>.</figcaption>
+      </figure>
+    {% endif %} 
+  </div>
+  <div id="LeftPanel" style="width: 50%; height: 100%; float: left;">
+    {% if Projection_plot!='no_plot' %} 
+      <figure>
+        <caption><h3>Changement Projeté
+        <a href="documentation#doc_plot_projection"><IMG SRC='static/images/question-mark-button.png' ALT=' ' WIDTH=12 HEIGHT=12></IMG></a>
+        <span style="float:right;"> 
+          <a class="label label-primary" href="/prepare_for_download/Projection_plot**_large.png" target="_blank"  style="margin-right: 5px;">png</a>
+          <a class="label label-primary" href="/prepare_for_download/Projection_plot**.pdf" target="_blank"  style="margin-right: 5px;">pdf</a>
+        </span> </h3>
+        </caption>
+        <IMG SRC={{ Projection_plot }} ALT=' ' WIDTH=100%></IMG>
+      <figcaption class=small>Changement projeté en {{indicator}}{{season_add_on}} pour {{proP_longname}} comparé à la période de référence {{refP_longname}}. Ici la <a href=documentation#doc_meth_ens_mean>moyenne de l'ensemble</a> des projections de <a href=documentation#doc_RCM>modèles climatiques régionales</a> est montrée. Les cellules de grilles pour lesquelles un <a href=documentation#doc_meth_disagreement>désaccord entre les modèles</a> est identifié sont coloriés en gris. Les projections sont basées sur le <a href=documentation#doc_scenario>scénario d'émission RCP4.5</a>.</figcaption>
+      </figure>
+    {% endif %} 
+  </div>
 </div>
 
-<div id="LeftPanel" style="width: 35%; height: 100%; float: left; padding-left: 5%;">
-  <figure>
-    <caption><h3>{{ Projection_plot_title }} 
-    <a href="documentation#doc_plot_projection"><IMG SRC='static/images/question-mark-button.png' ALT=' ' WIDTH=12 HEIGHT=12></IMG></a>
-    </h3></caption>
-      <IMG SRC={{ Projection_plot }} ALT=' ' WIDTH=350 HEIGHT=350></IMG>
-    <figcaption>{{ Projection_plot_title_txt }}</figcaption>
-  </figure>
-  <a class="label label-primary" href="/prepare_for_download/Projection_plot**_large.png" target="_blank"  style="margin-right: 5px;">{{download_png}}</a>
-  <a class="label label-primary" href="/prepare_for_download/Projection_plot**.pdf" target="_blank"  style="margin-right: 5px;">{{download_pdf}}</a>
-
-  {% if annual_cycle_plot!='no_plot' %}
-    <h3>{{ annual_cycle_plot_title }} <a href="documentation#doc_plot_annual_cycle"><IMG SRC='static/images/question-mark-button.png' ALT=' ' WIDTH=12 HEIGHT=12></IMG></a></h3>
-    <p class=small>{{ annual_cycle_plot_title_txt }}</p>
-      <IMG SRC={{ annual_cycle_plot }} ALT=' ' WIDTH=350 HEIGHT=350></IMG>
-  <a class="label label-primary" href="/prepare_for_download/annual_cycle_plot**_large.png" target="_blank"  style="margin-right: 5px;">{{download_png}}</a>
-  <a class="label label-primary" href="/prepare_for_download/annual_cycle_plot**.pdf" target="_blank"  style="margin-right: 5px;">{{download_pdf}}</a>
-  {% endif %} 
+<div id="LeftPanel" style="width: 75%; height: 100%; float: left; padding-left: 5%;"> 
+  <div id="LeftPanel" style="width: 50%; height: 100%; float: left;">
+    {% if transient_plot!='no_plot' %} 
+      <figure>
+        <caption><h3>Trajectoire de la Moyenne Régionale
+        <a href="documentation#doc_plot_transient"><IMG SRC='static/images/question-mark-button.png' ALT=' ' WIDTH=12 HEIGHT=12></IMG></a>
+        <span style="float:right;"> 
+          <a class="label label-primary" href="/prepare_for_download/transient_plot**_large.png" target="_blank"  style="margin-right: 5px;">png</a>
+          <a class="label label-primary" href="/prepare_for_download/transient_plot**.pdf" target="_blank"  style="margin-right: 5px;">pdf</a>
+        </span> </h3>
+        </caption>
+        <IMG SRC={{ transient_plot }} ALT=' ' WIDTH=100%></IMG>
+      <figcaption class=small>Projections de <a href=documentation#doc_RCM>modèles climatiques régionales</a> pour {{indicator}}{{season_add_on}} présenté comme moyenne glissante de 20 années. La ligne représente la <a href=documentation#doc_meth_ens_mean>moyenne de l'ensemble</a> tandis que l'ombrage représente l'écart entre les modèles. Les projections sont basées sur le <a href=documentation#doc_scenario>scénario d'émission RCP4.5</a>.</figcaption>
+      </figure>
+    {% endif %} 
   </div>
+
+  <div id="LeftPanel" style="width: 50%; height: 100%; float: left;">
+    {% if annual_cycle_plot!='no_plot' %} 
+      <figure>
+        <caption><h3>Cycle Annuel de la Moyenne Régionale
+        <a href="documentation#doc_plot_annual_cycle"><IMG SRC='static/images/question-mark-button.png' ALT=' ' WIDTH=12 HEIGHT=12></IMG></a>
+        <span style="float:right;"> 
+          <a class="label label-primary" href="/prepare_for_download/annual_cycle_plot**_large.png" target="_blank"  style="margin-right: 5px;">png</a>
+          <a class="label label-primary" href="/prepare_for_download/annual_cycle_plot**.pdf" target="_blank"  style="margin-right: 5px;">pdf</a>
+        </span> </h3>
+        </caption>
+        <IMG SRC={{ annual_cycle_plot }} ALT=' ' WIDTH=100%></IMG>
+      <figcaption class=small>Haut: Cycle annuel pour {{indicator}} pour la période {{refP_clim_longname}}. Bas: Changements dans le cycle annuel projeté pour {{proP_longname}} par rapport à la période de référence {{refP_longname}}. Les données <a href=documentation#doc_EWEMBI>EWEMBI</a> sont montrés en noir, les projections de <a href=documentation#doc_RCM>modèles climatiques régionales</a> en vert. La ligne verte représente la <a href=documentation#doc_meth_ens_mean>moyenne de l'ensemble</a> tandis que l'ombrage représente l'écart entre les modèles. Les projections sont basées sur le <a href=documentation#doc_scenario>scénario d'émission RCP4.5</a>.</figcaption>
+      </figure>
+    {% endif %} 
+  </div>
+</div>
 
 
 </div>

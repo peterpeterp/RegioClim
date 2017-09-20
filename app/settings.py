@@ -24,7 +24,7 @@
 """ database setting file. """
 
 
-import sys,glob,os,pickle
+import sys,glob,os,pickle,string
 import numpy as np
 from netCDF4 import Dataset,netcdftime,num2date
 import pandas as pd
@@ -72,19 +72,18 @@ ind_dict={
 }
 
 indicator_dict={'fr':{
-	'tas':'Température',
-	'pr':'Précipitation',
-	'RX1':'Extrêmes humides (RX1day)',
-	'TXx':'Extrêmes de chaleur (TXx)',
-	'year_RX5':'Extrêmes humides de 5 jours (RX5day)',
-	'year':'annuel',
+	'tas':'température',
+	'pr':'précipitation',
+	'RX1':'extrêmes humides (RX1day)',
+	'TXx':'extrêmes de chaleur (TXx)',
+	'year_RX5':'extrêmes humides de 5 jours (RX5day)',
 	},
 	'en':{
-	'tas':'Temperature',
-	'pr':'Precipitation',
-	'RX1':'Wet Extremes (RX1day)',
-	'TXx':'Hot Extremes (TXx)',
-	'year_RX5':'5day Wet Extremes (RX5day)',
+	'tas':'temperature',
+	'pr':'precipitation',
+	'RX1':'wet extremes (RX1day)',
+	'TXx':'hot extremes (TXx)',
+	'year_RX5':'5day wet extremes (RX5day)',
 	}
 }
 

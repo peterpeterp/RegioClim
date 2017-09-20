@@ -1,0 +1,40 @@
+{% extends "index.html" %}
+{% block content %}
+
+<div id="loading"><div id="overlay"></div><div id='overlay_text'><h1>Loading ... </h1></div></div>
+
+<div id="content">
+
+<div id="LeftPanel" style="width: 20%; height: 100%; float: left;">
+      <h3>Ajoutez un mois</h3>
+  	<p class=small>Choisissez un mois qui sera ajouté à la saison</p>
+  <form method="POST" action="/add_month" id="month_id">
+  {{ form_season.seasons.label }} {{ form_season.seasons(rows=10, size=12, onchange="month_to_new_season();") }}
+  </form>
+
+<form method="POST" action="/save_this_season"  onsubmit="save_this_season()" id="save_season_id">
+  <button type="submit" class="btn">Garder cette saison</button>
+</form>
+</div>
+
+
+<div id="LeftPanel" style="width: 50%; height: 100%; float: left; padding-left: 10%; padding-top: 80px;">
+  <form method="POST" action="/given_season_name">
+  	{% for mon in months %}
+  	{{mon}}<br>
+  	{% endfor %}
+  	<br><br>
+    Nom {{ form_NewSeason.season_name(size=10) }}<br>
+   <button type="submit" class="btn">Garder ce nom</button>
+ </form>
+</div>
+
+</div>
+
+
+{% endblock %}
+
+
+
+
+
