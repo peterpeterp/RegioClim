@@ -29,7 +29,7 @@ import matplotlib.pylab as plt
 from plotting import *
 
 basepath='/Users/peterpfleiderer/Documents/Projects/'
-try: 
+try:
   os.chdir(basepath)
 except:
   basepath='/home/RCM_projection/'
@@ -68,15 +68,15 @@ def initialize():
 
   COU._regions[session['country']]='** '+settings.country_names[session['country']]+' **'
   try:
-    COU.get_warming_slices(wlcalculator_path=basepath+'../wlcalculator/app/',model_real_names={'IPSL':'ipsl-cm5a-lr','HADGEM2':'hadgem2-es','ECEARTH':'ec-earth','MPIESM':'mpi-esm-lr'})
+    COU.get_warming_slices(wlcalculator_path=basepath+'../../wlcalculator/app/',model_real_names={'IPSL':'ipsl-cm5a-lr','HADGEM2':'hadgem2-es','ECEARTH':'ec-earth','MPIESM':'mpi-esm-lr'})
   except:
-    COU.get_warming_slices(wlcalculator_path=basepath+'wlcalculator/app/',model_real_names={'IPSL':'ipsl-cm5a-lr','HADGEM2':'hadgem2-es','ECEARTH':'ec-earth','MPIESM':'mpi-esm-lr'})
+    COU.get_warming_slices(wlcalculator_path=basepath+'../wlcalculator/app/',model_real_names={'IPSL':'ipsl-cm5a-lr','HADGEM2':'hadgem2-es','ECEARTH':'ec-earth','MPIESM':'mpi-esm-lr'})
 
   print COU._warming_slices
   session_cou = open(session['cou_path'], 'wb')
-  cPickle.dump(COU, session_cou, protocol=2) ; session_cou.close() 
-  
-  return COU   
+  cPickle.dump(COU, session_cou, protocol=2) ; session_cou.close()
+
+  return COU
 
 @app.route('/')
 def index():
@@ -126,13 +126,13 @@ def index():
 
   session['id']=str(int((time.time()-int(time.time()))*10000))+str(int(random.random()*100000))
   session['cou_path']='app/static/COU_sessions/'+session['id']+'_'+session['country']+'.pkl'
-  
+
   if os.path.isfile(session['cou_path'])==False:
     COU=initialize()
 
   session["region_avail"]   = [COU._regions.keys()[COU._regions.values().index(name)] for name in sorted(COU._regions.values())]
   session['region']   = session["region_avail"][0]
-  
+
   session['new_region_name']=''
   session['new_region_name_auto']=True
 
@@ -142,7 +142,7 @@ def index():
 
 @app.route('/choices')
 def choices():
-  try: 
+  try:
     start_time=time.time()
 
     s=session
@@ -156,7 +156,7 @@ def choices():
     form_country.countrys.choices = zip(s['country_avail'],[settings.country_names[cou] for cou in s['country_avail']])
 
     session_cou = open(s['cou_path'], 'rb')
-    COU=cPickle.load( session_cou) ; session_cou.close()      
+    COU=cPickle.load( session_cou) ; session_cou.close()
     COU.load_data(quiet=True,filename_filter=s['indicator'],load_mask=False,load_raw=True,load_area_averages=True,load_region_polygons=False)
     COU.unit_conversions()
 
@@ -261,7 +261,7 @@ def choices():
     if s['season']=='year':season_add_on=''
     if s['season']!='year':season_add_on=' in '+season_dict[lang][s['season']]
 
-    if s['use_periods']==False: 
+    if s['use_periods']==False:
       refP_clim_longname=refP_clim_longname.replace('°C','°C '+settings.above_preindustrial[lang])
       refP_longname=refP_longname.replace('°C','°C '+settings.above_preindustrial[lang])
       proP_longname=proP_longname.replace('°C','°C '+settings.above_preindustrial[lang])
@@ -286,7 +286,7 @@ def choices():
       'language_flag':languages[s['language']],
     }
 
-    form_dict = { 
+    form_dict = {
       'form_country':form_country,
       'form_region':form_region,
       'form_period':form_period,
@@ -308,7 +308,7 @@ def choices():
     session['location']='choices'
     return render_template('choices_'+lang+'.html',**context)
 
-  except Exception,e: 
+  except Exception,e:
     print str(e)
     return redirect(url_for("index"))
 
@@ -331,7 +331,7 @@ def season_page():
     form_NewSeason = forms.NewSeasonForm(request.form)
     form_NewSeason = forms.NewSeasonForm(request.form, season_name=session['new_season_name'])
 
-    context = { 
+    context = {
       'form_season':form_season,
       'form_NewSeason':form_NewSeason,
       'new_season_name':s['new_season_name'],
@@ -348,7 +348,7 @@ def season_page():
 
     return render_template('season_page_'+s['language']+'.html',**context)
 
-  except Exception,e: 
+  except Exception,e:
     print str(e)
     return redirect(url_for("index"))
 
@@ -390,10 +390,10 @@ def save_this_season():
   session['season_avail']+=[season_name]
 
   session_cou = open(session['cou_path'], 'rb')
-  COU=cPickle.load(session_cou) ; session_cou.close()      
+  COU=cPickle.load(session_cou) ; session_cou.close()
   COU._seasons[season_name]=[int(sea) for sea in sorted(session['new_season'])]
   session_cou = open(session['cou_path'], 'wb')
-  cPickle.dump(COU, session_cou, protocol=2) ; session_cou.close() 
+  cPickle.dump(COU, session_cou, protocol=2) ; session_cou.close()
 
   session['season']=season_name
   index=session['season_avail'].index(session['season'])
@@ -402,7 +402,7 @@ def save_this_season():
   season_dict['en'][session['season']]=session['new_season_name']
   season_dict['fr'][session['season']]=session['new_season_name']
 
-  session['new_season_name_auto']=True 
+  session['new_season_name_auto']=True
   session['new_season_name']=''
 
   return redirect(url_for("choices"))
@@ -423,7 +423,7 @@ def merging_page():
     s=session
 
     session_cou = open(s['cou_path'], 'rb')
-    COU=cPickle.load( session_cou) ; session_cou.close()  
+    COU=cPickle.load( session_cou) ; session_cou.close()
     COU.load_data(quiet=True,filename_filter=s['indicator'],load_mask=False,load_raw=True,load_area_averages=False,load_region_polygons=False)
 
     empty_object=COU.selection([s['indicator'],s['dataset'],'ensemble_mean'])[0]
@@ -432,14 +432,14 @@ def merging_page():
     regions_plot='app/static/COU_images/'+s['country']+'/'+s['region']+'.png'
     if os.path.isfile(regions_plot)==False:
 
-      
+
 
       fig = plt.figure(frameon=False)
       ax = plt.Axes(fig, [0., 0., 1., 1.])
       fig.set_size_inches(6*asp,6/asp)
       fig.add_axes(ax)
 
-      # fig,ax=plt.subplots(nrows=1,ncols=1,figsize=(6*asp,6/asp+1)) 
+      # fig,ax=plt.subplots(nrows=1,ncols=1,figsize=(6*asp,6/asp+1))
       empty_object.plot_map(to_plot='empty',
         show_region_names=True,
         color_bar=False,
@@ -491,7 +491,7 @@ def merging_page():
       clickable.append({'poly':point_list[:-2],'name':region})
 
 
-    context = { 
+    context = {
       'form_region':form_region,
       'form_NewRegion':form_NewRegion,
       'regions_plot':regions_plot.replace('app/',''),
@@ -510,7 +510,7 @@ def merging_page():
     session['location']='merging_page'
     return render_template('merging_page_'+s['language']+'.html',**context)
 
-  except Exception,e: 
+  except Exception,e:
     print str(e)
     return redirect(url_for("index"))
 
@@ -537,13 +537,13 @@ def merge_with_region(to_merge):
   s=session
 
   session_cou = open(s['cou_path'], 'rb')
-  COU=cPickle.load( session_cou) ; session_cou.close()  
+  COU=cPickle.load( session_cou) ; session_cou.close()
 
   if s['region']!=s['country']:
     s['region']=COU.merge_adm_regions([s['region'],to_merge])
 
     session_cou = open(s['cou_path'], 'wb')
-    cPickle.dump(COU, session_cou, protocol=2) ; session_cou.close()  
+    cPickle.dump(COU, session_cou, protocol=2) ; session_cou.close()
   else:
     s['region']=to_merge
 
@@ -555,7 +555,7 @@ def merge_with_region(to_merge):
 
   if s['new_region_name_auto']:s['new_region_name']=s['region']
 
-  
+
 
 
 @app.route('/merge_with_region_from_form',  methods=('POST', ))
@@ -573,7 +573,7 @@ def merge_with_region_click(region):
 def save_this_region():
 
   session_cou = open(session['cou_path'], 'rb')
-  COU=cPickle.load( session_cou) ; session_cou.close()  
+  COU=cPickle.load( session_cou) ; session_cou.close()
 
   COU._regions[session['region']]=session['new_region_name']
 
@@ -583,9 +583,9 @@ def save_this_region():
     session['region_avail'][index],session['region_avail'][0]=session['region_avail'][0],session['region_avail'][index]
 
   session_cou = open(session['cou_path'], 'wb')
-  cPickle.dump(COU, session_cou, protocol=2) ; session_cou.close() 
+  cPickle.dump(COU, session_cou, protocol=2) ; session_cou.close()
 
-  session['new_region_name_auto']=True 
+  session['new_region_name_auto']=True
   session['new_region_name']=''
 
   return redirect(url_for("choices"))
@@ -629,7 +629,7 @@ def switch_to_periods():
     session["proj_period"]  = settings.proj_period
   else:
     session['warming_lvl_avail']=['1.5','2.0','2.5','3']
-    session['warming_lvl']='2.0'  
+    session['warming_lvl']='2.0'
     index=session['warming_lvl_avail'].index(session['warming_lvl'])
     session['warming_lvl_avail'][index],session['warming_lvl_avail'][0]=session['warming_lvl_avail'][0],session['warming_lvl_avail'][index]
 
@@ -643,16 +643,16 @@ def add_periodchoice():
   proj_period=[int(form_period.proj_period.data.split("-")[0]),int(form_period.proj_period.data.split("-")[1])+1]
   session["proj_period"]  = proj_period
 
-  session['ref_period_warning']='ok' 
+  session['ref_period_warning']='ok'
   if ref_period[1]-ref_period[0]<20:  session['ref_period_warning']='small'
-  if ref_period[0]>ref_period[1]:  session['ref_period_warning']='strange' 
-  if ref_period[1]>2006:  session['ref_period_warning']='out_range' 
-  if ref_period[0]<1979:  session['ref_period_warning']='out_range' 
+  if ref_period[0]>ref_period[1]:  session['ref_period_warning']='strange'
+  if ref_period[1]>2006:  session['ref_period_warning']='out_range'
+  if ref_period[0]<1979:  session['ref_period_warning']='out_range'
 
-  session['proj_period_warning']='ok' 
+  session['proj_period_warning']='ok'
   if proj_period[1]-proj_period[0]<20:  session['proj_period_warning']='small'
-  if proj_period[0]>proj_period[1]:  session['proj_period_warning']='strange' 
-  if proj_period[1]>2100:  session['proj_period_warning']='out_range' 
+  if proj_period[0]>proj_period[1]:  session['proj_period_warning']='strange'
+  if proj_period[1]>2100:  session['proj_period_warning']='out_range'
   if proj_period[0]<1950:  session['proj_period_warning']='out_range'
 
 
@@ -686,9 +686,9 @@ def region_choice():
     #COU=COUs[session['country']]
     session_cou = open(session['cou_path'], 'rb')
     COU=cPickle.load( session_cou) ; session_cou.close()
-    if session['region']==session['country']:  
+    if session['region']==session['country']:
       session['small_region_warning']=False
-    if session['region']!=session['country']:  
+    if session['region']!=session['country']:
       area=COU.get_region_area(session['region'])['latxlon']*4
       if area<4:
         session['small_region_warning']=True
@@ -710,7 +710,7 @@ def country_choice():
 
   else:
     session_cou = open(session['cou_path'], 'rb')
-    COU=cPickle.load( session_cou) ; session_cou.close() 
+    COU=cPickle.load( session_cou) ; session_cou.close()
 
   session["indicator"]   = 'tas'
   index=session['indicator_avail'].index(session['indicator'])
@@ -720,7 +720,7 @@ def country_choice():
   session['region']   = session["region_avail"][0]
 
   session["season_avail"]   = settings.seasons.keys()
-  session["season"]   = 'year'  
+  session["season"]   = 'year'
 
   return redirect(url_for('choices'))
 
@@ -759,7 +759,7 @@ def prepare_for_download(plot_request):
 
 
   session_cou = open(s['cou_path'], 'rb')
-  COU=cPickle.load( session_cou) ; session_cou.close()  
+  COU=cPickle.load( session_cou) ; session_cou.close()
   COU.load_data(quiet=True,filename_filter=s['indicator'],load_mask=False,load_raw=True,load_area_averages=True,load_region_polygons=False)
   COU.unit_conversions()
 
@@ -810,7 +810,7 @@ def prepare_for_download(plot_request):
   if request_type=='transient_plot':  filename=transient_plot_func(**plot_context)
   if request_type=='annual_cycle_plot':  filename=annual_cycle_plot=annual_cycle_plot_func(**plot_context)
 
-  if request_type=='get_data':  
+  if request_type=='get_data':
     curretn_path=os.getcwd()
     os.chdir('../country_analysis/data/'+s['country']+'/')
     os.system('tar -vzcf ../'+s['country']+'_'+s['indicator']+'.tar.gz area_average/*-'+s['indicator']+'_* raw/*_'+s['indicator']+'_*')
@@ -899,7 +899,7 @@ def documentation():
 #     periods={'ref':session["ref_period"],'projection':session["proj_period"]}
 #     CORDEX_BC_plot_detail='static/images/'+country+'/'+session["indicator"]+'_'+session["scenario"]+'_'+session['dataset']+'_'+session['season']+'_details.png'
 
-#     context = { 
+#     context = {
 #       'CORDEX_BC_plot_detail':CORDEX_BC_plot_detail,
 #     }
 #     return render_template('model_agreement.html',**context)
@@ -920,11 +920,10 @@ def documentation():
 #     periods={'ref':session["ref_period"],'projection':session["proj_period"]}
 #     bias_corretion_check='static/images/'+country+'/'+session["indicator"]+'_BC_check_'+session['season']+'.png'
 
-#     context = { 
+#     context = {
 #       'bias_corretion_check':bias_corretion_check
 #     }
 #     return render_template('bias_correction.html',**context)
 
 #   except KeyError:
 #     return redirect(url_for("index"))
-
