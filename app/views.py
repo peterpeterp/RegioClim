@@ -741,6 +741,11 @@ def prepare_for_download(plot_request):
   region=s['region']
   if region.split('(')[-1]=='full country)': region=s['country']
 
+  session_cou = open(s['cou_path'], 'rb')
+  COU=cPickle.load( session_cou) ; session_cou.close()
+  COU.load_data(quiet=True,filename_filter=s['indicator'],load_mask=False,load_raw=True,load_area_averages=True,load_region_polygons=False)
+  COU.unit_conversions()
+
   if s['use_periods']:
     refP = "to".join(str(t) for t in s["ref_period"])
     proP = "to".join(str(t) for t in s["proj_period"])
@@ -758,10 +763,7 @@ def prepare_for_download(plot_request):
     proP_longname=warming_lvl_dict[lang][proP]
 
 
-  session_cou = open(s['cou_path'], 'rb')
-  COU=cPickle.load( session_cou) ; session_cou.close()
-  COU.load_data(quiet=True,filename_filter=s['indicator'],load_mask=False,load_raw=True,load_area_averages=True,load_region_polygons=False)
-  COU.unit_conversions()
+
 
   if s['use_periods']:
     refP = str(s["ref_period"][0])+'to'+str(s["ref_period"][1]-1)
