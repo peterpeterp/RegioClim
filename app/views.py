@@ -66,7 +66,7 @@ def initialize():
   COU.load_data(quiet=True,load_mask=True,load_raw=False,load_area_averages=False,load_region_polygons=True)
   COU.load_data(quiet=True,filename_filter='RX1',load_mask=False,load_raw=True,load_area_averages=True,load_region_polygons=False)
 
-  COU._regions[session['country']]='** '+settings.country_names[session['country']]+' **'
+  COU._regions[session['country']]='** '+settings.country_names[session['country']][session['language']]+' **'
   try:
     COU.get_warming_slices(wlcalculator_path=basepath+'wlcalculator/app/',model_real_names={'IPSL':'ipsl-cm5a-lr','HADGEM2':'hadgem2-es','ECEARTH':'ec-earth','MPIESM':'mpi-esm-lr'})
   except:
@@ -153,7 +153,7 @@ def choices():
     form_country = forms.countryForm(request.form)
     s["country_avail"]   = sorted(settings.country_names.keys())
     s['country_avail']=[s['country']]+[sea for sea in s['country_avail'] if sea != s['country']]
-    form_country.countrys.choices = zip(s['country_avail'],[settings.country_names[cou] for cou in s['country_avail']])
+    form_country.countrys.choices = zip(s['country_avail'],[settings.country_names[cou][lang] for cou in s['country_avail']])
 
     session_cou = open(s['cou_path'], 'rb')
     COU=cPickle.load( session_cou) ; session_cou.close()

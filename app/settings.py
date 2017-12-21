@@ -37,7 +37,7 @@ from matplotlib import rc
 rc('text', usetex=True)
 
 basepath='/Users/peterpfleiderer/Documents/Projects/'
-try: 
+try:
   os.chdir(basepath)
 except:
   basepath='/home/RCM_projection/'
@@ -53,10 +53,18 @@ for i in range(1,13):
 
 all_isos=['AGO', 'DZA', 'EGY', 'GNQ', 'BEN', 'NGA', 'NER', 'ZWE', 'NAM', 'GNB', 'SWZ', 'GHA', 'COG', 'SLE', 'ETH', 'COM', 'ERI', 'CPV', 'LBR', 'LBY', 'LSO', 'UGA', 'RWA', 'SOM', 'MDG', 'CMR', 'TZA', 'BWA', 'SEN', 'TCD', 'GAB', 'BFA', 'MWI', 'MOZ', 'MRT', 'GMB', 'MLI', 'BDI', 'STP', 'DJI', 'GIN', 'ESH', 'KEN', 'MAR', 'COD', 'ZMB', 'ZAF', 'TGO', 'TUN', 'CAF', 'SSD', 'SDN', 'CIV']
 
+iso_fr=open('app/iso_french_country.txt','r').read().split('\n')
+french_cou_dict={}
+for line in iso_fr:
+    if len(line)>1:
+        french_cou_dict[line.split('\t')[2][0:3]]=line.split('\t')[0]
+
+french_cou_dict['ESH']='Sahara occidental'
+
 country_names={}
 for iso in all_isos:
 	if os.path.isdir('app/static/COU_images/'+iso)==False:os.system('mkdir app/static/COU_images/'+iso)
-	country_names[iso]=pycountry.countries.get(alpha_3=iso).name
+	country_names[iso]={'en':pycountry.countries.get(alpha_3=iso).name,'fr':french_cou_dict[iso]}
 
 
 
@@ -132,9 +140,9 @@ form_labels={'fr':{
 	'scenario':u'Emission scenraio:',
 	'indicator':u'Climate indicator:',
 	'period':u'Projection period:',
-	'season':u'Season:',	
+	'season':u'Season:',
 	}
-	
+
 }
 
 plot_titles={'en':{
@@ -147,7 +155,7 @@ plot_titles={'en':{
 	'CORDEX_plot':u"Change projected by regional climate modeles ",
 	'transient_plot':u"",
 	'annual_cycle_plot':u""
-	}	
+	}
 }
 
 
@@ -282,10 +290,3 @@ above_preindustrial={'en':'above preindustrial','fr':'au-dessus des niveaux pré
 
 
 print 'done with settings'
-
-
-
-
-
-
-
