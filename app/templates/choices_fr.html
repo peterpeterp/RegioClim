@@ -4,7 +4,7 @@
 <div id="loading"><div id="overlay"></div><div id='overlay_text'><h1>Loading ... </h1></div></div>
 <div id="content">
 
-<div id="LeftPanel" style="width: 20%; height: 100%; float: left;">
+  <div id="LeftPanel" style="width: 20%; padding-left: 2%; padding-right: 2%; height: 100%; float: left; background: rgba(170,170,170,0.5);">
 
   <form method="POST" action="/country_choice" id="country_id">
   <h3>Pays</h3>
@@ -33,26 +33,26 @@
 {% if use_periods==1 %}
   <form method="POST" action="/periodchoice" onsubmit="period_change()" id="period_id">
   <h3>Période de Projection </h3>
-  <p class=small>Périodes temporelles pour lesquelles les projections sont présentées. Alternativement vous pouvez choisir un 
-  <a href="switch_to_periods">niveau de réchauffement global</a>  pour lequel la projection climatique régionale sera présentée 
+  <p class=small>Périodes temporelles pour lesquelles les projections sont présentées. Alternativement vous pouvez choisir un
+  <a href="switch_to_periods">niveau de réchauffement global</a>  pour lequel la projection climatique régionale sera présentée
   <a href="documentation#doc_scenario"><IMG SRC='static/images/question-mark-button.png' ALT=' ' WIDTH=12 HEIGHT=12></IMG></a></p>
       Période de Référence{{ form_period.ref_period(size=10) }}
-      {% if ref_period_warning=='small' %}<p class=warn_txt><b>Attention: </b>Nous suggérons d'utiliser des périodes d'au moins 20 années!</p>{% endif %}  
-      {% if ref_period_warning=='strange' %}<p class=warn_txt><b>Attention: </b>La première année de la période doit être avant la seconde année!?!</p>{% endif %}   
-      {% if ref_period_warning=='out_range' %}<p class=warn_txt><b>Attention: </b>Veuillez choisir une période de référence entre 1979 et 2005!</p>{% endif %}   
+      {% if ref_period_warning=='small' %}<p class=warn_txt><b>Attention: </b>Nous suggérons d'utiliser des périodes d'au moins 20 années!</p>{% endif %}
+      {% if ref_period_warning=='strange' %}<p class=warn_txt><b>Attention: </b>La première année de la période doit être avant la seconde année!?!</p>{% endif %}
+      {% if ref_period_warning=='out_range' %}<p class=warn_txt><b>Attention: </b>Veuillez choisir une période de référence entre 1979 et 2005!</p>{% endif %}
       Période de Projection{{ form_period.proj_period(size=10 ) }}
-      {% if ref_period_warning=='small' %}<p class=warn_txt><b>Attention: </b>Nous suggérons d'utiliser des périodes d'au moins 20 années!</p>{% endif %}  
-      {% if ref_period_warning=='strange' %}<p class=warn_txt><b>Attention: </b>La première année de la période doit être avant la seconde année!?!</p>{% endif %}   
-      {% if ref_period_warning=='out_range' %}<p class=warn_txt><b>Attention: </b>Veuillez choisir une période de projection entre 1950 et 2099!</p>{% endif %}   
+      {% if ref_period_warning=='small' %}<p class=warn_txt><b>Attention: </b>Nous suggérons d'utiliser des périodes d'au moins 20 années!</p>{% endif %}
+      {% if ref_period_warning=='strange' %}<p class=warn_txt><b>Attention: </b>La première année de la période doit être avant la seconde année!?!</p>{% endif %}
+      {% if ref_period_warning=='out_range' %}<p class=warn_txt><b>Attention: </b>Veuillez choisir une période de projection entre 1950 et 2099!</p>{% endif %}
     <button type="submit" class="btn">{{select_periods}}</button>
   </form>
-{% endif %}  
+{% endif %}
 
 
- 
+
   <form method="POST" action="/season_choice" id="season_id">
   <h3>Échelle Temporelle</h3>
-  <p class=small>Choisissez annuel, mensuel ou <a href="go_to_season_page">définissez une saison</a>.</p> 
+  <p class=small>Choisissez annuel, mensuel ou <a href="go_to_season_page">définissez une saison</a>.</p>
   {{ form_season.seasons(onchange="change_season();") }}
   </form>
 
@@ -74,13 +74,13 @@
 
 
 
-<div id="LeftPanel" style="width: 75%; height: 100%; float: left; padding-left: 5%;">
+<div id="LeftPanel" style="width: 74%; height: 100%; float: left; padding-left: 2%;">
   <div id="LeftPanel" style="width: 50%; height: 100%; float: left;">
-    {% if EWEMBI_plot!='no_plot' %} 
+    {% if EWEMBI_plot!='no_plot' %}
       <figure>
       <caption><h3>Période de Référence
         <a href="documentation#doc_plot_climatology"><IMG SRC='static/images/question-mark-button.png' ALT=' ' WIDTH=12 HEIGHT=12></IMG></a>
-        <span style="float:right;"> 
+        <span style="float:right;">
           <a class="label label-primary" href="/prepare_for_download/EWEMBI_plot**_large.png" target="_blank"  style="margin-right: 5px;">png</a>
           <a class="label label-primary" href="/prepare_for_download/EWEMBI_plot**.pdf" target="_blank"  style="margin-right: 5px;">pdf</a>
         </span> </h3>
@@ -88,14 +88,14 @@
         <IMG SRC={{ EWEMBI_plot }} ALT=' ' WIDTH=100%></IMG>
         <figcaption class=small>{{indicator[0].upper()+indicator[1:]}}{{season_add_on}} en tant que moyenne de la période de référence {{refP_clim_longname}}. Cette carte est basée sur les données <a href=documentation#doc_EWEMBI>EWEMBI</a>.</figcaption>
       </figure>
-    {% endif %} 
+    {% endif %}
   </div>
   <div id="LeftPanel" style="width: 50%; height: 100%; float: left;">
-    {% if Projection_plot!='no_plot' %} 
+    {% if Projection_plot!='no_plot' %}
       <figure>
         <caption><h3>Changement Projeté
         <a href="documentation#doc_plot_projection"><IMG SRC='static/images/question-mark-button.png' ALT=' ' WIDTH=12 HEIGHT=12></IMG></a>
-        <span style="float:right;"> 
+        <span style="float:right;">
           <a class="label label-primary" href="/prepare_for_download/Projection_plot**_large.png" target="_blank"  style="margin-right: 5px;">png</a>
           <a class="label label-primary" href="/prepare_for_download/Projection_plot**.pdf" target="_blank"  style="margin-right: 5px;">pdf</a>
         </span> </h3>
@@ -103,17 +103,17 @@
         <IMG SRC={{ Projection_plot }} ALT=' ' WIDTH=100%></IMG>
       <figcaption class=small>Changement projeté en {{indicator}}{{season_add_on}} pour {{proP_longname}} comparé à la période de référence {{refP_longname}}. Ici la <a href=documentation#doc_meth_ens_mean>moyenne de l'ensemble</a> des projections de <a href=documentation#doc_RCM>modèles climatiques régionales</a> est montrée. Les cellules de grilles pour lesquelles un <a href=documentation#doc_meth_disagreement>désaccord entre les modèles</a> est identifié sont coloriés en gris. Les projections sont basées sur le <a href=documentation#doc_scenario>scénario d'émission RCP4.5</a>.</figcaption>
       </figure>
-    {% endif %} 
+    {% endif %}
   </div>
 </div>
 
-<div id="LeftPanel" style="width: 75%; height: 100%; float: left; padding-left: 5%;"> 
+<div id="LeftPanel" style="width: 74%; height: 100%; float: left; padding-left: 2%;">
   <div id="LeftPanel" style="width: 50%; height: 100%; float: left;">
-    {% if transient_plot!='no_plot' %} 
+    {% if transient_plot!='no_plot' %}
       <figure>
         <caption><h3>Trajectoire de la Moyenne Régionale
         <a href="documentation#doc_plot_transient"><IMG SRC='static/images/question-mark-button.png' ALT=' ' WIDTH=12 HEIGHT=12></IMG></a>
-        <span style="float:right;"> 
+        <span style="float:right;">
           <a class="label label-primary" href="/prepare_for_download/transient_plot**_large.png" target="_blank"  style="margin-right: 5px;">png</a>
           <a class="label label-primary" href="/prepare_for_download/transient_plot**.pdf" target="_blank"  style="margin-right: 5px;">pdf</a>
         </span> </h3>
@@ -121,15 +121,15 @@
         <IMG SRC={{ transient_plot }} ALT=' ' WIDTH=100%></IMG>
       <figcaption class=small>Projections de <a href=documentation#doc_RCM>modèles climatiques régionales</a> pour {{indicator}}{{season_add_on}} présenté comme moyenne glissante de 20 années. La ligne représente la <a href=documentation#doc_meth_ens_mean>moyenne de l'ensemble</a> tandis que l'ombrage représente l'écart entre les modèles. Les projections sont basées sur le <a href=documentation#doc_scenario>scénario d'émission RCP4.5</a>.</figcaption>
       </figure>
-    {% endif %} 
+    {% endif %}
   </div>
 
   <div id="LeftPanel" style="width: 50%; height: 100%; float: left;">
-    {% if annual_cycle_plot!='no_plot' %} 
+    {% if annual_cycle_plot!='no_plot' %}
       <figure>
         <caption><h3>Cycle Annuel de la Moyenne Régionale
         <a href="documentation#doc_plot_annual_cycle"><IMG SRC='static/images/question-mark-button.png' ALT=' ' WIDTH=12 HEIGHT=12></IMG></a>
-        <span style="float:right;"> 
+        <span style="float:right;">
           <a class="label label-primary" href="/prepare_for_download/annual_cycle_plot**_large.png" target="_blank"  style="margin-right: 5px;">png</a>
           <a class="label label-primary" href="/prepare_for_download/annual_cycle_plot**.pdf" target="_blank"  style="margin-right: 5px;">pdf</a>
         </span> </h3>
@@ -137,7 +137,7 @@
         <IMG SRC={{ annual_cycle_plot }} ALT=' ' WIDTH=100%></IMG>
       <figcaption class=small>Haut: Cycle annuel pour {{indicator}} pour la période {{refP_clim_longname}}. Bas: Changements dans le cycle annuel projeté pour {{proP_longname}} par rapport à la période de référence {{refP_longname}}. Les données <a href=documentation#doc_EWEMBI>EWEMBI</a> sont montrés en noir, les projections de <a href=documentation#doc_RCM>modèles climatiques régionales</a> en vert. La ligne verte représente la <a href=documentation#doc_meth_ens_mean>moyenne de l'ensemble</a> tandis que l'ombrage représente l'écart entre les modèles. Les projections sont basées sur le <a href=documentation#doc_scenario>scénario d'émission RCP4.5</a>.</figcaption>
       </figure>
-    {% endif %} 
+    {% endif %}
   </div>
 </div>
 
@@ -190,5 +190,3 @@
       'annual_cycle_plot_title_txt':'Cycle annuel de '+indicator_dict[lang][s['indicator']]+' pour la période de référence '+refP_clim_longname+' (en haut) et différences dans le cycle annuel projetées pour '+proP_longname+ ' par rapport à la période de référence'+refP_longname+' (en bas). Observations (EWEMBI) en vert, modélisation climatique régionale en vert. La ligne représente la moyenne de l`ensemble et la zone ombragée montre l`écart entre les modèles. Les projections sont basées sur le scénario d´émission RCP4.5.',
     }
     }
-
-

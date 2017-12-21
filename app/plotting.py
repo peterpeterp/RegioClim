@@ -35,11 +35,11 @@ def EWEMBI_plot_func(s,COU,refP,refP_clim,proP,refP_longname,refP_clim_longname,
 
       plt.savefig(EWEMBI_plot)
       if out_format=='_small.png':plt.savefig(EWEMBI_plot)
-      if out_format=='_large.png':plt.savefig(EWEMBI_plot,dpi=300) 
-      if out_format=='.pdf':plt.savefig(EWEMBI_plot, format='pdf', dpi=1000) 
+      if out_format=='_large.png':plt.savefig(EWEMBI_plot,dpi=300)
+      if out_format=='.pdf':plt.savefig(EWEMBI_plot, format='pdf', dpi=1000)
   plt.clf()
   return(EWEMBI_plot)
-      
+
 
 def Projection_plot_func(s,COU,refP,refP_clim,proP,refP_longname,refP_clim_longname,proP_longname,region,highlight_region,periods,periods_ewembi,lang,indicator_label,season_dict,out_format):
   # projection
@@ -50,7 +50,7 @@ def Projection_plot_func(s,COU,refP,refP_clim,proP,refP_longname,refP_clim_longn
     COU.period_statistics(periods=periods,selection=ens_selection,ref_name=refP)
     COU.period_model_agreement(ref_name=refP)
     asp=(float(len(ens_selection[0].lon))/float(len(ens_selection[0].lat)))**0.5
-    fig,ax=plt.subplots(nrows=1,ncols=1,figsize=(3*asp+2.5,3/asp+1))    
+    fig,ax=plt.subplots(nrows=1,ncols=1,figsize=(3*asp+2.5,3/asp+1))
     ens_mean.display_map(ax=ax,
       period='diff_'+proP+'-'+refP,
       season=s['season'],
@@ -62,8 +62,8 @@ def Projection_plot_func(s,COU,refP,refP_clim,proP,refP_longname,refP_clim_longn
       plt.title(proP_longname+' vs '+refP_longname+' '+season_dict[lang][s['season']]+' RCP4.5',fontsize=10)
 
     if out_format=='_small.png':plt.savefig(Projection_plot)
-    if out_format=='_large.png':plt.savefig(Projection_plot,dpi=300) 
-    if out_format=='.pdf':plt.savefig(Projection_plot, format='pdf', dpi=1000) 
+    if out_format=='_large.png':plt.savefig(Projection_plot,dpi=300)
+    if out_format=='.pdf':plt.savefig(Projection_plot, format='pdf', dpi=1000)
   plt.clf()
   return(Projection_plot)
 
@@ -92,10 +92,11 @@ def transient_plot_func(s,COU,refP,refP_clim,proP,refP_longname,refP_clim_longna
       if s['season']!='year':
         plt.title(COU._regions[s['region']].replace('**','').replace('_',' ')+' '+season_dict[lang][s['season']]+' RCP4.5',fontsize=12)
       #plt.text(2100,60,'Climate Analytics',horizontalalignment='right',fontsize=7)
+      #plt.text(-0.1, 0.,'climate anaylics',horizontalalignment='left',verticalalignment='bottom',transform = ax.transAxes)
       fig.tight_layout()
       if out_format=='_small.png':plt.savefig(transient_plot)
-      if out_format=='_large.png':plt.savefig(transient_plot,dpi=300)  
-      if out_format=='.pdf':plt.savefig(transient_plot, format='pdf', dpi=1000)  
+      if out_format=='_large.png':plt.savefig(transient_plot,dpi=300)
+      if out_format=='.pdf':plt.savefig(transient_plot, format='pdf', dpi=1000)
   plt.clf()
   return(transient_plot)
 
@@ -145,18 +146,18 @@ def annual_cycle_plot_func(s,COU,refP,refP_clim,proP,refP_longname,refP_clim_lon
 
       if out_format=='_small.png':plt.savefig(annual_cycle_plot)
       if out_format=='_large.png':plt.savefig(annual_cycle_plot,dpi=300)
-      if out_format=='.pdf':plt.savefig(annual_cycle_plot, format='pdf', dpi=1000)  
+      if out_format=='.pdf':plt.savefig(annual_cycle_plot, format='pdf', dpi=1000)
   plt.clf()
   return(annual_cycle_plot)
 
-      
+
 def localisation_overview(s,COU,refP,refP_clim,proP,refP_longname,refP_clim_longname,proP_longname,region,highlight_region,periods,periods_ewembi,lang,indicator_label,season_dict,out_format):
-  overview_plot='app/static/COU_images/'+s['country']+'/overview_'+highlight_region+out_format 
+  overview_plot='app/static/COU_images/'+s['country']+'/overview_'+highlight_region+out_format
   if os.path.isfile(overview_plot)==False:
     ewembi=COU.selection([s['indicator'],'EWEMBI'])[0]
     lon,lat=ewembi.lon,ewembi.lat
     fig,ax=plt.subplots(nrows=1,ncols=1,figsize=(5,5))
-    ewembi.plot_map(to_plot='empty',limits=[min(lon)-10,max(lon)+10,min(lat)-10,max(lat)+10],ax=ax,color_bar=False)  
+    ewembi.plot_map(to_plot='empty',limits=[min(lon)-10,max(lon)+10,min(lat)-10,max(lat)+10],ax=ax,color_bar=False)
 
 
     patch = PolygonPatch(COU._adm_polygons[s['country']], facecolor=[0,0,0.5], edgecolor=[0,0,0], alpha=0.7, zorder=2)
@@ -167,11 +168,7 @@ def localisation_overview(s,COU,refP,refP_clim,proP,refP_longname,refP_clim_long
 
 
     if out_format=='_small.png':plt.savefig(overview_plot)
-    if out_format=='_large.png':plt.savefig(overview_plot,dpi=300) 
-    if out_format=='.pdf':plt.savefig(overview_plot, format='pdf', dpi=1000) 
+    if out_format=='_large.png':plt.savefig(overview_plot,dpi=300)
+    if out_format=='.pdf':plt.savefig(overview_plot, format='pdf', dpi=1000)
   plt.clf()
   return(overview_plot)
-
-
-
-

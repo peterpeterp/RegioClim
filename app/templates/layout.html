@@ -7,7 +7,7 @@
   <script src="//code.jquery.com/jquery-2.2.0.min.js"></script>
   <script src="//code.jquery.com/ui/1.10.2/jquery-ui.js" ></script>
 
-  
+
   <script type="text/javascript">
 
    function change_indicator() {
@@ -64,7 +64,7 @@
     $("#loading").show();
     document.getElementById("period_id").submit();
    }
-  
+
   function back_to_choices() {
     $("#loading").show();
     document.getElementById("done_id").submit();
@@ -112,13 +112,13 @@
     #nav_bar_button {
       background-color: Transparent;
       border: Transparent;
-      line-height: 2.8;   
-      margin:2;    
-      color: white;
+      line-height: 2.8;
+      margin:2;
+      color: gray;
     }
     #nav_bar_button:hover {
       border: none;
-      background: green;
+      color: white;
     }
 
     #link_button {
@@ -126,7 +126,7 @@
       border:none;
       margin:0.2;
       padding:0;
-      line-height: 1.3;       
+      line-height: 1.3;
       color: blue;
       font-size: 12px;
     }
@@ -135,37 +135,38 @@
       background: pink;
     }
 
+
     h6 {
       color: red;
-      font-size: 14px;    
+      font-size: 14px;
       line-height: 1;
     }
 
     h3 {
-      font-size: 14px;    
+      font-size: 14px;
       line-height: 1;
     }
 
     figcaption.small {
-      font-size: 12px; 
-      line-height: 1.3;        
+      font-size: 12px;
+      line-height: 1.3;
     }
 
     p.warn_txt {
       color: red;
-      font-size: 12px;    
+      font-size: 12px;
       line-height: 1.3;
     }
 
     p.small {
-      font-size: 12px; 
-      line-height: 1.3;   
+      font-size: 12px;
+      line-height: 1.3;
     }
 
     p.white {
       color: white;
-      font-size: 10px; 
-      line-height: 1;   
+      font-size: 10px;
+      line-height: 1;
     }
 
     div#loading {
@@ -231,14 +232,7 @@
     <div class="navbar navbar-inverse navbar-fixed-top">
       <div class="navbar-inner">
         <div class="container">
-          <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
-
-          <a class="brand" href="choices">Still testing</a>
-
+          <a class="brand" href="choices">RegioClim</a>
           <div class="nav-collapse collapse">
             <ul class="nav navbar-nav">
               <li><a href="documentation">Documentation</a></li>
@@ -246,11 +240,10 @@
               <li>
                 </form>
                 <form method="POST" action="/language_choice">
-                <button type="submit" id="nav_bar_button"><font color="white">{{language}}</font></button>
+                <button type="submit" id="nav_bar_button">{{language}}</button>
                 </form>
               </li>
            </ul>
-
           </div>
         </div>
       </div>
@@ -309,8 +302,3 @@
   </body>
 
 </html>
-
-
-
-
-

@@ -27,19 +27,19 @@ table#myTable td
 {
 	border: 1px solid #cccccc;
 	padding: 2px;
-	
+
 }
 
 p
 {
-    width:600px; 
+    width:600px;
     word-wrap:break-word;
     margin-left: 100px
 }
 
 ul.list
 {
-    width:600px; 
+    width:600px;
     word-wrap:break-word;
     margin-left: 100px;
     list-style-type:square;
@@ -52,21 +52,21 @@ section {
 
 h2
 {
-    width:600px; 
+    width:600px;
     word-wrap:break-word;
     margin-left: 40px
 }
- 
+
 h3
 {
-    width:600px; 
+    width:600px;
     word-wrap:break-word;
     margin-left: 60px
 }
 
 h4
 {
-    width:600px; 
+    width:600px;
     word-wrap:break-word;
     margin-left: 80px
 }
@@ -131,7 +131,7 @@ h4
           <li><a href="#doc_limitations">Limitations</a></li>
         </ul>
 
-        <li><a href="#doc_data_source">Sources De Données</a></li>
+        <li><a href="#doc_data_source">Sources de Données</a></li>
         <ul>
           <li><a href="#doc_RCM">Modèles Climatiques Régionaux (RCM)</a></li>
           <li><a href="#doc_ensemble">Choix de l'ensemble</a></li>
@@ -151,7 +151,7 @@ h4
           <li><a href="#doc_plot_annual_cycle">Cycle annuel de la moyenne régionale</a></li>
         </ul>
         <li><a href="#doc_tool">Outil pour l'analyse de données climatiques (Python)</a></li>
-        <li><a href="#doc_acknowledgements">Acknowledgements</a></li>
+        <li><a href="#doc_acknowledgements">Remerciments</a></li>
         <li><a href="#doc_references">Références</a></li>
       </ul>
     </div>
@@ -160,7 +160,7 @@ h4
 
 
 <div id="main-content">
-    
+
   <h1 class="title" id="doc_start">Documentation</h1>
 
   <span class=anchor id=doc_summary></span>
@@ -173,7 +173,7 @@ h4
   <div id="outline-container-1" class="outline-2">
   <h3><span class="section-number-2"> Objectif </span></h3>
   <div class="outline-text-2" id="text-1">
-  <p>On a crée cet outil pour faciliter l'accès aux projections climatique régionales de pointe au grand public. Les données climatiques utilisées sont ouvertement disponibles et les scripts Python développé pour ce site sont basés sur du code source ouvert. Notre contribution est de limiter l'information à quelques graphiques basiques facilement interprétables qui pourront être réutilisé dans des rapports impliquant le changement climatique.
+  <p>Cet outil a été créé pour faciliter l'accès aux projections climatiques régionales de pointe au grand public. Les données climatiques utilisées sont en accès libre et les scripts Python développés pour ce site sont basés sur du code en source ouvert. Notre approche se concentre sur des graphiques de bases facilement interpretables qui peuvent être réutilisés dans des rapports sur les changements climatiques.
   </p>
   </div>
   </div>
@@ -183,16 +183,16 @@ h4
   <h3><span class="section-number-2"> Méthodes </span></h3>
   <div class="outline-text-2" id="text-1">
   <p>
-  Les graphiques décrites dans <a href='#doc_plot_explanation'>présentation des projections climatiques</a> sont basées sur quatre fonctionnalités basiques:
+  Les graphiques obtenus sont basé	s sur quatre fonctionnalités basiques:
   <ul class=list>
   <span class=anchor id=doc_meth_period></span>
-  <li>Les <b>moyennes de périodes </b>sont utilisées pour la <a href='#doc_plot_climatology'>carte de la période de référence</a> et la <a href='#doc_plot_projection'>carte de la projection</a>. Parce que la variabilité inter-annuelle peut dominer le signal du changement climatique, le climat future comme le climat de la période de référence doivent être traités comme moyennes de périodes (nous suggérons 30 années). Pour chaque grille la moyenne temporelle de tout les valeurs mensuelles (de la saison choisie) pour les années comprises dans la période est calculée. </li>
+  <li>Les <b>moyennes de périodes </b>sont utilisées pour la <a href='#doc_plot_climatology'>carte de la période de référence</a> et la <a href='#doc_plot_projection'>carte de la projection</a>. Parce que la variabilité inter-annuelle peut dominer le signal du changement climatique, le climat future comme le climat de la période de référence doivent être traités comme moyennes de périodes (nous suggérons 30 années). Pour chaque grille la moyenne temporelle de toutes les valeurs mensuelles (de la saison choisie) pour les années comprises dans la période est calculée. </li>
   <span class=anchor id=doc_meth_area></span>
-  <li>Les <b>moyennes régionales </b>sont utilisées pour la <a href='#doc_plot_transient'>trajectoire de la moyenne régionale</a> et pour le <a href='#doc_plot_annual_cycle'>cycle annuel de la moyenne régionale</a>. La moyenne régionale es calculé pour chaque pas de temps en tant que la moyenne de toutes les grilles touchés par la région. Les grilles sont pondérées par la fraction de la surface de la région recouverte par la grille.</li> 
+  <li>Les <b>moyennes régionales </b>sont utilisées pour la <a href='#doc_plot_transient'>trajectoire de la moyenne régionale</a> et pour le <a href='#doc_plot_annual_cycle'>cycle annuel de la moyenne régionale</a>. La moyenne régionale est calculée pour chaque pas de temps en tant que moyenne de toutes les grilles touchées par la région. Les grilles sont pondérées par la fraction de la surface de la région recouverte par la grille.</li>
   <span class=anchor id=doc_meth_ens_mean></span>
-  <li>Nous présentons la <b>moyenne de l'ensemble</b> des projections climatiques au lieu de présenter la projection de chaque modèle individuellement. La moyenne de l'ensemble est la moyenne des quatre modèles est elle est calculé pour chaque grille ou pour chaque pas de temps selon la graphique. </li>
+  <li>Nous présentons la <b>moyenne de l'ensemble</b> des projections climatiques au lieu de présenter la projection de chaque modèle individuellement. La moyenne de l'ensemble est la moyenne des quatre modèles, calculée pour chaque grille ou pour chaque pas de temps selon le graphique. </li>
   <span class=anchor id=doc_meth_disagreement></span>
-  <li> En montrant l'ensemble de la moyenne uniquement, l'information sur les différences entre les modèles et sur l'incertitude sont perdues. Dans la <a href='#doc_plot_projection'>carte de projection</a> nous montrant le <b>désaccord entre les modèles</b> pour partiellement réintroduire l'information sur l'incertitude. Nous disons qu'il y a un désaccord entre les modèles sur le changement climatique projeté si au moins deux des quatre modèles projettent un changement qui diffère de la moyenne de l'ensemble dans le signe du changement.</li> 
+  <li> En montrant l'ensemble de la moyenne uniquement, l'information sur les différences entre les modèles et sur l'incertitude sont perdues. Dans la <a href='#doc_plot_projection'>carte de projection</a> nous montrant le <b>désaccord entre les modèles</b> pour partiellement réintroduire l'information sur l'incertitude. Nous disons qu'il y a un désaccord entre les modèles sur le changement climatique projeté si au moins deux des quatre modèles projettent un changement qui diffère de la moyenne de l'ensemble dans le signe du changement.</li>
   </ul></p>
   </div>
   </div>
@@ -204,9 +204,9 @@ h4
   <p>
   <ul class=list>
     <li><b>Petit Ensemble: </b>Les projections sont présentées pour un ensemble de quatre modèles climatiques régionaux. Nous soutenons qu'un plus grand ensemble n'améliorerait pas forcement la qualité des projections en raison des biais provenant de l'utilisation répétée des mêmes modèles de circulation générale (voir <a href=#doc_ensemble>choix de l'ensemble</a>). Cependant, une comparaison de notre ensemble de quatre modèles avec un plus vaste ensemble augmenterait la crédibilité des projections.</li>
-    <li><b>Projections de Précipitation: </b>L'incertitude des projections de précipitations est particulièrement élevée pour la plupart de l'Afrique. Cela s'explique en parti par un manque d'un réseau de stations météorologiques dense dans beaucoup de régions africaines <a href=#ref_kim2014>(Kim 2014)</a>. </li>
+    <li><b>Projections de Précipitation: </b>L'incertitude des projections de précipitations est particulièrement élevée pour une grande part de l'Afrique. Cela s'explique en partie par le manque d'un réseau de stations météorologiques dense dans beaucoup de régions africaines <a href=#ref_kim2014>(Kim 2014)</a>. </li>
     <li><b>Capacité des modèles de reproduire les événements extrêmes: </b>Bien que des techniques de <a href=#doc_bias_correction>correction de biais</a> ont été appliquées pour corriger des biais systématiques, pour certaines régions les indicateurs de changement climatique comme les <a href='#doc_TXx'>extrêmes de chaleur (TXx)</a> ou les <a href='#doc_RX1'>extrêmes humides (RX1day)</a> sont surestimés ou sous-estimés par les modèles. Veuillez voir <a href=#doc_bias_correction>correction de biais</a> pour plus d'informations. </li>
-  </ul>  
+  </ul>
   </p>
   </div></div>
 
@@ -221,7 +221,7 @@ h4
   <div id="outline-container-1" class="outline-2">
   <h3><span class="section-number-2"> Modèles Climatiques Régionaux (RCM) </span></h3>
   <div class="outline-text-2" id="text-1">
-<p>L'analyse de projections climatiques sur l'échelle régionale nécessite des données en haute résolution qui ne peuvent pas être fournies par les modèles de circulation générales (GCM). Les modèles climatiques régionaux (RCM) fournissent de projections climatiques de haute résolution pour une région limitée. Les RCMs modélisent les impacts régionaux des changements globaux en concentration de gazes à effet de serre. Pour cela les RCMs nécessitent les projections des GCMs comme données d'entrée et ainsi la modélisation climatique régionale est toujours une combinaison d'un GCM avec un RCM.</p>
+<p>L'analyse de projections climatiques sur l'échelle régionale nécessite des données en haute résolution qui ne peuvent pas être fournies par les modèles de circulation générales (GCM). Les modèles climatiques régionaux (RCM) fournissent de projections climatiques de haute résolution pour une région limitée. Les RCMs modélisent les impacts régionaux des changements globaux en concentration de gaz à effet de serre. Pour cela les RCMs nécessitent les projections des GCMs comme données d'entrée et ainsi la modélisation climatique régionale est toujours une combinaison d'un GCM avec un RCM.</p>
   </div>
   </div>
 
@@ -230,7 +230,7 @@ h4
   <div id="outline-container-1" class="outline-2">
   <h3><span class="section-number-2"> Choix de l'ensemble</span></h3>
   <div class="outline-text-2" id="text-1">
-  <p>L'ensemble contiens quatre combinaisons de RCMs et de GCMs. Bien que plus de combinaisons sont possibles, nous nous limitons a un petit ensemble dans lequel chaque modèle apparaît qu'une seule fois pour éviter des biais envers un des modèles.</p>
+  <p>L'ensemble contients quatre combinaisons de RCMs et de GCMs. Bien que plus de combinaisons sont possibles, nous nous limitons a un petit ensemble dans lequel chaque modèle apparaît qu'une seule fois pour éviter des biais envers un des modèles.</p>
   <div rows>
   <div id="LeftPanel" style="width: 40%; height: 100%; float: left; padding-left: 20%; padding-right: 40%;">
       <table class="table">
@@ -257,8 +257,8 @@ h4
   <div id="outline-container-1" class="outline-2">
   <h3><span class="section-number-2">Choix du scénario</span></h3>
   <div class="outline-text-2" id="text-1">
-  <p>Les projections climatiques sont présentés pour le scénario d'émission RCP4.5, qui est entre le scénario d'émission atteignant 2°C réchauffement global au-dessus du niveau préindustriel (RCP2.6) et le scenario sans efforts de atténuation du changement climatique (RCP8.5).<br>
-  Au lieu d'utiliser des <b>périodes fixes</b> et différents scénarios d'émission, on peut analyser des périodes pour lesquelles un certain <b>niveau de réchauffement global au-dessus du niveau préindustriel</b> est atteint. Pour chaque modèle nous estimons les périodes de vingt années pour lesquelles un certain niveau de réchauffement global est atteint. Quand les projections de la moyenne de l'ensemble sont présentées pour différents niveaux de réchauffement, différentes périodes sont utilisés pour les différents modèles: </p>
+  <p>Les projections climatiques sont présentées pour le scénario d'émission RCP4.5, qui est entre le scénario d'émission atteignant 2°C de réchauffement global au-dessus du niveau préindustriel (RCP2.6) et le scenario sans efforts d'atténuation du changement climatique (RCP8.5).<br>
+  Au lieu d'utiliser des <b>périodes fixes</b> et différents scénarios d'émission, on peut analyser des périodes pour lesquelles un certain <b>niveau de réchauffement global au-dessus du niveau préindustriel</b> est atteint. Pour chaque modèle nous estimons les périodes de vingt années pour lesquelles un certain niveau de réchauffement global est atteint. Quand les projections de la moyenne de l'ensemble sont présentées pour différents niveaux de réchauffement, différentes périodes sont utilisées pour les différents modèles: </p>
   <div id="LeftPanel" style="width: 40%; height: 100%; float: left; padding-left: 20%; padding-right: 40%;">
       <table class="table">
       <thead>
@@ -303,11 +303,11 @@ h4
     <IMG SRC='static/images/bias_correction/RX1_transients.png ' ALT=' ' WIDTH=350 HEIGHT=350></IMG>
     <IMG SRC='static/images/bias_correction/RX5_transients.png ' ALT=' ' WIDTH=350 HEIGHT=350></IMG>
     <IMG SRC='static/images/bias_correction/transients_legend.png ' ALT=' ' WIDTH=350 HEIGHT=350></IMG>
-    <figcaption><b>Fig 1</b> Projections climatiques pour le Sénégal. <a href='#doc_RCM'>Modèles climatiques régionaux (RCM)</a> sans correction de biais en gris, <a href='#doc_RCM'>modèles climatiques régionaux (RCM)</a> avec correction de biais en magenta, <a href='#doc_EWEMBI'>EWEMBI</a> en noir et modèles de circulation générale (GCM) en vert. L'ensemble GCM comporte les cinq modèles utilisés comme données d'entrée pour le projet ISIMIP (voir <a href='https://www.isimip.org/gettingstarted/#input-data-bias-correction'>https://www.isimip.org</a>). La moyenne de l'ensemble es présentée par une ligne épaisse et l'écart entre les modèles est présenté par l'ombrage. Les données ont été amortis par une moyenne glissante de 20 années (voir <a href='#doc_plot_transient'>trajectoire de la moyenne régionale</a>). </figcaption>
+    <figcaption><b>Figure 1</b> Projections climatiques pour le Sénégal. <a href='#doc_RCM'>Modèles climatiques régionaux (RCM)</a> sans correction de biais en gris, <a href='#doc_RCM'>modèles climatiques régionaux (RCM)</a> avec correction de biais en magenta, <a href='#doc_EWEMBI'>EWEMBI</a> en noir et modèles de circulation générale (GCM) en vert. L'ensemble GCM comporte les cinq modèles utilisés comme données d'entrée pour le projet ISIMIP (voir <a href='https://www.isimip.org/gettingstarted/#input-data-bias-correction'>https://www.isimip.org</a>). La moyenne de l'ensemble est présentée par une ligne épaisse et l'écart entre les modèles est présenté par l'ombrage. Les données ont été amortis par une moyenne glissante de 20 années (voir <a href='#doc_plot_transient'>trajectoire de la moyenne régionale</a>). </figcaption>
     </figure>
   </div>
-  <p>Pour les moyennes mensuelles de température et de précipitation la correction des biais améliore fortement la qualité des simulations. L'écart entres les modèles est réduit et la <a href=#doc_meth_ens_mean>moyenne de l'ensemble</a> est plus proche des données <a href='#doc_EWEMBI'>EWEMBI</a>. Il est à noter que la technique de correction de biais n'a pas comme objectif de corriger les tendances envers les observations est que pour cela la différence entre les tendances dans les données <a href='#doc_EWEMBI'>EWEMBI</a> est les simulations des modèles n'est pas lié à la méthode de correction des biais, elle est lié à la qualité limité des modèles climatiques.</p>
-  <p>Pour les valeurs extrêmes comme les <a href=#doc_TXx>extrêmes de chaleur (TXx)</a>, <a href=#doc_RX1>extrêmes humides (RX1day)</a> and <a href=#doc_RX5>extrêmes humides de 5 jours (RX5day)</a> les différences entre données <a href='#doc_EWEMBI'>EWEMBI</a> est le projections des modèles persistent après la correction des biais. La correction des biais avant tout réduit l'écart entre les modèles mais ne parvient pas à corriger <a href=#doc_meth_ens_mean>moyenne de l'ensemble</a> envers les données <a href='#doc_EWEMBI'>EWEMBI</a>. Les défaillances de la méthode de correction des biais utilisée pour les événements climatiques extrêmes ont été reportées par Sippel et al. <a href=#ref_sippel2016>(Sippel 2016)</a>.</p>
+  <p>Pour les moyennes mensuelles de température et de précipitation la correction des biais améliore fortement la qualité des simulations. L'écart entres les modèles est réduit et la <a href=#doc_meth_ens_mean>moyenne de l'ensemble</a> est plus proche des données <a href='#doc_EWEMBI'>EWEMBI</a>. Il est à noter que la technique de correction de biais n'a pas comme objectif de corriger les tendances envers les observations et que pour cela la différence entre les tendances dans les données <a href='#doc_EWEMBI'>EWEMBI</a> et les simulations des modèles n'est pas liée à la méthode de correction des biais, elle est liée à la qualité limitée des modèles climatiques.</p>
+  <p>Pour les valeurs extrêmes comme les <a href=#doc_TXx>extrêmes de chaleur (TXx)</a>, <a href=#doc_RX1>extrêmes humides (RX1day)</a> and <a href=#doc_RX5>extrêmes humides de 5 jours (RX5day)</a> les différences entre données <a href='#doc_EWEMBI'>EWEMBI</a> et les projections des modèles persistent après la correction des biais. La correction des biais avant tout réduit l'écart entre les modèles mais ne parvient pas à corriger <a href=#doc_meth_ens_mean>moyenne de l'ensemble</a> envers les données <a href='#doc_EWEMBI'>EWEMBI</a>. Les défaillances de la méthode de correction des biais utilisée pour les événements climatiques extrêmes ont été reportées par Sippel et al. <a href=#ref_sippel2016>(Sippel 2016)</a>.</p>
   </div></div>
 
   <span class=anchor id=doc_shapefiles></span>
@@ -323,7 +323,7 @@ h4
   <h2><span class="section-number-2"> Indicateurs Climatiques </span></h2>
   <div class="outline-text-2" id="text-1">
   <p>
-  En plus de la moyenne de <b>température</b> et de la <b>précipitation</b> mensuelle cumulée, trois <a href='http://etccdi.pacificclimate.org/list_27_indices.shtml'>trois indicateurs de changement climatique</a> sont analysées:</p>
+  En plus de la moyenne de <b>température</b> et de la <b>précipitation</b> mensuelle cumulée, trois <a href='http://etccdi.pacificclimate.org/list_27_indices.shtml'>indicateurs de changement climatique</a> sont analysés:</p>
   <ul style="width:600px; word-wrap:break-word; margin-left: 100px; list-style-type:square;">
     <span class=anchor id=doc_TXx></span>
     <li><b>Extrêmes de chaleur TXx,</b> Maximum mensuel de température quotidienne maximale: <br>Supposons TXx sont les températures quotidienne maximale dans le mois k, période j. Le maximum mensuel de température quotidienne maximale dans chaque mois est:
@@ -331,11 +331,11 @@ h4
     <span class=anchor id=doc_RX1></span>
     <li><b>Extrêmes humides Rx1day,</b> Maximum mensuel de précipitation en une journée: <br>Supposons RR<sub>ij</sub> est la quantité de précipitation du jour i dans la période j. Le maximum mensuel de précipitation en une journée pour la période j est:  Rx1day<sub>j</sub> = max (RR<sub>ij</sub>) </li>
      <span class=anchor id=doc_RX5></span>
-   <li><b>Extrêmes humides de 5 jours Rx5day,</b> Maximum mensuel de précipitation en cinq jours consécutifs: <br>Supposons RR<sub>kj</sub> est la quantité de précipitation de la période de cinq jours finissant le jour k dans la période j. Le maximum mensuel de précipitation en cinq jours pour la période j est: Rx5day<sub>j</sub> = max (RR<sub>kj</sub>) </li> 
+   <li><b>Extrêmes humides de 5 jours Rx5day,</b> Maximum mensuel de précipitation en cinq jours consécutifs: <br>Supposons RR<sub>kj</sub> est la quantité de précipitation de la période de cinq jours finissant le jour k dans la période j. Le maximum mensuel de précipitation en cinq jours pour la période j est: Rx5day<sub>j</sub> = max (RR<sub>kj</sub>) </li>
   </ul>
   <p>
-  Veuillez trouver plus d'informations sue <a href='http://etccdi.pacificclimate.org'>http://etccdi.pacificclimate.org</a>.</p>
-  <p>Dans la version actuelle aucun indicateur de sécheresse est présenté. On peut estimés les changements pour les risques de sécheresse en analysant les précipitation mensuelles en combinaison avec les moyennes de température en supposant que l'évapotranspiration potentielle augmente avec une augmentation en température.</p>
+  Veuillez trouver plus d'informations sur <a href='http://etccdi.pacificclimate.org'>http://etccdi.pacificclimate.org</a>.</p>
+  <p>Dans la version actuelle aucun indicateur de sécheresse est présenté. Les changements pour les risques de sécheresse peuvent être estimés en analysant les précipitation mensuelles en combinaison avec les moyennes de température en supposant que l'évapotranspiration potentielle augmente avec une augmentation en température.</p>
   </div></div>
 
 
@@ -356,7 +356,7 @@ h4
   <h3><span class="section-number-2"> Carte de la projection </span></h3>
   <div class="outline-text-2" id="text-1">
   <p>
-  Les changements dans les indicateurs climatiques sont présentés comme différence entre la <a href='#doc_meth_period'>moyenne de période</a> de la période de projection et la <a href='#doc_meth_period'>moyenne de période</a> de la période de référence. Les différences sont calculés individuellement pour chaque modèle. Dans la carte la <a href='#doc_meth_ens_mean'>moyenne de l'ensemble</a> du changement est présentée. Les cellules de la grille pour lesquelles le signe du changement projeté de deux des modèles diffère de la <a href='#doc_meth_ens_mean'>moyenne de l'ensemble</a> sont coloriées en gris comme les <a href='#doc_meth_disagreement'>modèles sont en désaccord</a> concernant le futur changement dans cette cellule. Les changements envers conditions plus chaudes ou plus sèches sont coloriés en rouge tandis que les changements envers conditions plus fraîches et humides sont coloriés en bleu.
+  Les changements dans les indicateurs climatiques sont présentés comme différence entre la <a href='#doc_meth_period'>moyenne de période</a> de la période de projection et la <a href='#doc_meth_period'>moyenne de période</a> de la période de référence. Les différences sont calculées individuellement pour chaque modèle. Dans la carte la <a href='#doc_meth_ens_mean'>moyenne de l'ensemble</a> du changement est présentée. Les cellules de la grille pour lesquelles le signe du changement projeté de deux des modèles diffère de la <a href='#doc_meth_ens_mean'>moyenne de l'ensemble</a> sont coloriées en gris puisque les <a href='#doc_meth_disagreement'>modèles sont en désaccord</a> concernant le futur changement dans cette cellule. Les changements vers des conditions plus chaudes ou plus sèches sont coloriés en rouge tandis que les changements vers des conditions plus fraîches et humides sont coloriés en bleu.
   </p>
   </div></div>
 
@@ -379,15 +379,15 @@ h4
   <div id="outline-container-1" class="outline-2">
   <h2><span class="section-number-2">Outil pour l'analyse de données climatiques (Python)</span></h2>
   <div class="outline-text-2" id="text-1">
-  <p>Ce site est basé sur un outil Python qui à été développé pour l'analyse régionale. En plus de fonctionnalités basiques pour calculer des <a href='#doc_meth_period'>moyenne des périodes</a>, des <a href='#doc_meth_area'>moyenne régionales</a> et des <a href='#doc_meth_ens_mean'>moyennes d'ensembles</a> l'outil comporte différentes fonctions additionnelles qui peuvent être utilisé pour des analyses plus sophistiquées.<br>
+  <p>Ce site est basé sur un outil Python qui à été développé pour l'analyse régionale. En plus de fonctionnalités basiques pour calculer des <a href='#doc_meth_period'>moyennes des périodes</a>, des <a href='#doc_meth_area'>moyennes régionales</a> et des <a href='#doc_meth_ens_mean'>moyennes d'ensemble</a> l'outil comporte différentes fonctions additionnelles qui peuvent être utilisées pour des analyses plus sophistiquées.<br>
   Le code à source ouverte et la documentation de l'outil seront publiés prochainement.</p>
   </div></div>
 
   <span class=anchor id=doc_acknowledgements></span>
   <div id="outline-container-1" class="outline-2">
-  <h2><span class="section-number-2"> Acknowledgements </span></h2>
+  <h2><span class="section-number-2"> Remerciments </span></h2>
   <div class="outline-text-2" id="text-1">
-  <p>We acknowledge the World Climate Research Programme's Working Group on Regional Climate, and the Working Group on Coupled Modelling, former coordinating body of CORDEX and responsible panel for CMIP5. We also thank the climate modelling groups (listed in Table XX of this paper) for producing and making available their model output. We also acknowledge the Earth System Grid Federation infrastructure an international effort led by the U.S. Department of Energy's Program for Climate Model Diagnosis and Intercomparison, the European Network for Earth System Modelling and other partners in the Global Organisation for Earth System Science Portals (GO-ESSP).</p>
+  <p>Nous remercions le Groupe de travail sur le climat régional du Programme mondial de recherche sur le climat (World Climate Research Programme) ainsi que le Groupe de travail sur la modélisation couplée, ancien organe de coordination du CORDEX et le comité responsable du CMIP5. Nous remercions également les groupes de modélisation du climat pour leurs travaux et la mise à disposition d’informations et de leurs modèles. Nous sommes reconnaissants également envers  l'infrastructure de la Earth System Grid Federation, un programme international de diagnostic et d'intercomparaison des modèles climatiques du Département américain de l'énergie, également reconnaissant envers le Réseau européen de modélisation des systèmes terrestres et d'autres partenaires de l'Organisation mondiale pour les portails scientifiques du système terrestre (GO-ESSP ).</p>
   </div></div>
 
   <span class=anchor id=doc_references></span>

@@ -67,4 +67,3 @@ class NewRegionForm(Form):
 
 class NewSeasonForm(Form):
   season_name    = TextField(u'season', validators=[Required()])
-
