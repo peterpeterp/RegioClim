@@ -1,0 +1,196 @@
+Afghanistan 	la République islamique d'Afghanistan 	AFG 	AF 	4 	AFG 	2 	1
+Afrique du Sud 	la République sud-africaine 	ZAF 	ZA 	710 	ZAF 	202 	227
+Albanie 	la République d'Albanie 	ALB 	AL 	8 	ALB 	3 	3
+Algérie 	la République algérienne démocratique et populaire 	DZA 	DZ 	12 	DZA 	4 	4
+Allemagne 	la République fédérale d'Allemagne 	DEU 	DE 	276 	DEU 	79 	93
+Andorre 	la Principauté d'Andorre 	AND 	AD 	20 	AND 	6 	7
+Angola 	la République d'Angola 	AGO 	AO 	24 	AGO 	7 	8
+Antigua-et-Barbuda 	Antigua-et-Barbuda 	ATG 	AG 	28 	ATG 	8 	11
+Arabie saoudite 	le Royaume d'Arabie saoudite 	SAU 	SA 	682 	SAU 	194 	215
+Argentine 	la République argentine 	ARG 	AR 	32 	ARG 	9 	12
+Arménie 	la République d'Arménie 	ARM 	AM 	51 	ARM 	1 	13
+Australie 	l'Australie 	AUS 	AU 	36 	AUS 	10 	17
+Autriche 	la République d'Autriche 	AUT 	AT 	40 	AUT 	11 	18
+Azerbaïdjan 	la République d'Azerbaïdjan 	AZE 	AZ 	31 	AZE 	52 	19
+Bahamas 	le Commonwealth des Bahamas 	BHS 	BS 	44 	BHS 	12 	20
+Bahreïn 	le Royaume de Bahreïn 	BHR 	BH 	48 	BHR 	13 	21
+Bangladesh 	la République populaire du Bangladesh 	BGD 	BD 	50 	BGD 	16 	23
+Barbade 	la Barbade 	BRB 	BB 	52 	BRB 	14 	24
+Belgique 	le Royaume de Belgique 	BEL 	BE 	56 	BEL 	255 	27
+Belize 	le Belize 	BLZ 	BZ 	84 	BLZ 	23 	28
+Bhoutan 	le Royaume du Bhoutan 	BTN 	BT 	64 	BTN 	18 	31
+Bolivie (État plurinational de) 	l'État plurinational de Bolivie 	BOL 	BO 	68 	BOL 	19 	33
+Bosnie-Herzégovine 	la Bosnie-Herzégovine 	BIH 	BA 	70 	BIH 	80 	34
+Botswana 	la République du Botswana 	BWA 	BW 	72 	BWA 	20 	35
+Brunéi Darussalam 	le Brunéi Darussalam 	BRN 	BN 	96 	BRN 	26 	40
+Brésil 	la République fédérative du Brésil 	BRA 	BR 	76 	BRA 	21 	37
+Bulgarie 	la République de Bulgarie 	BGR 	BG 	100 	BGR 	27 	41
+Burkina Faso 	le Burkina Faso 	BFA 	BF 	854 	BFA 	233 	42
+Burundi 	la République du Burundi 	BDI 	BI 	108 	BDI 	29 	43
+Bélarus 	la République du Bélarus 	BLR 	BY 	112 	BLR 	57 	26
+Bénin 	la République du Bénin 	BEN 	BJ 	204 	BEN 	53 	29
+Cabo Verde 	la République de Cabo Verde 	CPV 	CV 	132 	CPV 	35 	47
+Cambodge 	le Royaume du Cambodge 	KHM 	KH 	116 	KHM 	115 	44
+Cameroun 	la République du Cameroun 	CMR 	CM 	120 	CMR 	32 	45
+Canada 	le Canada 	CAN 	CA 	124 	CAN 	33 	46
+Chili 	la République du Chili 	CHL 	CL 	152 	CHL 	40 	51
+Chine 	la République populaire de Chine 	CHN 	CN 	156 	CHN 	41 	53
+Chypre 	la République de Chypre 	CYP 	CY 	196 	CYP 	50 	64
+Colombie 	la République de Colombie 	COL 	CO 	170 	COL 	44 	57
+Comores 	l'Union des Comores 	COM 	KM 	174 	COM 	45 	58
+Congo 	la République du Congo 	COG 	CG 	178 	COG 	46 	59
+Costa Rica 	la République du Costa Rica 	CRI 	CR 	188 	CRI 	48 	61
+Croatie 	la République de Croatie 	HRV 	HR 	191 	HRV 	98 	62
+Cuba 	la République de Cuba 	CUB 	CU 	192 	CUB 	49 	63
+Côte d'Ivoire 	la République de Côte d'Ivoire 	CIV 	CI 	384 	CIV 	107 	66
+Danemark 	le Royaume du Danemark 	DNK 	DK 	208 	DNK 	54 	69
+Djibouti 	la République de Djibouti 	DJI 	DJ 	262 	DJI 	72 	70
+Dominique 	le Commonwealth de la Dominique 	DMA 	DM 	212 	DMA 	55 	71
+El Salvador 	la République d'El Salvador 	SLV 	SV 	222 	SLV 	60 	75
+Espagne 	le Royaume d'Espagne 	ESP 	ES 	724 	ESP 	203 	229
+Estonie 	la République d'Estonie 	EST 	EE 	233 	EST 	63 	78
+Fidji 	la République des Fidji 	FJI 	FJ 	242 	FJI 	66 	83
+Finlande 	la République de Finlande 	FIN 	FI 	246 	FIN 	67 	84
+France 	la République française 	FRA 	FR 	250 	FRA 	68 	85
+Fédération de Russie 	la Fédération de Russie 	RUS 	RU 	643 	RUS 	185 	204
+Gabon 	la République gabonaise 	GAB 	GA 	266 	GAB 	74 	89
+Gambie 	la République de Gambie 	GMB 	GM 	270 	GMB 	75 	90
+Ghana 	la République du Ghana 	GHA 	GH 	288 	GHA 	81 	94
+Grenade 	la Grenade 	GRD 	GD 	308 	GRD 	86 	99
+Grèce 	la République hellénique 	GRC 	GR 	300 	GRC 	84 	97
+Guatemala 	la République du Guatemala 	GTM 	GT 	320 	GTM 	89 	103
+Guinée 	la République de Guinée 	GIN 	GN 	324 	GIN 	90 	106
+Guinée équatoriale 	la République de Guinée équatoriale 	GNQ 	GQ 	226 	GNQ 	61 	76
+Guinée-Bissau 	la République de Guinée-Bissau 	GNB 	GW 	624 	GNB 	175 	105
+Guyana 	la République du Guyana 	GUY 	GY 	328 	GUY 	91 	107
+Géorgie 	la Géorgie 	GEO 	GE 	268 	GEO 	73 	92
+Haïti 	la République d'Haïti 	HTI 	HT 	332 	HTI 	93 	108
+Honduras 	la République du Honduras 	HND 	HN 	340 	HND 	95 	111
+Hongrie 	la Hongrie 	HUN 	HU 	348 	HUN 	97 	113
+Inde 	la République de l'Inde 	IND 	IN 	356 	IND 	100 	115
+Indonésie 	la République d'Indonésie 	IDN 	ID 	360 	IDN 	101 	116
+Iran (République islamique d') 	la République islamique d'Iran 	IRN 	IR 	364 	IRN 	102 	117
+Iraq 	la République d'Iraq 	IRQ 	IQ 	368 	IRQ 	103 	118
+Irlande 	l'Irlande 	IRL 	IE 	372 	IRL 	104 	119
+Islande 	la République d'Islande 	ISL 	IS 	352 	ISL 	99 	114
+Israël 	l'État d'Israël 	ISR 	IL 	376 	ISR 	105 	121
+Italie 	la République italienne 	ITA 	IT 	380 	ITA 	106 	122
+Jamaïque 	la Jamaïque 	JAM 	JM 	388 	JAM 	109 	123
+Japon 	le Japon 	JPN 	JP 	392 	JPN 	110 	126
+Jordanie 	le Royaume hachémite de Jordanie 	JOR 	JO 	400 	JOR 	112 	130
+Kazakhstan 	la République du Kazakhstan 	KAZ 	KZ 	398 	KAZ 	108 	132
+Kenya 	la République du Kenya 	KEN 	KE 	404 	KEN 	114 	133
+Kirghizistan 	la République kirghize 	KGZ 	KG 	417 	KGZ 	113 	138
+Kiribati 	la République de Kiribati 	KIR 	KI 	296 	KIR 	83 	135
+Koweït 	l'État du Koweït 	KWT 	KW 	414 	KWT 	118 	137
+Lesotho 	le Royaume du Lesotho 	LSO 	LS 	426 	LSO 	122 	142
+Lettonie 	la République de Lettonie 	LVA 	LV 	428 	LVA 	119 	140
+Liban 	la République libanaise 	LBN 	LB 	422 	LBN 	121 	141
+Libye 	la Libye 	LBY 	LY 	434 	LBY 	124 	145
+Libéria 	la République du Libéria 	LBR 	LR 	430 	LBR 	123 	144
+Lituanie 	la République de Lituanie 	LTU 	LT 	440 	LTU 	126 	147
+Luxembourg 	le Grand-Duché de Luxembourg 	LUX 	LU 	442 	LUX 	256 	148
+Madagascar 	la République de Madagascar 	MDG 	MG 	450 	MDG 	129 	150
+Malaisie 	la Malaisie 	MYS 	MY 	458 	MYS 	131 	153
+Malawi 	la République du Malawi 	MWI 	MW 	454 	MWI 	130 	152
+Maldives 	la République des Maldives 	MDV 	MV 	462 	MDV 	132 	154
+Mali 	la République du Mali 	MLI 	ML 	466 	MLI 	133 	155
+Malte 	la République de Malte 	MLT 	MT 	470 	MLT 	134 	156
+Maroc 	le Royaume du Maroc 	MAR 	MA 	504 	MAR 	143 	169
+Maurice 	la République de Maurice 	MUS 	MU 	480 	MUS 	137 	160
+Mauritanie 	la République islamique de Mauritanie 	MRT 	MR 	478 	MRT 	136 	159
+Mexique 	les États-Unis du Mexique 	MEX 	MX 	484 	MEX 	138 	162
+Micronésie (États fédérés de) 	les États fédérés de Micronésie 	FSM 	FM 	583 	FSM 	145 	163
+Monaco 	la Principauté de Monaco 	MCO 	MC 	492 	MCO 	140 	166
+Mongolie 	la Mongolie 	MNG 	MN 	496 	MNG 	141 	167
+Monténégro 	le Monténégro 	MNE 	ME 	499 	MNE 	273 	2647
+Mozambique 	la République du Mozambique 	MOZ 	MZ 	508 	MOZ 	144 	170
+Myanmar 	République de l'Union du Myanmar 	MMR 	MM 	104 	MMR 	28 	171
+Namibie 	la République de Namibie 	NAM 	NA 	516 	NAM 	147 	172
+Nauru 	la République de Nauru 	NRU 	NR 	520 	NRU 	148 	173
+Nicaragua 	la République du Nicaragua 	NIC 	NI 	558 	NIC 	157 	180
+Niger 	la République du Niger 	NER 	NE 	562 	NER 	158 	181
+Nigéria 	la République fédérale du Nigéria 	NGA 	NG 	566 	NGA 	159 	182
+Nioué 	Nioué 	NIU 	NU 	570 	NIU 	160 	183
+Norvège 	le Royaume de Norvège 	NOR 	NO 	578 	NOR 	162 	186
+Nouvelle-Zélande 	la Nouvelle-Zélande 	NZL 	NZ 	554 	NZL 	156 	179
+Népal 	la République fédérale démocratique du Nepal 	NPL 	NP 	524 	NPL 	149 	175
+Oman 	le Sultanat d'Oman 	OMN 	OM 	512 	OMN 	221 	187
+Ouganda 	la République de l'Ouganda 	UGA 	UG 	800 	UGA 	226 	253
+Ouzbékistan 	la République d'Ouzbékistan 	UZB 	UZ 	860 	UZB 	235 	261
+Pakistan 	la République islamique du Pakistan 	PAK 	PK 	586 	PAK 	165 	188
+Palaos 	la République des Palaos 	PLW 	PW 	585 	PLW 	180 	189
+Panama 	la République du Panama 	PAN 	PA 	591 	PAN 	166 	191
+Papouasie-Nouvelle-Guinée 	État indépendant de Papouasie-Nouvelle-Guinée 	PNG 	PG 	598 	PNG 	168 	192
+Paraguay 	la République du Paraguay 	PRY 	PY 	600 	PRY 	169 	194
+Pays-Bas 	le Royaume des Pays-Bas 	NLD 	NL 	528 	NLD 	150 	177
+Philippines 	la République des Philippines 	PHL 	PH 	608 	PHL 	171 	196
+Pologne 	la République de Pologne 	POL 	PL 	616 	POL 	173 	198
+Portugal 	la République portugaise 	PRT 	PT 	620 	PRT 	174 	199
+Pérou 	la République du Pérou 	PER 	PE 	604 	PER 	170 	195
+Qatar 	l'État du Qatar 	QAT 	QA 	634 	QAT 	179 	201
+Roumanie 	la Roumanie 	ROU 	RO 	642 	ROU 	183 	203
+Royaume-Uni 	le Royaume-Uni de Grande-Bretagne et d'Irlande du Nord 	GBR 	GB 	826 	GBR 	229 	256
+Rwanda 	la République du Rwanda 	RWA 	RW 	646 	RWA 	184 	205
+République arabe syrienne 	la République arabe syrienne 	SYR 	SY 	760 	SYR 	212 	238
+République centrafricaine 	la République centrafricaine 	CAF 	CF 	140 	CAF 	37 	49
+République de Corée 	la République de Corée 	KOR 	KR 	410 	KOR 	117 	202
+République de Moldova 	la République de Moldova 	MDA 	MD 	498 	MDA 	146 	165
+République dominicaine 	la République dominicaine 	DOM 	DO 	214 	DOM 	56 	72
+République démocratique du Congo 	la République démocratique du Congo 	COD 	CD 	180 	COD 	250 	68
+République démocratique populaire lao 	la République démocratique populaire lao 	LAO 	LA 	418 	LAO 	120 	139
+République populaire démocratique de Corée 	la République populaire démocratique de Corée 	PRK 	KP 	408 	PRK 	116 	67
+République-Unie de Tanzanie 	la République-Unie de Tanzanie 	TZA 	TZ 	834 	TZA 	215 	257
+Saint-Kitts-et-Nevis 	Saint-Kitts-et-Nevis 	KNA 	KN 	659 	KNA 	188 	208
+Saint-Marin 	la République de Saint-Marin 	SMR 	SM 	674 	SMR 	192 	213
+Saint-Vincent-et-les Grenadines 	Saint-Vincent-et-les Grenadines 	VCT 	VC 	670 	VCT 	191 	211
+Sainte-Lucie 	Sainte-Lucie 	LCA 	LC 	662 	LCA 	189 	209
+Samoa 	l'État indépendant du Samoa 	WSM 	WS 	882 	WSM 	244 	212
+Sao Tomé-et-Principe 	la République démocratique de Sao Tomé-et-Principe 	STP 	ST 	678 	STP 	193 	214
+Serbie 	la République de Serbie 	SRB 	RS 	688 	SRB 	272 	2648
+Seychelles 	la République des Seychelles 	SYC 	SC 	690 	SYC 	196 	220
+Sierra Leone 	la République de Sierra Leone 	SLE 	SL 	694 	SLE 	197 	221
+Singapour 	la République de Singapour 	SGP 	SG 	702 	SGP 	200 	222
+Slovaquie 	la République slovaque 	SVK 	SK 	703 	SVK 	199 	223
+Slovénie 	la République de Slovénie 	SVN 	SI 	705 	SVN 	198 	224
+Somalie 	la République fédérale de Somalie 	SOM 	SO 	706 	SOM 	201 	226
+Soudan 	la République du Soudan 	SDN 	SD 	736 	SDN 	276 	40764
+Soudan du Sud 	République du Soudan du Sud 	SSD 	SS 	728 	SSD 	277 	74
+Sri Lanka 	la République socialiste démocratique de Sri Lanka 	LKA 	LK 	144 	LKA 	38 	231
+Suisse 	la Confédération suisse 	CHE 	CH 	756 	CHE 	211 	237
+Suriname 	la République du Suriname 	SUR 	SR 	740 	SUR 	207 	233
+Suède 	le Royaume de Suède 	SWE 	SE 	752 	SWE 	210 	236
+Swaziland 	le Royaume du Swaziland 	SWZ 	SZ 	748 	SWZ 	209 	235
+Sénégal 	la République du Sénégal 	SEN 	SN 	686 	SEN 	195 	217
+Tadjikistan 	la République du Tadjikistan 	TJK 	TJ 	762 	TJK 	208 	239
+Tchad 	la République du Tchad 	TCD 	TD 	148 	TCD 	39 	50
+Tchéquie (la) 	la République tchèque 	CZE 	CZ 	203 	CZE 	167 	65
+Thaïlande 	le Royaume de Thaïlande 	THA 	TH 	764 	THA 	216 	240
+Timor-Leste 	la République démocratique du Timor-Leste 	TLS 	TL 	626 	TLS 	176 	242
+Togo 	la République togolaise 	TGO 	TG 	768 	TGO 	217 	243
+Tokélaou (Membre associé) 	les Tokélaou 	TKL 	TK 	772 	TKL 	218 	244
+Tonga 	le Royaume des Tonga 	TON 	TO 	776 	TON 	219 	245
+Trinité-et-Tobago 	la République de Trinité-et-Tobago 	TTO 	TT 	780 	TTO 	220 	246
+Tunisie 	la République tunisienne 	TUN 	TN 	788 	TUN 	222 	248
+Turkménistan 	le Turkménistan 	TKM 	TM 	795 	TKM 	213 	250
+Turquie 	la République turque 	TUR 	TR 	792 	TUR 	223 	249
+Tuvalu 	les Tuvalu 	TUV 	TV 	798 	TUV 	227 	252
+Ukraine 	l'Ukraine 	UKR 	UA 	804 	UKR 	230 	254
+Uruguay 	la République orientale de l'Uruguay 	URY 	UY 	858 	URY 	234 	260
+Vanuatu 	la République du Vanuatu 	VUT 	VU 	548 	VUT 	155 	262
+Venezuela (République bolivarienne du) 	la République bolivarienne du Venezuela 	VEN 	VE 	862 	VEN 	236 	263
+Viet Nam 	la République socialiste du Viet Nam 	VNM 	VN 	704 	VNM 	237 	264
+Yémen 	la République du Yémen 	YEM 	YE 	887 	YEM 	249 	269
+Zambie 	la République de Zambie 	ZMB 	ZM 	894 	ZMB 	251 	270
+Zimbabwe 	la République du Zimbabwe 	ZWE 	ZW 	716 	ZWE 	181 	271
+ex-République yougoslave de Macédoine 	l'ex-République yougoslave de Macédoine 	MKD 	MK 	807 	MKD 	154 	241
+Îles Cook 	les Îles Cook 	COK 	CK 	184 	COK 	47 	60
+Îles Féroé (Membre associé) 	les Îles Féroé 	FRO 	FO 	234 	FRO 	64 	82
+Îles Marshall 	la République des Îles Marshall 	MHL 	MH 	584 	MHL 	127 	157
+Îles Salomon 	les Îles Salomon 	SLB 	SB 	90 	SLB 	25 	225
+Égypte 	la République arabe d'Égypte 	EGY 	EG 	818 	EGY 	59 	40765
+Émirats arabes unis 	les Émirats arabes unis 	ARE 	AE 	784 	ARE 	225 	255
+Équateur 	la République de l'Équateur 	ECU 	EC 	218 	ECU 	58 	73
+Érythrée 	l'État d'Érythrée 	ERI 	ER 	232 	ERI 	178 	77
+États-Unis d'Amérique 	les États-Unis d'Amérique 	USA 	US 	840 	USA 	231 	259
+Éthiopie 	la République fédérale démocratique d'Éthiopie 	ETH 	ET 	231 	ETH 	238 	79
