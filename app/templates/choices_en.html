@@ -70,16 +70,14 @@
 
 <div id="LeftPanel" style="width: 74%; height: 100%; float: left; padding-left: 2%;">
   <h3>Regional climate model projections vizualized for the country scale </h3>
-  <p>Click on the <a class="label label-primary" tyle="margin-right: 5px;">png</a> or <a class="label label-primary" tyle="margin-right: 5px;">pdf</a> to download high resolution graphics.
+  <p>Click on <a class="label label-primary" tyle="margin-right: 5px;">png</a> or <a class="label label-primary" tyle="margin-right: 5px;">pdf</a> to download high resolution graphics.
   <div id="LeftPanel" style="width: 50%; height: 100%; float: left;">
     {% if EWEMBI_plot!='no_plot' %}
       <figure>
         <caption><h3>Reference Period
         <a href="documentation#doc_plot_climatology"><IMG SRC='static/images/question-mark-button.png' ALT=' ' WIDTH=12 HEIGHT=12></IMG></a>
-        <span style="float:right;">
-          <a class="label label-primary" href="/prepare_for_download/EWEMBI_plot**_large.png" target="_blank"  style="margin-right: 5px;">png</a>
-          <a class="label label-primary" href="/prepare_for_download/EWEMBI_plot**.pdf" target="_blank"  style="margin-right: 5px;">pdf</a>
-        </span> </h3>
+          <form method="POST" action="/prepare_for_download/EWEMBI_plot**_large.png" style="float: right;"><button type="submit" class="label label-primary" style="margin-right: 5px;">png</button></form>
+          <form method="POST" action="/prepare_for_download/EWEMBI_plot**.pdf" style="float: right;"><button type="submit" class="label label-primary" style="margin-right: 5px;">pdf</button></form> </h3>
         </caption>
         <IMG SRC={{ EWEMBI_plot }} ALT=' ' WIDTH=100%></IMG>
         <figcaption class=small>{{indicator[0].upper()+indicator[1:]}}{{season_add_on}} averaged over the reference period {{refP_clim_longname}}. This map is based on the <a href=documentation#doc_EWEMBI>EWEMBI</a> dataset.</figcaption>
@@ -91,10 +89,8 @@
       <figure>
         <caption><h3>Projected Change
         <a href="documentation#doc_plot_projection"><IMG SRC='static/images/question-mark-button.png' ALT=' ' WIDTH=12 HEIGHT=12></IMG></a>
-        <span style="float:right;">
-          <a class="label label-primary" href="/prepare_for_download/Projection_plot**_large.png" target="_blank"  style="margin-right: 5px;">png</a>
-          <a class="label label-primary" href="/prepare_for_download/Projection_plot**.pdf" target="_blank"  style="margin-right: 5px;">pdf</a>
-        </span> </h3>
+        <form method="POST" action="/prepare_for_download/Projection_plot**_large.png" style="float: right;"><button type="submit" class="label label-primary" style="margin-right: 5px;">png</button></form>
+        <form method="POST" action="/prepare_for_download/Projection_plot**.pdf" style="float: right;"><button type="submit" class="label label-primary" style="margin-right: 5px;">pdf</button></form> </h3>
         </caption>
         <IMG SRC={{ Projection_plot }} ALT=' ' WIDTH=100%></IMG>
       <figcaption class=small>Projected change in {{indicator}}{{season_add_on}} for {{proP_longname}} compared to the reference period {{refP_longname}}. Here the <a href=documentation#doc_meth_ens_mean>ensemble mean</a> of <a href=documentation#doc_RCM>regional climate model</a> projections is displayed. Grid-cells for which a <a href=documentation#doc_meth_disagreement>model-disagreement</a> is found are colored in gray. The projections are based on the <a href=documentation#doc_scenario>emission scenario RCP4.5</a>.</figcaption>
@@ -109,10 +105,8 @@
       <figure>
         <caption><h3>Regionally Averaged Transient
         <a href="documentation#doc_plot_transient"><IMG SRC='static/images/question-mark-button.png' ALT=' ' WIDTH=12 HEIGHT=12></IMG></a>
-        <span style="float:right;">
-          <a class="label label-primary" href="/prepare_for_download/transient_plot**_large.png" target="_blank"  style="margin-right: 5px;">png</a>
-          <a class="label label-primary" href="/prepare_for_download/transient_plot**.pdf" target="_blank"  style="margin-right: 5px;">pdf</a>
-        </span> </h3>
+        <form method="POST" action="/prepare_for_download/transient_plot**_large.png" style="float: right;"><button type="submit" class="label label-primary" style="margin-right: 5px;">png</button></form>
+        <form method="POST" action="/prepare_for_download/transient_plot**.pdf" style="float: right;"><button type="submit" class="label label-primary" style="margin-right: 5px;">pdf</button></form> </h3>
         </caption>
         <IMG SRC={{ transient_plot }} ALT=' ' WIDTH=100%></IMG>
       <figcaption class=small><a href=documentation#doc_RCM>Regional climate model</a> projections for {{indicator}}{{season_add_on}} displayed as 20 year running mean. The line represents the <a href=documentation#doc_meth_ens_mean>ensemble mean</a> while the shaded area represents the model spread. The projections are based on the <a href=documentation#doc_scenario>emission scenario RCP4.5</a>.</figcaption>
@@ -125,10 +119,8 @@
       <figure>
         <caption><h3>Regionally Averaged Annual Cycle
         <a href="documentation#doc_plot_annual_cycle"><IMG SRC='static/images/question-mark-button.png' ALT=' ' WIDTH=12 HEIGHT=12></IMG></a>
-        <span style="float:right;">
-          <a class="label label-primary" href="/prepare_for_download/annual_cycle_plot**_large.png" target="_blank"  style="margin-right: 5px;">png</a>
-          <a class="label label-primary" href="/prepare_for_download/annual_cycle_plot**.pdf" target="_blank"  style="margin-right: 5px;">pdf</a>
-        </span> </h3>
+        <form method="POST" action="/prepare_for_download/annual_cycle_plot**_large.png" style="float: right;"><button type="submit" class="label label-primary" style="margin-right: 5px;">png</button></form>
+        <form method="POST" action="/prepare_for_download/annual_cycle_plot**.pdf" style="float: right;"><button type="submit" class="label label-primary" style="margin-right: 5px;">pdf</button></form> </h3>
         </caption>
         <IMG SRC={{ annual_cycle_plot }} ALT=' ' WIDTH=100%></IMG>
       <figcaption class=small>Top: Annual cycle of {{indicator}} for the period {{refP_clim_longname}}. Bottom: Changes in annual cycle projected for {{proP_longname}} compared to the reference period {{refP_longname}}. <a href=documentation#doc_EWEMBI>EWEMBI</a> data is shown in black, <a href=documentation#doc_RCM>regional climate model</a> simulations in green. The green line represents the <a href=documentation#doc_meth_ens_mean>ensemble mean</a> while the shaded area represents the model spread. The projections are based on the <a href=documentation#doc_scenario>emission scenario RCP4.5</a>.</figcaption>

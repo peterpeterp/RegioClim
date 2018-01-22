@@ -44,8 +44,8 @@ except:
 
 sys.path.append(basepath+'country_analysis/country_analysis_scripts/')
 import country_analysis; reload(country_analysis)
-sys.path.append(basepath+'/projection_sharing/')
-os.chdir(basepath+'/projection_sharing/')
+sys.path.append(basepath+'/RegioClim/')
+os.chdir(basepath+'/RegioClim/')
 
 seasons={'year':range(1,13)}
 for i in range(1,13):

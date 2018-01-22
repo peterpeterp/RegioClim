@@ -36,8 +36,8 @@ except:
 
 sys.path.append(basepath+'country_analysis/country_analysis_scripts/')
 import country_analysis; reload(country_analysis)
-sys.path.append(basepath+'/projection_sharing/')
-os.chdir(basepath+'/projection_sharing/')
+sys.path.append(basepath+'/RegioClim/')
+os.chdir(basepath+'/RegioClim/')
 
 
 def flash_errors(form):
@@ -736,6 +736,7 @@ def prepare_for_download(plot_request):
   plot_format=plot_request.split('**')[-1]
 
   s=session
+
   lang=s['language']
 
   region=s['region']
@@ -824,7 +825,7 @@ def prepare_for_download(plot_request):
     return send_from_directory(directory=settings.basepath+'country_analysis/data/', filename=filename.replace('app/',''),as_attachment=True)
 
   if 'plot' in request_type.split('_'):
-    return send_from_directory(directory=settings.basepath+'projection_sharing/app/', filename=filename.replace('app/',''),as_attachment=True)
+    return send_from_directory(directory=settings.basepath+'RegioClim/app/', filename=filename.replace('app/',''),as_attachment=True)
 
 
 ###############################

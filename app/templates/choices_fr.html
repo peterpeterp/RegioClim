@@ -82,10 +82,8 @@
       <figure>
       <caption><h3>Période de Référence
         <a href="documentation#doc_plot_climatology"><IMG SRC='static/images/question-mark-button.png' ALT=' ' WIDTH=12 HEIGHT=12></IMG></a>
-        <span style="float:right;">
-          <a class="label label-primary" href="/prepare_for_download/EWEMBI_plot**_large.png" target="_blank"  style="margin-right: 5px;">png</a>
-          <a class="label label-primary" href="/prepare_for_download/EWEMBI_plot**.pdf" target="_blank"  style="margin-right: 5px;">pdf</a>
-        </span> </h3>
+        <form method="POST" action="/prepare_for_download/EWEMBI_plot**_large.png" style="float: right;"><button type="submit" class="label label-primary" style="margin-right: 5px;">png</button></form>
+        <form method="POST" action="/prepare_for_download/EWEMBI_plot**.pdf" style="float: right;"><button type="submit" class="label label-primary" style="margin-right: 5px;">pdf</button></form></h3>
         </caption>
         <IMG SRC={{ EWEMBI_plot }} ALT=' ' WIDTH=100%></IMG>
         <figcaption class=small>{{indicator[0].upper()+indicator[1:]}}{{season_add_on}} en tant que moyenne de la période de référence {{refP_clim_longname}}. Cette carte est basée sur les données <a href=documentation#doc_EWEMBI>EWEMBI</a>.</figcaption>
@@ -97,10 +95,8 @@
       <figure>
         <caption><h3>Changement Projeté
         <a href="documentation#doc_plot_projection"><IMG SRC='static/images/question-mark-button.png' ALT=' ' WIDTH=12 HEIGHT=12></IMG></a>
-        <span style="float:right;">
-          <a class="label label-primary" href="/prepare_for_download/Projection_plot**_large.png" target="_blank"  style="margin-right: 5px;">png</a>
-          <a class="label label-primary" href="/prepare_for_download/Projection_plot**.pdf" target="_blank"  style="margin-right: 5px;">pdf</a>
-        </span> </h3>
+        <form method="POST" action="/prepare_for_download/Projection_plot**_large.png" style="float: right;"><button type="submit" class="label label-primary" style="margin-right: 5px;">png</button></form>
+        <form method="POST" action="/prepare_for_download/Projection_plot**.pdf" style="float: right;"><button type="submit" class="label label-primary" style="margin-right: 5px;">pdf</button></form></h3>
         </caption>
         <IMG SRC={{ Projection_plot }} ALT=' ' WIDTH=100%></IMG>
       <figcaption class=small>Changement projeté en {{indicator}}{{season_add_on}} pour {{proP_longname}} comparé à la période de référence {{refP_longname}}. Ici la <a href=documentation#doc_meth_ens_mean>moyenne de l'ensemble</a> des projections de <a href=documentation#doc_RCM>modèles climatiques régionales</a> est montrée. Les cellules de grilles pour lesquelles un <a href=documentation#doc_meth_disagreement>désaccord entre les modèles</a> est identifié sont coloriés en gris. Les projections sont basées sur le <a href=documentation#doc_scenario>scénario d'émission RCP4.5</a>.</figcaption>
@@ -115,10 +111,8 @@
       <figure>
         <caption><h3>Trajectoire de la Moyenne Régionale
         <a href="documentation#doc_plot_transient"><IMG SRC='static/images/question-mark-button.png' ALT=' ' WIDTH=12 HEIGHT=12></IMG></a>
-        <span style="float:right;">
-          <a class="label label-primary" href="/prepare_for_download/transient_plot**_large.png" target="_blank"  style="margin-right: 5px;">png</a>
-          <a class="label label-primary" href="/prepare_for_download/transient_plot**.pdf" target="_blank"  style="margin-right: 5px;">pdf</a>
-        </span> </h3>
+        <form method="POST" action="/prepare_for_download/transient_plot**_large.png" style="float: right;"><button type="submit" class="label label-primary" style="margin-right: 5px;">png</button></form>
+        <form method="POST" action="/prepare_for_download/transient_plot**.pdf" style="float: right;"><button type="submit" class="label label-primary" style="margin-right: 5px;">pdf</button></form></h3>
         </caption>
         <IMG SRC={{ transient_plot }} ALT=' ' WIDTH=100%></IMG>
       <figcaption class=small>Projections de <a href=documentation#doc_RCM>modèles climatiques régionales</a> pour {{indicator}}{{season_add_on}} présenté comme moyenne glissante de 20 années. La ligne représente la <a href=documentation#doc_meth_ens_mean>moyenne de l'ensemble</a> tandis que l'ombrage représente l'écart entre les modèles. Les projections sont basées sur le <a href=documentation#doc_scenario>scénario d'émission RCP4.5</a>.</figcaption>
@@ -131,10 +125,8 @@
       <figure>
         <caption><h3>Cycle Annuel de la Moyenne Régionale
         <a href="documentation#doc_plot_annual_cycle"><IMG SRC='static/images/question-mark-button.png' ALT=' ' WIDTH=12 HEIGHT=12></IMG></a>
-        <span style="float:right;">
-          <a class="label label-primary" href="/prepare_for_download/annual_cycle_plot**_large.png" target="_blank"  style="margin-right: 5px;">png</a>
-          <a class="label label-primary" href="/prepare_for_download/annual_cycle_plot**.pdf" target="_blank"  style="margin-right: 5px;">pdf</a>
-        </span> </h3>
+        <form method="POST" action="/prepare_for_download/annual_cycle_plot**_large.png" style="float: right;"><button type="submit" class="label label-primary" style="margin-right: 5px;">png</button></form>
+        <form method="POST" action="/prepare_for_download/annual_cycle_plot**.pdf" style="float: right;"><button type="submit" class="label label-primary" style="margin-right: 5px;">pdf</button></form></h3>
         </caption>
         <IMG SRC={{ annual_cycle_plot }} ALT=' ' WIDTH=100%></IMG>
       <figcaption class=small>Haut: Cycle annuel pour {{indicator}} pour la période {{refP_clim_longname}}. Bas: Changements dans le cycle annuel projeté pour {{proP_longname}} par rapport à la période de référence {{refP_longname}}. Les données <a href=documentation#doc_EWEMBI>EWEMBI</a> sont montrés en noir, les projections de <a href=documentation#doc_RCM>modèles climatiques régionales</a> en vert. La ligne verte représente la <a href=documentation#doc_meth_ens_mean>moyenne de l'ensemble</a> tandis que l'ombrage représente l'écart entre les modèles. Les projections sont basées sur le <a href=documentation#doc_scenario>scénario d'émission RCP4.5</a>.</figcaption>
