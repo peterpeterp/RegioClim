@@ -86,7 +86,11 @@
         <form method="POST" action="/prepare_for_download/EWEMBI_plot**.pdf" style="float: right;"><button type="submit" class="label label-primary" style="margin-right: 5px;">pdf</button></form></h3>
         </caption>
         <IMG SRC={{ EWEMBI_plot }} ALT=' ' WIDTH=100%></IMG>
-        <figcaption class=small>{{indicator[0].upper()+indicator[1:]}}{{season_add_on}} en tant que moyenne de la période de référence {{refP_clim_longname}}. Cette carte est basée sur les données <a href=documentation#doc_EWEMBI>EWEMBI</a>.</figcaption>
+        {% if indicator in ["température","précipitation"] %}
+          <figcaption class=small>{{indicator[0].upper()+indicator[1:]}} moyenne{{season_add_on}} sur la période de reference {{refP_clim_longname}} des données <a href=documentation#doc_EWEMBI>EWEMBI</a>.</figcaption>
+        {% else %}
+          <figcaption class=small>{{indicator[0].upper()+indicator[1:]}}{{season_add_on}} en tant que moyenne de la période de référence {{refP_clim_longname}}. Cette carte est basée sur les données <a href=documentation#doc_EWEMBI>EWEMBI</a>.</figcaption>
+        {% endif %}
       </figure>
     {% endif %}
   </div>

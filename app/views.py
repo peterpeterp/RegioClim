@@ -237,6 +237,7 @@ def choices():
       'out_format':'_small.png'
     }
 
+
     EWEMBI_plot=EWEMBI_plot_func(**plot_context)
     Projection_plot=Projection_plot_func(**plot_context)
     transient_plot=transient_plot_func(**plot_context)
@@ -258,8 +259,10 @@ def choices():
       'overview_plot':overview_plot.replace('app/',''),
     }
 
+
     if s['season']=='year':season_add_on=''
-    if s['season']!='year':season_add_on=' in '+season_dict[lang][s['season']]
+    if s['season']!='year' and lang=='en':season_add_on=' in '+season_dict[lang][s['season']]
+    if s['season']!='year' and lang=='fr':season_add_on=' en '+season_dict[lang][s['season']]
 
     if s['use_periods']==False:
       refP_clim_longname=refP_clim_longname.replace('°C','°C '+settings.above_preindustrial[lang])
