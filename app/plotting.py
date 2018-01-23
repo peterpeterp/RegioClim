@@ -83,6 +83,7 @@ def transient_plot_func(s,COU,refP,refP_clim,proP,refP_longname,refP_clim_longna
     fig,ax=plt.subplots(nrows=1,ncols=1,figsize=(5,4))
     message=ens_mean.plot_transients(season=s['season'],region=region,running_mean_years=20,ax=ax,title='',ylabel=None,label='model data',color='green',shading_range=[0,100],x_range=[1960,2090],show_all_models=False)
     #message=ewembi[0].plot_transients(season=s['season'],region=region,running_mean_years=20,ax=ax,title='',ylabel=None,label='observations (EWEMBI)',color='black',x_range=[1960,2090])
+    print message
     if message==1:
       ax.set_ylabel(indicator_label)
       #leg = plt.legend(loc='best',fancybox=True,fontsize=10)
