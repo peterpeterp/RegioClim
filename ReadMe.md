@@ -16,12 +16,14 @@ This project requires python2.7 with the following packages:
 - pandas
 - scipy
 - seaborn
+- unidecode
 - pycountry
 - dimarray
 
+
 ```
 conda create --name some_name
-conda install numpy netCDF4 basemap matplotlib shapely descartes fiona flask flask-wtf gunicorn pandas scipy seaborn
+conda install numpy netCDF4 basemap matplotlib shapely descartes fiona flask flask-wtf gunicorn pandas scipy seaborn unidecode
 ```
 the two packages pycountry and dimarray are not found by conda, install them using pip
 ```

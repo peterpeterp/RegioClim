@@ -313,7 +313,7 @@ def choices():
 
   except Exception,e:
     print str(e)
-    return redirect(url_for("index"))
+    return render_template('error.html')
 
 
 
@@ -353,7 +353,7 @@ def season_page():
 
   except Exception,e:
     print str(e)
-    return redirect(url_for("index"))
+    return render_template('error.html')
 
 @app.route('/given_season_name',  methods=("POST", ))
 def given_season_name():
@@ -434,9 +434,6 @@ def merging_page():
 
     regions_plot='app/static/COU_images/'+s['country']+'/'+s['region']+'.png'
     if os.path.isfile(regions_plot)==False:
-
-
-
       fig = plt.figure(frameon=False)
       ax = plt.Axes(fig, [0., 0., 1., 1.])
       fig.set_size_inches(6*asp,6/asp)
@@ -451,6 +448,7 @@ def merging_page():
         #title=COU._regions[s['region']])
 
       if s['region']!=s['country']:
+        print COU._adm_polygons[s['region']]
         patch = PolygonPatch(COU._adm_polygons[s['region']], facecolor='orange', edgecolor=[0,0,0], alpha=0.7, zorder=2)
         ax.add_patch(patch)
         ax.set_axis_off()
@@ -515,7 +513,7 @@ def merging_page():
 
   except Exception,e:
     print str(e)
-    return redirect(url_for("index"))
+    return render_template('error.html')
 
 @app.route('/given_region_name',  methods=("POST", ))
 def given_region_name():
@@ -557,8 +555,6 @@ def merge_with_region(to_merge):
     s['small_region_warning']=False
 
   if s['new_region_name_auto']:s['new_region_name']=s['region']
-
-
 
 
 @app.route('/merge_with_region_from_form',  methods=('POST', ))
@@ -898,7 +894,7 @@ def documentation():
 
 # @app.route('/model_agreement')
 # def model_agreement():
-#   try:
+  # try:
 #     country=session['country']
 
 #     form_period = forms.periodForm(request.form)
@@ -919,7 +915,7 @@ def documentation():
 
 # @app.route('/bias_correction')
 # def bias_correction():
-#   try:
+  # try:
 #     country=session['country']
 
 #     form_period = forms.PeriodField(request.form)
