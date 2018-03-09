@@ -712,11 +712,15 @@ def country_choice():
 
   session['cou_path']='app/static/COU_sessions/'+session['id']+'_'+session['country']+'.pkl'
   if os.path.isfile(session['cou_path'])==False:
-    COU=initialize()
+    if os.path.isdir('../country_analysis/data/'+session['country']):
+        COU=initialize()
+    else:
+        return redirect(url_for("not_available"))
 
   else:
     session_cou = open(session['cou_path'], 'rb')
     COU=cPickle.load( session_cou) ; session_cou.close()
+
 
   session["indicator"]   = 'tas'
   index=session['indicator_avail'].index(session['indicator'])
