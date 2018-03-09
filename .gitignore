@@ -1,3 +1,7 @@
 
 
 app/*pyc
+app/static/COU_images
+app/static/COU_sessions
+
+
