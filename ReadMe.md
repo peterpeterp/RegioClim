@@ -2,7 +2,7 @@
 
 * Installation
 
-This project requires python2.7 with the following packages:
+This project requires python2.7 with the following packages:<br>
   numpy netCDF4 basemap matplotlib shapely descartes fiona flask flask-wtf gunicorn pandas scipy seaborn pycountry dimarray
 
 conda create --name some_name
