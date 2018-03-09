@@ -140,9 +140,6 @@ def index():
   session['location']='index'
   return redirect(url_for("choices"))
 
-
-
-
 @app.route('/choices')
 def choices():
   try:
