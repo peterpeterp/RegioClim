@@ -13,6 +13,9 @@
 
   <form method="POST" action="/indicator_choice" id="indicator_id">
   <h3>Indicateur Climatique <a href="documentation#doc_indicators"><IMG SRC='static/images/question-mark-button.png' ALT=' ' WIDTH=12 HEIGHT=12></IMG></a></h3>
+  {% if small_region_warning==True %}
+  <p class=warn_txt><b>Attention: </b>{{ reduced_inidicator_set_txt }}</p>
+  {% endif %}
   {{ form_indicator.indicators(onchange="change_indicator();") }}
   <a class="label label-primary" href="/prepare_for_download/get_data**bla" target="_blank"  style="margin-right: 5px;">{{download_data }}</a>
   </form>

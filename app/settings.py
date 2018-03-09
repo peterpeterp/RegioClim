@@ -180,6 +180,7 @@ text_dict={'en':{
 
 	'warning':'Warning: ',
 	'warning_txt':'The chosen region is smaller than 5 grid-cells. Please ',
+	'reduced_inidicator_set_txt':"The chosen region is smaller than 5 grid-cells. We don't provide extreme indices for such small regions!",
 
 	'merge_page_h':'Add another region',
 	'merge_page_txt':'Select a region you want to add to the chosen region.',
@@ -213,6 +214,7 @@ text_dict={'en':{
 },'fr':{
 	'warning':'Avertissement!',
 	'warning_txt':'La région choisie est plus petite que 5 grilles. Veuillez ',
+	'reduced_inidicator_set_txt':"La région choisie est plus petite que 5 grilles. Nous ne fournissons pas d'indicateurs climatiques extrêmes pour cette région!",
 
 	'merge_page_h':'Ajoutez une Région',
 	'merge_page_txt':'Choisissez une région qui sera combiné avec la région actuelle.',

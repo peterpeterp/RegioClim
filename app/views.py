@@ -174,7 +174,12 @@ def choices():
     form_dataset.datasets.choices = zip(s['dataset_avail'],s['dataset_avail'])
 
     form_indicator = forms.indicatorForm(request.form)
-    form_indicator.indicators.choices = zip(s['indicator_avail'],[indicator_dict[lang][ind][0].upper()+indicator_dict[lang][ind][1:] for ind in s['indicator_avail']])
+    if s['small_region_warning']:
+        indi_avail_tmp=['tas','pr']
+    else:
+        indi_avail_tmp=s['indicator_avail']
+
+    form_indicator.indicators.choices = zip(indi_avail_tmp,[indicator_dict[lang][ind][0].upper()+indicator_dict[lang][ind][1:] for ind in indi_avail_tmp])
 
     form_warming_lvl = forms.warming_lvlForm(request.form)
     s['warming_lvl_avail']=[warming_lvl_dict[lang].keys()[warming_lvl_dict[lang].values().index(name)] for name in sorted(warming_lvl_dict[lang].values())]
@@ -677,6 +682,14 @@ def indicator_choice():
   if session["season"] not in session["season_avail"]: session["season"] = 'year'
   return redirect(url_for('choices'))
 
+def check_size(COU):
+  area=COU.get_region_area(session['region'])['latxlon']*4
+  if area<4:
+    session['small_region_warning']=True
+  else:
+    session['small_region_warning']=False
+
+
 @app.route('/region_choice',  methods=('POST', ))
 def region_choice():
   form_region = forms.regionForm(request.form)
@@ -687,12 +700,7 @@ def region_choice():
     COU=cPickle.load( session_cou) ; session_cou.close()
     if session['region']==session['country']:
       session['small_region_warning']=False
-    if session['region']!=session['country']:
-      area=COU.get_region_area(session['region'])['latxlon']*4
-      if area<4:
-        session['small_region_warning']=True
-      else:
-        session['small_region_warning']=False
+    check_size(COU)
   return redirect(url_for('choices'))
 
 @app.route('/country_choice',  methods=('POST', ))
@@ -724,6 +732,7 @@ def country_choice():
 
   session["season_avail"]   = settings.seasons.keys()
   session["season"]   = 'year'
+  check_size(COU)
 
   return redirect(url_for('choices'))
 
