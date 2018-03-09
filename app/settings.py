@@ -180,7 +180,7 @@ text_dict={'en':{
 
 	'warning':'Warning: ',
 	'warning_txt':'The chosen region is smaller than 5 grid-cells. Please ',
-	'reduced_inidicator_set_txt':"The chosen region is smaller than 5 grid-cells. We don't provide extreme indices for such small regions!",
+	'reduced_inidicator_set_txt':"The chosen region is smaller than 5 grid-cells. We don't provide extreme indicators for such small regions!",
 
 	'merge_page_h':'Add another region',
 	'merge_page_txt':'Select a region you want to add to the chosen region.',
