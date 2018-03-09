@@ -712,7 +712,7 @@ def country_choice():
     if os.path.isdir('../country_analysis/data/'+session['country']):
         COU=initialize()
     else:
-        return redirect(url_for("not_available.html"))
+        return render_template('not_available.html')
 
   else:
     session_cou = open(session['cou_path'], 'rb')
