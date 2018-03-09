@@ -62,6 +62,7 @@ languages={'en':'English','fr':'Français'}
 
 def initialize():
   print '________________initialize_____________'
+
   COU=country_analysis.country_analysis(session['country'],'../country_analysis/data/'+session['country']+'/',seasons=settings.seasons)
   COU.load_data(quiet=True,load_mask=True,load_raw=False,load_area_averages=False,load_region_polygons=True)
   COU.load_data(quiet=True,filename_filter='RX1',load_mask=False,load_raw=True,load_area_averages=True,load_region_polygons=False)
@@ -75,8 +76,12 @@ def initialize():
   print COU._warming_slices
   session_cou = open(session['cou_path'], 'wb')
   cPickle.dump(COU, session_cou, protocol=2) ; session_cou.close()
-
   return COU
+
+
+@app.route('/not_available')
+def not_available():
+    return render_template('not_available.html')
 
 @app.route('/')
 def index():
@@ -89,7 +94,13 @@ def index():
 
   session["country_avail"]   = sorted(settings.country_names.keys())
   session['country']   = session["country_avail"][0]
-  session['country']   = 'SEN'
+  session['country']   = 'BEN'
+
+  session['id']=str(int((time.time()-int(time.time()))*10000))+str(int(random.random()*100000))
+  session['cou_path']='app/static/COU_sessions/'+session['id']+'_'+session['country']+'.pkl'
+
+  if os.path.isfile(session['cou_path'])==False:
+    COU=initialize()
 
   session["ref_period"]   = settings.ref_period
   session["proj_period"]  = settings.proj_period
@@ -123,12 +134,6 @@ def index():
 
   session['new_season_name']=''
   session['new_season_name_auto']=True
-
-  session['id']=str(int((time.time()-int(time.time()))*10000))+str(int(random.random()*100000))
-  session['cou_path']='app/static/COU_sessions/'+session['id']+'_'+session['country']+'.pkl'
-
-  if os.path.isfile(session['cou_path'])==False:
-    COU=initialize()
 
   session["region_avail"]   = [COU._regions.keys()[COU._regions.values().index(name)] for name in sorted(COU._regions.values())]
   session['region']   = session["region_avail"][0]
@@ -709,7 +714,10 @@ def country_choice():
 
   session['cou_path']='app/static/COU_sessions/'+session['id']+'_'+session['country']+'.pkl'
   if os.path.isfile(session['cou_path'])==False:
-    COU=initialize()
+    if os.path.isdir('../country_analysis/data/'+session['country']):
+        COU=initialize()
+    else:
+        return redirect(url_for("not_available"))
 
   else:
     session_cou = open(session['cou_path'], 'rb')
