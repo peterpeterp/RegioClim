@@ -1,6 +1,6 @@
 
 
-app/*pyc
+app/settings.pyc
 app/static/COU_images
 app/static/COU_sessions
 regioclim_promo

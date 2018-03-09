@@ -14,7 +14,7 @@ pip install dimarray
 
 you would also need the git repositories "country_analysis_scripts" and "wlcalculator"
 clone them into the same directory where RegioClim is located or change the path in the respective files (might be tedious)
-git clone https://github.com/peterpeterp/country_analysis_scripts
+git clone https://github.com/peterpeterp/country_analysis
 git clone https://gitlab.pik-potsdam.de/mengel/wlcalculator.git
 
 * Testing
