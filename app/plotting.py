@@ -18,13 +18,11 @@
 # along with regioclim; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-
 import os
 import matplotlib.pyplot as plt
 from matplotlib.patches import Rectangle
 import numpy as np
 from descartes import PolygonPatch
-
 
 from matplotlib import rc
 rc('text', usetex=True)
