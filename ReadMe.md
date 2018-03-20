@@ -48,3 +48,7 @@ run the following command:
 python run.py
 ```
 in your browser the test-website will be available on http://127.0.0.1:5000
+
+
+# To Do
+get rid of double templates. having choices_en and choices_fr is really annoying

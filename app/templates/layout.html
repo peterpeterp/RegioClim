@@ -10,6 +10,15 @@
 
   <script type="text/javascript">
 
+    function change_something(what_to_change) {
+     $("#loading").show();
+     document.getElementById(what_to_change).submit();
+    }
+
+  // all the following function can be replaced by change_something()
+  // I have done it in choices_en, but not on other templates
+  // this is exactly thy it is annoying to have two different templates for _en and _fr
+
    function change_indicator() {
     $("#loading").show();
     document.getElementById("indicator_id").submit();

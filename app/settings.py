@@ -19,8 +19,6 @@
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
 
-
-
 """ database setting file. """
 
 
@@ -30,47 +28,45 @@ from netCDF4 import Dataset,netcdftime,num2date
 import pandas as pd
 import pycountry
 
-import matplotlib
-matplotlib.use('Agg')
-import matplotlib.pyplot as plt
-from matplotlib import rc
-rc('text', usetex=True)
+# ISOs that can be chosen
+all_isos=['AGO', 'DZA', 'EGY', 'GNQ', 'BEN', 'NGA', 'NER', 'ZWE', 'NAM', 'GNB', 'SWZ', 'GHA', 'COG', 'SLE', 'ETH', 'COM', 'ERI', 'CPV', 'LBR',\
+            'LBY', 'LSO', 'UGA', 'RWA', 'SOM', 'MDG', 'CMR', 'TZA', 'BWA', 'SEN', 'TCD', 'GAB', 'BFA', 'MWI', 'MOZ', 'MRT', 'GMB', 'MLI', 'BDI', \
+            'STP', 'DJI', 'GIN', 'ESH', 'KEN', 'MAR', 'COD', 'ZMB', 'ZAF', 'TGO', 'TUN', 'CAF', 'SSD', 'SDN', 'CIV','SYC','MUS']
 
-basepath='/Users/peterpfleiderer/Documents/Projects/'
-try:
-  os.chdir(basepath)
-except:
-  basepath='/home/RCM_projection/'
-
-sys.path.append(basepath+'country_analysis')
-import country_analysis; reload(country_analysis)
-sys.path.append(basepath+'/RegioClim/')
-os.chdir(basepath+'/RegioClim/')
-
-seasons={'year':range(1,13)}
-for i in range(1,13):
-	seasons[str(i)]=[i]
-
-all_isos=['AGO', 'DZA', 'EGY', 'GNQ', 'BEN', 'NGA', 'NER', 'ZWE', 'NAM', 'GNB', 'SWZ', 'GHA', 'COG', 'SLE', 'ETH', 'COM', 'ERI', 'CPV', 'LBR', 'LBY', 'LSO', 'UGA', 'RWA', 'SOM', 'MDG', 'CMR', 'TZA', 'BWA', 'SEN', 'TCD', 'GAB', 'BFA', 'MWI', 'MOZ', 'MRT', 'GMB', 'MLI', 'BDI', 'STP', 'DJI', 'GIN', 'ESH', 'KEN', 'MAR', 'COD', 'ZMB', 'ZAF', 'TGO', 'TUN', 'CAF', 'SSD', 'SDN', 'CIV','SYC','MUS']
-
+# find french country names
 iso_fr=open('app/iso_french_country.txt','r').read().split('\n')
 french_cou_dict={}
 for line in iso_fr:
     if len(line)>1:
         french_cou_dict[line.split('\t')[2][0:3]]=line.split('\t')[0]
-
 french_cou_dict['ESH']='Sahara occidental'
 
+# create a dict for country names. For english names, the python package pycountry is used
 country_names={}
 for iso in all_isos:
 	if os.path.isdir('app/static/COU_images/'+iso)==False:os.system('mkdir app/static/COU_images/'+iso)
 	country_names[iso]={'en':pycountry.countries.get(alpha_3=iso).name,'fr':french_cou_dict[iso]}
 
-
-
-
+# name of datasets (not used in the current RegioClim version)
 datasets=['CORDEX_BC','CMIP5_BC']
 
+# scenarios (not used in current version of RegioClim)
+scenarios=['rcp4p5']
+
+# default reference and projection periods
+ref_period  = [1986,2006]
+proj_period = [2031,2051]
+
+# # names
+# period_dict	= {
+# 	'2020-2040':'2020-2040',
+# 	'2040-2060':'2040-2060',
+# 	'2':'2 deg global warming',
+# 	'1.5':'1.5 deg global warming',
+# }
+
+
+# indicators, units, timesteps
 ind_dict={
 	'tas':{'unit':'$^\circ C$','time_step':'monthly'},
 	'pr':{'unit':'mm','time_step':'monthly'},
@@ -79,6 +75,7 @@ ind_dict={
 	'year_RX5':{'unit':'mm','time_step':'yearly'},
 }
 
+# names of indicators
 indicator_dict={'fr':{
 	'tas':'température',
 	'pr':'précipitation',
@@ -95,6 +92,13 @@ indicator_dict={'fr':{
 	}
 }
 
+
+# a small dict stating which months are included in a season
+seasons={'year':range(1,13)}
+for i in range(1,13):
+	seasons[str(i)]=[i]
+
+# dict for season names
 season_dict={'fr':{
 	'year':'** Annuel **',
 	'1':'Janvier',
@@ -127,6 +131,10 @@ season_dict={'fr':{
 	}
 }
 
+# some french and english dictionaries
+# there might be smoother way to deal with translations
+# this seemed to be the easiest to me, but maybe it's not...
+
 form_labels={'fr':{
 	'country':u'Pays analysé:',
 	'region':u'Région administrative:',
@@ -158,21 +166,8 @@ plot_titles={'en':{
 	}
 }
 
-
-scenarios=['rcp4p5']
-
-
-
-ref_period  = [1986,2006]
-proj_period = [2031,2051]
-
-period_dict	= {
-	'2020-2040':'2020-2040',
-	'2040-2060':'2040-2060',
-	'2':'2 deg global warming',
-	'1.5':'1.5 deg global warming',
-}
-
+# these are text fragments used in the templates
+# this is defentively not elegant
 text_dict={'en':{
 
 	'country_h':'Country',

@@ -9,7 +9,7 @@
       <h3>Add another region</h3>
   	<p class=small>Select a region you want to add to the chosen region or click on a region on the map.</p>
 	  <form method="POST" action="/merge_with_region_from_form" id="region_id">
-	  {{ form_region.regions(onchange="change_region();") }}
+	  {{ form_region.regions(onchange='change_something("region_id");') }}
 	  </form>
 
 {% if small_region_warning==True %}
@@ -49,8 +49,3 @@
 </div>
 
 {% endblock %}
-
-
-
-
-
