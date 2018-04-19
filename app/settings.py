@@ -73,6 +73,7 @@ ind_dict={
 	'RX1':{'unit':'mm','time_step':'monthly'},
 	'TXx':{'unit':'$^\circ C$','time_step':'monthly'},
 	'year_RX5':{'unit':'mm','time_step':'yearly'},
+    'yield_maize':{'unit':'t ha-1 yr-1','time_step':'yearly'}
 }
 
 # names of indicators
@@ -82,6 +83,7 @@ indicator_dict={'fr':{
 	'RX1':'extrêmes humides (RX1day)',
 	'TXx':'extrêmes de chaleur (TXx)',
 	'year_RX5':'extrêmes humides de 5 jours (RX5day)',
+    'yield_maize':'rendement'
 	},
 	'en':{
 	'tas':'temperature',
@@ -89,6 +91,7 @@ indicator_dict={'fr':{
 	'RX1':'wet extremes (RX1day)',
 	'TXx':'hot extremes (TXx)',
 	'year_RX5':'5day wet extremes (RX5day)',
+    'yield_maize':'maize yield'
 	}
 }
 
