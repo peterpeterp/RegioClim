@@ -23,6 +23,10 @@ import matplotlib.pyplot as plt
 from matplotlib.patches import Rectangle
 import numpy as np
 from descartes import PolygonPatch
+import cartopy.crs as ccrs
+import cartopy
+import cartopy.feature as cfeature
+import cartopy.io.shapereader as shapereader
 
 from matplotlib import rc
 rc('text', usetex=True)
@@ -107,9 +111,9 @@ def transient_plot_func(s,COU,refP,refP_clim,proP,refP_longname,refP_clim_longna
       #leg = plt.legend(loc='best',fancybox=True,fontsize=10)
       #leg.get_frame().set_alpha(0.3)
       if s['season']=='year':
-        plt.title(COU._regions[s['region']].replace('**','').replace('_',' ')+' RCP4.5',fontsize=12)
+        plt.title(COU._region_names[s['region']].replace('**','').replace('_',' ')+' RCP4.5',fontsize=12)
       if s['season']!='year':
-        plt.title(COU._regions[s['region']].replace('**','').replace('_',' ')+' '+season_dict[lang][s['season']]+' RCP4.5',fontsize=12)
+        plt.title(COU._region_names[s['region']].replace('**','').replace('_',' ')+' '+season_dict[lang][s['season']]+' RCP4.5',fontsize=12)
       #plt.text(2100,60,'Climate Analytics',horizontalalignment='right',fontsize=7)
       #plt.text(-0.1, 0.,'climate anaylics',horizontalalignment='left',verticalalignment='bottom',transform = ax.transAxes)
       fig.tight_layout()
@@ -147,7 +151,7 @@ def annual_cycle_plot_func(s,COU,refP,refP_clim,proP,refP_longname,refP_clim_lon
       leg = ax[0].legend(loc='best',fancybox=True,fontsize=10)
       leg.get_frame().set_alpha(0.3)
 
-      ax[0].set_title(COU._regions[s['region']].replace('**','').replace('_',' ')+' '+refP_clim_longname,fontsize=12)
+      ax[0].set_title(COU._region_names[s['region']].replace('**','').replace('_',' ')+' '+refP_clim_longname,fontsize=12)
 
       ens_mean.plot_annual_cycle(period='diff_'+proP+'-'+refP,region=region,ax=ax[1],title='',ylabel='  ',label='projected change',color='green',shading_range=[0,100])
       ax[1].plot([0,1],[0,0],color='k')
@@ -176,15 +180,12 @@ def localisation_overview(s,COU,refP,refP_clim,proP,refP_longname,refP_clim_long
     ewembi=COU.selection([s['indicator'],'EWEMBI'])[0]
     lon,lat=ewembi.lon,ewembi.lat
     fig,ax=plt.subplots(nrows=1,ncols=1,figsize=(5,5))
-    ewembi.plot_map(to_plot='empty',limits=[min(lon)-10,max(lon)+10,min(lat)-10,max(lat)+10],ax=ax,color_bar=False)
+    ax,im,color_bar=ewembi.plot_map(to_plot=None,limits=[min(lon)-10,max(lon)+10,min(lat)-10,max(lat)+10],ax=ax,color_bar=False)
+    ax.add_feature(cfeature.COASTLINE)
+    ax.add_feature(cfeature.BORDERS)
 
-
-    patch = PolygonPatch(COU._adm_polygons[s['country']], facecolor=[0,0,0.5], edgecolor=[0,0,0], alpha=0.7, zorder=2)
-    ax.add_patch(patch)
-
-    patch = PolygonPatch(COU._adm_polygons[highlight_region], facecolor='orange', edgecolor=[0,0,0], alpha=0.7, zorder=2)
-    ax.add_patch(patch)
-
+    ax.add_geometries([COU._adm_polygons[s['country']]], ccrs.PlateCarree(), color='black',alpha=0.7,facecolor=[0,0,0.5])
+    ax.add_geometries([COU._adm_polygons[highlight_region]], ccrs.PlateCarree(), color='black',alpha=0.7,facecolor='orange')
 
     if out_format=='_small.png':plt.savefig(overview_plot)
     if out_format=='_large.png':plt.savefig(overview_plot,dpi=300)

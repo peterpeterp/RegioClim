@@ -27,6 +27,10 @@ import matplotlib
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 from matplotlib import rc
+import cartopy.crs as ccrs
+import cartopy
+import cartopy.feature as cfeature
+import cartopy.io.shapereader as shapereader
 rc('text', usetex=True)
 
 # basepath is the directory where RegioClim is located
@@ -84,7 +88,7 @@ def initialize():
     COU.load_data(quiet=True,load_mask=True,load_raw=False,load_area_averages=False,load_region_polygons=True)
 
     # set change region name of country from ISO to full country name (only important for plot titles I think)
-    COU._regions[session['country']]='** '+settings.country_names[session['country']][session['language']]+' **'
+    COU._region_names[session['country']]='** '+settings.country_names[session['country']][session['language']]+' **'
 
     # get warming slices for loaded models
     COU.get_warming_slices(wlcalculator_path=wlcalculator_path,model_real_names={'IPSL':'ipsl-cm5a-lr','HADGEM2':'hadgem2-es','ECEARTH':'ec-earth','MPIESM':'mpi-esm-lr'})
@@ -151,7 +155,7 @@ def index():
     if os.path.isfile(session['cou_path'])==False:
         COU=initialize()
 
-    session["region_avail"]   = [COU._regions.keys()[COU._regions.values().index(name)] for name in sorted(COU._regions.values())]
+    session["region_avail"]   = [COU._region_names.keys()[COU._region_names.values().index(name)] for name in sorted(COU._region_names.values())]
     session['region']   = session["region_avail"][0]
 
     session['new_region_name']=''
@@ -189,9 +193,9 @@ def choices():
 
         # fill the form of region choice - a bit complicated sorting
         form_region = forms.regionForm(request.form)
-        sorted_regions = [reg for reg in [COU._regions.keys()[COU._regions.values().index(name)] for name in sorted(COU._regions.values())] if reg in s['region_avail']]
+        sorted_regions = [reg for reg in [COU._region_names.keys()[COU._region_names.values().index(name)] for name in sorted(COU._region_names.values())] if reg in s['region_avail']]
         sorted_regions=[s['region']]+[reg for reg in sorted_regions if (reg != s['region']) & ('+' in reg)]+[reg for reg in sorted_regions if (reg != s['region']) & ('+' not in reg)]
-        form_region.regions.choices = zip(sorted_regions,[COU._regions[reg].replace('_',' ') for reg in sorted_regions])
+        form_region.regions.choices = zip(sorted_regions,[COU._region_names[reg].replace('_',' ') for reg in sorted_regions])
 
         # fill scenario forms
         form_scenario = forms.scenarioForm(request.form)
@@ -253,6 +257,7 @@ def choices():
             proP_longname=warming_lvl_dict[lang][proP]
             periods=COU._warming_slices
             periods_ewembi={'ref':[1986,2006]}
+
 
         # plot_context is a dictionary combing all information needed by plotting functions in plotting.py
         indicator_label=indicator_dict[lang][s['indicator']]+' ['+ind_dict[s['indicator']]['unit']+']'
@@ -453,7 +458,7 @@ def merging_page():
   not working if full country is actual region
   '''
 
-  try:
+  if True:
     s=session
 
     session_cou = open(s['cou_path'], 'rb')
@@ -470,25 +475,23 @@ def merging_page():
       fig.set_size_inches(6*asp,6/asp)
       fig.add_axes(ax)
 
-      # fig,ax=plt.subplots(nrows=1,ncols=1,figsize=(6*asp,6/asp+1))
-      empty_object.plot_map(to_plot='empty',
+      ax,im,color_range=empty_object.plot_map(to_plot=None,
         show_region_names=True,
         color_bar=False,
         ax=ax,
         show_all_adm_polygons=True)
-        #title=COU._regions[s['region']])
 
+      fig.set_size_inches(6*asp,6/asp)
       if s['region']!=s['country']:
-        print COU._adm_polygons[s['region']]
-        patch = PolygonPatch(COU._adm_polygons[s['region']], facecolor='orange', edgecolor=[0,0,0], alpha=0.7, zorder=2)
-        ax.add_patch(patch)
-        ax.set_axis_off()
+        ax.add_geometries([COU._adm_polygons[s['region']]], ccrs.PlateCarree(), color='none',alpha=0.7,facecolor='orange')
+      ax.set_axis_off()
 
-      plt.savefig(regions_plot,dpi=300)
+      plt.axis('off')
+      plt.savefig(regions_plot,dpi=300, bbox_inches='tight', pad_inches=0)
 
     choosable_regions=[reg for reg in s['region_avail'][:] if reg!=s['country'] and len(reg.split('+'))<2]
     form_region = forms.regionForm(request.form)
-    form_region.regions.choices = zip(choosable_regions,[COU._regions[reg].replace('_',' ') for reg in choosable_regions])
+    form_region.regions.choices = zip(choosable_regions,[COU._region_names[reg].replace('_',' ') for reg in choosable_regions])
 
     form_NewRegion = forms.NewRegionForm(request.form)
     form_NewRegion = forms.NewRegionForm(request.form, region_name=session['new_region_name'])
@@ -542,9 +545,9 @@ def merging_page():
     session['location']='merging_page'
     return render_template('merging_page_'+s['language']+'.html',**context)
 
-  except Exception,e:
-    print str(e)
-    return render_template('error.html')
+  # except Exception,e:
+  #   print str(e)
+  #   return render_template('error.html')
 
 @app.route('/given_region_name',  methods=("POST", ))
 def given_region_name():
@@ -573,7 +576,6 @@ def merge_with_region(to_merge):
 
   if s['region']!=s['country']:
     s['region']=COU.merge_adm_regions([s['region'],to_merge])
-
     session_cou = open(s['cou_path'], 'wb')
     cPickle.dump(COU, session_cou, protocol=2) ; session_cou.close()
   else:
@@ -605,7 +607,7 @@ def save_this_region():
   session_cou = open(session['cou_path'], 'rb')
   COU=cPickle.load( session_cou) ; session_cou.close()
 
-  COU._regions[session['region']]=session['new_region_name']
+  COU._region_names[session['region']]=session['new_region_name']
 
   if session['region'] not in session['region_avail']:
     session['region_avail']+=[session['region']]
@@ -709,12 +711,14 @@ def indicator_choice():
   return redirect(url_for('choices'))
 
 def check_size(COU):
+  print COU._adm_polygons.keys()
+  print COU._region_names.keys()
+  print session['region']
   area=COU.get_region_area(session['region'])['latxlon']*4
   if area<4:
     session['small_region_warning']=True
   else:
     session['small_region_warning']=False
-
 
 @app.route('/region_choice',  methods=('POST', ))
 def region_choice():
@@ -753,7 +757,7 @@ def country_choice():
   index=session['indicator_avail'].index(session['indicator'])
   session['indicator_avail'][index],session['indicator_avail'][0]=session['indicator_avail'][0],session['indicator_avail'][index]
 
-  session["region_avail"]   = [COU._regions.keys()[COU._regions.values().index(name)] for name in sorted(COU._regions.values())]
+  session["region_avail"]   = [COU._region_names.keys()[COU._region_names.values().index(name)] for name in sorted(COU._region_names.values())]
   session['region']   = session["region_avail"][0]
 
   session["season_avail"]   = settings.seasons.keys()
@@ -860,10 +864,10 @@ def prepare_for_download(plot_request):
 
 
   if 'get_data' in request_type.split('**'):
-    return send_from_directory(directory=settings.basepath+'country_analysis/data/', filename=filename.replace('app/',''),as_attachment=True)
+    return send_from_directory(directory=basepath+'country_analysis/data/', filename=filename.replace('app/',''),as_attachment=True)
 
   if 'plot' in request_type.split('_'):
-    return send_from_directory(directory=settings.basepath+'RegioClim/app/', filename=filename.replace('app/',''),as_attachment=True)
+    return send_from_directory(directory=basepath+'RegioClim/app/', filename=filename.replace('app/',''),as_attachment=True)
 
 
 ###############################
