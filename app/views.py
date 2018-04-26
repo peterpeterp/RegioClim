@@ -30,7 +30,7 @@ from matplotlib import rc
 rc('text', usetex=True)
 
 # basepath is the directory where RegioClim is located
-basepath='/Users/peterpfleiderer/Documents/Projects/'
+basepath='/Users/quentinlejeune/Documents/GitHub/'
 try:
   os.chdir(basepath)
 except:
@@ -110,7 +110,7 @@ def index():
     # the following lines load lists of indicators, countries etc from settings and set the default parameters (SEN, tas etc.)
     session["country_avail"]   = sorted(settings.country_names.keys())
     session['country']   = session["country_avail"][0]
-    session['country']   = 'SEN'
+    session['country']   = 'BEN'
 
     session["ref_period"]   = settings.ref_period
     session["proj_period"]  = settings.proj_period
