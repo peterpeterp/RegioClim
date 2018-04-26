@@ -148,14 +148,6 @@ def choices():
         lang=s['language']
         region=s['region']
 
-        # load country_data_object
-        start_time=time.time()
-        session_cou = open(s['cou_path'], 'rb')
-        COU=cPickle.load( session_cou) ; session_cou.close()
-        COU.load_data(quiet=True,filename_filter=s['indicator'],load_mask=False,load_raw=True,load_area_averages=True,load_region_polygons=False)
-        COU.unit_conversions()
-        print 'loaded session and data '+str(time.time()-start_time)
-
         # fill the form for country choice
         form_country = forms.countryForm(request.form)
         s["country_avail"]   = sorted(settings.country_names.keys())
@@ -164,9 +156,9 @@ def choices():
 
         # fill the form of region choice - a bit complicated sorting
         form_region = forms.regionForm(request.form)
-        sorted_regions = [reg for reg in [COU._regions.keys()[COU._regions.values().index(name)] for name in sorted(COU._regions.values())] if reg in s['region_avail']]
+        sorted_regions = ['asdas','asdasas']
         sorted_regions=[s['region']]+[reg for reg in sorted_regions if (reg != s['region']) & ('+' in reg)]+[reg for reg in sorted_regions if (reg != s['region']) & ('+' not in reg)]
-        form_region.regions.choices = zip(sorted_regions,[COU._regions[reg].replace('_',' ') for reg in sorted_regions])
+        form_region.regions.choices = zip(sorted_regions,['sdsad','asdasd'])
 
         # fill scenario forms
         form_scenario = forms.scenarioForm(request.form)
@@ -233,7 +225,7 @@ def choices():
         indicator_label=indicator_dict[lang][s['indicator']]+' ['+ind_dict[s['indicator']]['unit']+']'
         plot_context={
             's':s,
-            'COU':COU,
+            'COU':'sdasd',
             'periods':periods,
             'periods_ewembi':periods_ewembi,
             'refP':refP,
