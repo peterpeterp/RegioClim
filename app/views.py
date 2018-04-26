@@ -70,30 +70,7 @@ languages={'en':'English','fr':'Français'}
 #             ))
 
 
-def initialize():
-    '''
-    This function is called when a user selects a country which hasn't be loaded before
-    it creates the country_analysis object which is used to plot data for the country
-    no arguments are given to this function
-    all information is stored in session (check out how flask - session works)
-    '''
-    print '________________initialize_____________'
-    # create a country_analysis object
-    COU=country_analysis.country_analysis(session['country'],'../country_analysis/data/'+session['country']+'/',seasons=settings.seasons)
-    # load masks and polygons of country - data will only be loaded for each indicator if needed
-    COU.load_data(quiet=True,load_mask=True,load_raw=False,load_area_averages=False,load_region_polygons=True)
 
-    # set change region name of country from ISO to full country name (only important for plot titles I think)
-    COU._regions[session['country']]='** '+settings.country_names[session['country']][session['language']]+' **'
-
-    # get warming slices for loaded models
-    COU.get_warming_slices(wlcalculator_path=wlcalculator_path,model_real_names={'IPSL':'ipsl-cm5a-lr','HADGEM2':'hadgem2-es','ECEARTH':'ec-earth','MPIESM':'mpi-esm-lr'})
-    print COU._warming_slices
-
-    # write the country_object to a file that can be reloaded later on (saving time)
-    session_cou = open(session['cou_path'], 'wb')
-    cPickle.dump(COU, session_cou, protocol=2) ; session_cou.close()
-    return COU
 
 @app.route('/')
 def index():
@@ -148,10 +125,8 @@ def index():
     session['id']=str(int((time.time()-int(time.time()))*10000))+str(int(random.random()*100000))
     session['cou_path']='app/static/COU_sessions/'+session['id']+'_'+session['country']+'.pkl'
 
-    if os.path.isfile(session['cou_path'])==False:
-        COU=initialize()
 
-    session["region_avail"]   = [COU._regions.keys()[COU._regions.values().index(name)] for name in sorted(COU._regions.values())]
+    session["region_avail"]   = ['asdas','asdas']
     session['region']   = session["region_avail"][0]
 
     session['new_region_name']=''
@@ -276,11 +251,11 @@ def choices():
         }
 
         # create all plots - see plotting.py
-        EWEMBI_plot=EWEMBI_plot_func(**plot_context)
-        Projection_plot=Projection_plot_func(**plot_context)
-        transient_plot=transient_plot_func(**plot_context)
-        annual_cycle_plot=annual_cycle_plot_func(**plot_context)
-        overview_plot=localisation_overview(**plot_context)
+        EWEMBI_plot='path/to/plot'
+        Projection_plot='path/to/plot'
+        transient_plot='path/to/plot'
+        annual_cycle_plot='path/to/plot'
+        overview_plot='path/to/plot'
         plt.close('all'); plt.clf()
         print 'everything plotted '+str(time.time()-start_time)
 
