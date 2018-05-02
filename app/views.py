@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+    # -*- coding: utf-8 -*-
 
 # Copyright (C) 2017 Peter Pfleiderer
 #
@@ -58,7 +58,6 @@ form_labels=settings.form_labels
 text_dict=settings.text_dict
 button_dict=settings.button_dict
 warming_lvl_dict=settings.warming_lvl_dict
-
 
 languages={'en':'English','fr':'Français'}
 
