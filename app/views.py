@@ -244,16 +244,12 @@ def choices():
       'out_format':'_small.png'
     }
 
-
+    plt.close('all')
     EWEMBI_plot=EWEMBI_plot_func(**plot_context)
     Projection_plot=Projection_plot_func(**plot_context)
-    print('######')
     transient_plot=transient_plot_func(**plot_context)
-    print('######')
     annual_cycle_plot=annual_cycle_plot_func(**plot_context)
-    print('######')
     overview_plot=localisation_overview(**plot_context)
-    print('######')
     plt.clf()
 
     print 'everything plotted '+str(time.time()-start_time)
@@ -282,6 +278,7 @@ def choices():
 
 
     plot_text_dict={
+      'country':s['indicator'],
       'indicator':indicator_dict[lang][s['indicator']],
       'season_add_on':season_add_on,
       'refP_longname':refP_longname,
@@ -831,6 +828,7 @@ def prepare_for_download(plot_request):
   if request_type=='transient_plot':  filename=transient_plot_func(**plot_context)
   if request_type=='annual_cycle_plot':  filename=annual_cycle_plot=annual_cycle_plot_func(**plot_context)
 
+  print(plot_request)
   if request_type=='get_data':
     curretn_path=os.getcwd()
     os.chdir('../country_analysis/data/'+s['country']+'/')

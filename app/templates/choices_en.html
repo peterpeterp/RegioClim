@@ -15,7 +15,7 @@
   <p class=warn_txt><b>Warning: </b>{{ reduced_inidicator_set_txt }}</p>
   {% endif %}
   {{ form_indicator.indicators(onchange="change_indicator();") }}
-  <a class="label label-primary" href="/prepare_for_download/get_data**bla?" target="_blank"  style="margin-right: 5px;">{{download_data }}</a>
+  <a class="label label-primary" href="/prepare_for_download/get_data**{country}{indicator}" target="_blank"  style="margin-right: 5px;">{{download_data }}</a>
   </form>
 
 {% if use_periods==0 %}
