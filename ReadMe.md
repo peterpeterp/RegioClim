@@ -46,3 +46,7 @@ run the following command:
 python run.py
 ```
 in your browser the test-website will be available on http://127.0.0.1:5000
+
+
+
+# uwsgi --socket 0.0.0.0:8003 --protocol=http -w wsgi:app

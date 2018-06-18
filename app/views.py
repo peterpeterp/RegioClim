@@ -144,7 +144,7 @@ def index():
 
 @app.route('/choices')
 def choices():
-  try:
+  if True:
     start_time=time.time()
 
     s=session
@@ -319,9 +319,9 @@ def choices():
     session['location']='choices'
     return render_template('choices_'+lang+'.html',**context)
 
-  except Exception,e:
-    print str(e)
-    return render_template('error.html')
+  # except Exception,e:
+  #   print str(e)
+  #   return render_template('error.html')
 
 
 

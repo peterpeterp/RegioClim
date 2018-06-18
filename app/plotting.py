@@ -178,8 +178,8 @@ def localisation_overview(s,COU,refP,refP_clim,proP,refP_longname,refP_clim_long
   if os.path.isfile(overview_plot)==False:
     ewembi=COU.selection([s['indicator'],'EWEMBI'])[0]
     lon,lat=ewembi.lon,ewembi.lat
-    fig,ax=plt.subplots(nrows=1,ncols=1,figsize=(5,5))
-    ewembi.plot_map(to_plot='empty',limits=[min(lon)-10,max(lon)+10,min(lat)-10,max(lat)+10],ax=ax,color_bar=False)
+    fig,ax=plt.subplots(nrows=1,ncols=1,figsize=(5,5),subplot_kw={'projection': ccrs.PlateCarree()})
+    ewembi.plot_map(to_plot=None,limits=[min(lon)-10,max(lon)+10,min(lat)-10,max(lat)+10],ax=ax,color_bar=False)
 
 
     patch = PolygonPatch(COU._adm_polygons[s['country']], facecolor=[0,0,0.5], edgecolor=[0,0,0], alpha=0.7, zorder=2)
