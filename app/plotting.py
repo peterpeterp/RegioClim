@@ -24,7 +24,8 @@ import matplotlib.pyplot as plt
 from matplotlib.patches import Rectangle
 import numpy as np
 from descartes import PolygonPatch
-
+import cartopy.crs as ccrs
+import cartopy
 
 from matplotlib import rc
 rc('text', usetex=True)
@@ -41,7 +42,7 @@ def EWEMBI_plot_func(s,COU,refP,refP_clim,proP,refP_longname,refP_clim_longname,
       return('no_plot')
     else:
       asp=(float(len(ewembi[0].lon))/float(len(ewembi[0].lat)))**0.5
-      fig,ax=plt.subplots(nrows=1,ncols=1,figsize=(3*asp+2.5,3/asp+1))
+      fig,ax=plt.subplots(nrows=1,ncols=1,figsize=(3*asp+2.5,3/asp+1),subplot_kw={'projection': ccrs.PlateCarree()})
       ewembi[0].display_map(out_file=EWEMBI_plot,
         ax=ax,
         period=refP_clim,
@@ -70,7 +71,7 @@ def Projection_plot_func(s,COU,refP,refP_clim,proP,refP_longname,refP_clim_longn
     COU.period_statistics(periods=periods,selection=ens_selection,ref_name=refP)
     COU.period_model_agreement(ref_name=refP)
     asp=(float(len(ens_selection[0].lon))/float(len(ens_selection[0].lat)))**0.5
-    fig,ax=plt.subplots(nrows=1,ncols=1,figsize=(3*asp+2.5,3/asp+1))
+    fig,ax=plt.subplots(nrows=1,ncols=1,figsize=(3*asp+2.5,3/asp+1),subplot_kw={'projection': ccrs.PlateCarree()})
     ens_mean.display_map(ax=ax,
       period='diff_'+proP+'-'+refP,
       season=s['season'],
@@ -109,9 +110,9 @@ def transient_plot_func(s,COU,refP,refP_clim,proP,refP_longname,refP_clim_longna
       #leg = plt.legend(loc='best',fancybox=True,fontsize=10)
       #leg.get_frame().set_alpha(0.3)
       if s['season']=='year':
-        plt.title(COU._regions[s['region']].replace('**','').replace('_',' ')+' RCP4.5',fontsize=12)
+        plt.title(COU._region_names[s['region']].replace('**','').replace('_',' ')+' RCP4.5',fontsize=12)
       if s['season']!='year':
-        plt.title(COU._regions[s['region']].replace('**','').replace('_',' ')+' '+season_dict[lang][s['season']]+' RCP4.5',fontsize=12)
+        plt.title(COU._region_names[s['region']].replace('**','').replace('_',' ')+' '+season_dict[lang][s['season']]+' RCP4.5',fontsize=12)
       #plt.text(2100,60,'Climate Analytics',horizontalalignment='right',fontsize=7)
       #plt.text(-0.1, 0.,'climate anaylics',horizontalalignment='left',verticalalignment='bottom',transform = ax.transAxes)
       fig.tight_layout()
@@ -149,7 +150,7 @@ def annual_cycle_plot_func(s,COU,refP,refP_clim,proP,refP_longname,refP_clim_lon
       leg = ax[0].legend(loc='best',fancybox=True,fontsize=10)
       leg.get_frame().set_alpha(0.3)
 
-      ax[0].set_title(COU._regions[s['region']].replace('**','').replace('_',' ')+' '+refP_clim_longname,fontsize=12)
+      ax[0].set_title(COU._region_names[s['region']].replace('**','').replace('_',' ')+' '+refP_clim_longname,fontsize=12)
 
       ens_mean.plot_annual_cycle(period='diff_'+proP+'-'+refP,region=region,ax=ax[1],title='',ylabel='  ',label='projected change',color='green',shading_range=[0,100])
       ax[1].plot([0,1],[0,0],color='k')

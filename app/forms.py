@@ -22,50 +22,50 @@
 
 
 from wtforms import RadioField, SelectMultipleField, TextField, IntegerField, SelectField, StringField
-from flask_wtf import Form,validators
+from flask_wtf import FlaskForm,validators
 from wtforms.validators import ValidationError, Required, Regexp
 
 
-class countryForm(Form):
+class countryForm(FlaskForm):
   countrys = SelectField(' ', choices=[],
             validators=[Required("Please select at least one region.")])
 
-class regionForm(Form):
+class regionForm(FlaskForm):
   regions = SelectField(u'', choices=[],
             validators=[Required("Please select at least one region.")])
 
-class indicatorForm(Form):
+class indicatorForm(FlaskForm):
   indicators = SelectField(u'', choices=[],
             validators=[Required("Please select at least one region.")])
 
-class scenarioForm(Form):
+class scenarioForm(FlaskForm):
   scenarios = SelectField(u'', choices=[],
             validators=[Required("Please select at least one region.")])
 
-class datasetForm(Form):
+class datasetForm(FlaskForm):
   datasets = SelectField(u'', choices=[],
             validators=[Required("Please select at least one region.")])
 
-class seasonForm(Form):
+class seasonForm(FlaskForm):
   seasons = SelectField(u'', choices=[],
             validators=[Required("Please select at least one season.")])
 
-class warming_lvlForm(Form):
+class warming_lvlForm(FlaskForm):
   warming_lvls = SelectField(u'', choices=[],
             validators=[Required("Please select at least one period.")])
 
-class warming_lvl_refForm(Form):
+class warming_lvl_refForm(FlaskForm):
   warming_lvl_refs = SelectField(u'', choices=[],
             validators=[Required("Please select at least one period.")])
 
-class PeriodField(Form):
+class PeriodField(FlaskForm):
   regex = "[1-2][0-9]{3}-[1-2][0-9]{3}"
 
   ref_period    = TextField(u'', validators=[Regexp(regex, message="Please use YYYY-YYYY format.")])
   proj_period   = TextField(u'', validators=[Regexp(regex, message="Please use YYYY-YYYY format.")])
 
-class NewRegionForm(Form):
+class NewRegionForm(FlaskForm):
   region_name    = TextField(u'region', validators=[Required()])
 
-class NewSeasonForm(Form):
+class NewSeasonForm(FlaskForm):
   season_name    = TextField(u'season', validators=[Required()])

@@ -67,9 +67,10 @@ def initialize():
   COU.load_data(quiet=True,load_mask=True,load_raw=False,load_area_averages=False,load_region_polygons=True)
   COU.load_data(quiet=True,filename_filter='RX1',load_mask=False,load_raw=True,load_area_averages=True,load_region_polygons=False)
 
-  COU._regions[session['country']]='** '+settings.country_names[session['country']][session['language']]+' **'
+  COU._region_names[session['country']]='** '+settings.country_names[session['country']][session['language']]+' **'
+
   try:
-    COU.get_warming_slices(wlcalculator_path=basepath+'wlcalculator/app/',model_real_names={'IPSL':'ipsl-cm5a-lr','HADGEM2':'hadgem2-es','ECEARTH':'ec-earth','MPIESM':'mpi-esm-lr'})
+    COU.get_warming_slices(wlcalculator_path=basepath+'wlcalculator-backup/app/',model_real_names={'IPSL':'ipsl-cm5a-lr','HADGEM2':'hadgem2-es','ECEARTH':'ec-earth','MPIESM':'mpi-esm-lr'})
   except:
     COU.get_warming_slices(wlcalculator_path=basepath+'../wlcalculator/app/',model_real_names={'IPSL':'ipsl-cm5a-lr','HADGEM2':'hadgem2-es','ECEARTH':'ec-earth','MPIESM':'mpi-esm-lr'})
 
@@ -90,7 +91,7 @@ def index():
 
   session["country_avail"]   = sorted(settings.country_names.keys())
   session['country']   = session["country_avail"][0]
-  session['country']   = 'SEN'
+  session['country']   = 'BEN'
 
   session["ref_period"]   = settings.ref_period
   session["proj_period"]  = settings.proj_period
@@ -131,7 +132,7 @@ def index():
   if os.path.isfile(session['cou_path'])==False:
     COU=initialize()
 
-  session["region_avail"]   = [COU._regions.keys()[COU._regions.values().index(name)] for name in sorted(COU._regions.values())]
+  session["region_avail"]   = [COU._region_names.keys()[COU._region_names.values().index(name)] for name in sorted(COU._region_names.values())]
   session['region']   = session["region_avail"][0]
 
   session['new_region_name']=''
@@ -164,9 +165,9 @@ def choices():
     print 'loaded session and data '+str(time.time()-start_time)
 
     form_region = forms.regionForm(request.form)
-    sorted_regions = [reg for reg in [COU._regions.keys()[COU._regions.values().index(name)] for name in sorted(COU._regions.values())] if reg in s['region_avail']]
+    sorted_regions = [reg for reg in [COU._region_names.keys()[COU._region_names.values().index(name)] for name in sorted(COU._region_names.values())] if reg in s['region_avail']]
     sorted_regions=[s['region']]+[reg for reg in sorted_regions if (reg != s['region']) & ('+' in reg)]+[reg for reg in sorted_regions if (reg != s['region']) & ('+' not in reg)]
-    form_region.regions.choices = zip(sorted_regions,[COU._regions[reg].replace('_',' ') for reg in sorted_regions])
+    form_region.regions.choices = zip(sorted_regions,[COU._region_names[reg].replace('_',' ') for reg in sorted_regions])
 
     form_scenario = forms.scenarioForm(request.form)
     form_scenario.scenarios.choices = zip(s['scenario_avail'],s['scenario_avail'])
@@ -246,9 +247,13 @@ def choices():
 
     EWEMBI_plot=EWEMBI_plot_func(**plot_context)
     Projection_plot=Projection_plot_func(**plot_context)
+    print('######')
     transient_plot=transient_plot_func(**plot_context)
+    print('######')
     annual_cycle_plot=annual_cycle_plot_func(**plot_context)
+    print('######')
     overview_plot=localisation_overview(**plot_context)
+    print('######')
     plt.clf()
 
     print 'everything plotted '+str(time.time()-start_time)
@@ -451,7 +456,7 @@ def merging_page():
         color_bar=False,
         ax=ax,
         show_all_adm_polygons=True)
-        #title=COU._regions[s['region']])
+        #title=COU._region_names[s['region']])
 
       if s['region']!=s['country']:
         print COU._adm_polygons[s['region']]
@@ -463,7 +468,7 @@ def merging_page():
 
     choosable_regions=[reg for reg in s['region_avail'][:] if reg!=s['country'] and len(reg.split('+'))<2]
     form_region = forms.regionForm(request.form)
-    form_region.regions.choices = zip(choosable_regions,[COU._regions[reg].replace('_',' ') for reg in choosable_regions])
+    form_region.regions.choices = zip(choosable_regions,[COU._region_names[reg].replace('_',' ') for reg in choosable_regions])
 
     form_NewRegion = forms.NewRegionForm(request.form)
     form_NewRegion = forms.NewRegionForm(request.form, region_name=session['new_region_name'])
@@ -580,7 +585,7 @@ def save_this_region():
   session_cou = open(session['cou_path'], 'rb')
   COU=cPickle.load( session_cou) ; session_cou.close()
 
-  COU._regions[session['region']]=session['new_region_name']
+  COU._region_names[session['region']]=session['new_region_name']
 
   if session['region'] not in session['region_avail']:
     session['region_avail']+=[session['region']]
@@ -728,7 +733,7 @@ def country_choice():
   index=session['indicator_avail'].index(session['indicator'])
   session['indicator_avail'][index],session['indicator_avail'][0]=session['indicator_avail'][0],session['indicator_avail'][index]
 
-  session["region_avail"]   = [COU._regions.keys()[COU._regions.values().index(name)] for name in sorted(COU._regions.values())]
+  session["region_avail"]   = [COU._region_names.keys()[COU._region_names.values().index(name)] for name in sorted(COU._region_names.values())]
   session['region']   = session["region_avail"][0]
 
   session["season_avail"]   = settings.seasons.keys()
