@@ -33,8 +33,10 @@ from plotting import *
 basepath='/Users/peterpfleiderer/Documents/Projects/'
 try:
   os.chdir(basepath)
+  wlcalculator_path=basepath+'wlcalculator-backup/app/'
 except:
   basepath='/home/RCM_projection/'
+  wlcalculator_path=basepath+'wlcalculator/app/'
 
 sys.path.append(basepath+'country_analysis/country_analysis_scripts/')
 import country_analysis; reload(country_analysis)
@@ -69,10 +71,8 @@ def initialize():
 
   COU._region_names[session['country']]='** '+settings.country_names[session['country']][session['language']]+' **'
 
-  try:
-    COU.get_warming_slices(wlcalculator_path=basepath+'wlcalculator-backup/app/',model_real_names={'IPSL':'ipsl-cm5a-lr','HADGEM2':'hadgem2-es','ECEARTH':'ec-earth','MPIESM':'mpi-esm-lr'})
-  except:
-    COU.get_warming_slices(wlcalculator_path=basepath+'../wlcalculator/app/',model_real_names={'IPSL':'ipsl-cm5a-lr','HADGEM2':'hadgem2-es','ECEARTH':'ec-earth','MPIESM':'mpi-esm-lr'})
+  COU.get_warming_slices(wlcalculator_path=wlcalculator_path,model_real_names={'IPSL':'ipsl-cm5a-lr','HADGEM2':'hadgem2-es','ECEARTH':'ec-earth','MPIESM':'mpi-esm-lr'})
+
 
   print COU._warming_slices
   session_cou = open(session['cou_path'], 'wb')
