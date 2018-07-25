@@ -1,4 +1,5 @@
-
+Author: Peter Pfleiderer <peter.pfleiderer@climateanalytics.org>
+License: GNU General Public License v3.0
 
 # Installation
 
