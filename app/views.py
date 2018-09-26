@@ -35,7 +35,7 @@ try:
   os.chdir(basepath)
   wlcalculator_path=basepath+'wlcalculator-backup/app/'
 except:
-  basepath='/home/RCM_projection/'
+  basepath='/home/regioClim/'
   wlcalculator_path=basepath+'wlcalculator/app/'
 
 sys.path.append(basepath+'country_analysis/country_analysis_scripts/')

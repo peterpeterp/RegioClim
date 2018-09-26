@@ -40,7 +40,7 @@ basepath='/Users/peterpfleiderer/Documents/Projects/'
 try:
   os.chdir(basepath)
 except:
-  basepath='/home/RCM_projection/'
+  basepath='/home/regioClim/'
 
 sys.path.append(basepath+'country_analysis')
 import country_analysis; reload(country_analysis)
