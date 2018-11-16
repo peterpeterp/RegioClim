@@ -133,7 +133,7 @@ h4
 
         <li><a href="#doc_data_source">Sources de Données</a></li>
         <ul>
-          <li><a href="#doc_RCM">Modèles Climatiques Régionaux (RCM)</a></li>
+          <li><a href="#doc_RCM">Modèles Climatiques Régionaux (RCMs)</a></li>
           <li><a href="#doc_ensemble">Choix de l'ensemble</a></li>
           <li><a href="#doc_scenario">Choix du scénario d'émission</a></li>
           <li><a href="#doc_EWEMBI">EWEMBI (observations et réanalyses)</a></li>
@@ -151,7 +151,7 @@ h4
           <li><a href="#doc_plot_annual_cycle">Cycle annuel de la moyenne régionale</a></li>
         </ul>
         <li><a href="#doc_tool">Outil pour l'analyse de données climatiques (Python)</a></li>
-        <li><a href="#doc_acknowledgements">Remerciments</a></li>
+        <li><a href="#doc_acknowledgements">Remerciements</a></li>
         <li><a href="#doc_references">Références</a></li>
       </ul>
     </div>
@@ -173,7 +173,9 @@ h4
   <div id="outline-container-1" class="outline-2">
   <h3><span class="section-number-2"> Objectif </span></h3>
   <div class="outline-text-2" id="text-1">
-  <p>Cet outil a été créé pour faciliter l'accès aux projections climatiques régionales de pointe au grand public. Les données climatiques utilisées sont en accès libre et les scripts Python développés pour ce site sont basés sur du code en source ouvert. Notre approche se concentre sur des graphiques de bases facilement interpretables qui peuvent être réutilisés dans des rapports sur les changements climatiques.
+  <p>Cet outil a été créé pour faciliter l'accès au grand public à la dernière génération de projections climatiques régionales.
+		Les données climatiques utilisées et les scripts Python développés pour ce site sont en accès libre.
+		Notre approche vise à diffuser des graphiques simples facilement interprétables, qui peuvent par exemple être réutilisés dans des rapports sur les changements climatiques.
   </p>
   </div>
   </div>
@@ -183,16 +185,23 @@ h4
   <h3><span class="section-number-2"> Méthodes </span></h3>
   <div class="outline-text-2" id="text-1">
   <p>
-  Les graphiques obtenus sont basé	s sur quatre fonctionnalités basiques:
+  Les graphiques obtenus sont basés sur quatre fonctionnalités basiques:
   <ul class=list>
   <span class=anchor id=doc_meth_period></span>
-  <li>Les <b>moyennes de périodes </b>sont utilisées pour la <a href='#doc_plot_climatology'>carte de la période de référence</a> et la <a href='#doc_plot_projection'>carte de la projection</a>. Parce que la variabilité inter-annuelle peut dominer le signal du changement climatique, le climat future comme le climat de la période de référence doivent être traités comme moyennes de périodes (nous suggérons 30 années). Pour chaque grille la moyenne temporelle de toutes les valeurs mensuelles (de la saison choisie) pour les années comprises dans la période est calculée. </li>
+  <li>Les <b>moyennes temporelles </b>sont utilisées pour les cartes correspondant aux <a href='#doc_plot_climatology'>période de référence</a> et de <a href='#doc_plot_projection'>projection</a>.
+		Puisque la variabilité inter-annuelle peut dominer le signal du changement climatique, le climat futur comme le climat de la période de référence doivent être moyennés dur des périodes longues (nous suggérons 30 années, en accord avec les recommandations du GIEC).
+		Pour chaque cellule de la maille des modèles et chaque période sélectionnée (future et de référence), une moyenne temporelle est calculée sur toutes les valeurs mensuelles (ou saisonnières, selon le choix de l'utilisateur) comprises dans les années incluses dans ces périodes. </li>
   <span class=anchor id=doc_meth_area></span>
-  <li>Les <b>moyennes régionales </b>sont utilisées pour la <a href='#doc_plot_transient'>trajectoire de la moyenne régionale</a> et pour le <a href='#doc_plot_annual_cycle'>cycle annuel de la moyenne régionale</a>. La moyenne régionale est calculée pour chaque pas de temps en tant que moyenne de toutes les grilles touchées par la région. Les grilles sont pondérées par la fraction de la surface de la région recouverte par la grille.</li>
+  <li>Les <b>moyennes régionales </b>sont utilisées pour la <a href='#doc_plot_transient'>trajectoire de la moyenne régionale</a> et pour le <a href='#doc_plot_annual_cycle'>cycle saisonnier de la moyenne régionale</a>.
+		La moyenne régionale est calculée pour chaque pas de temps, sur toutes les cellules de la maille incluses dans la région sélectionnée.
+		Les valeurs de chaque cellule sont pondérées par la fraction de la surface de la cellule incluse dans la région.</li>
   <span class=anchor id=doc_meth_ens_mean></span>
-  <li>Nous présentons la <b>moyenne de l'ensemble</b> des projections climatiques au lieu de présenter la projection de chaque modèle individuellement. La moyenne de l'ensemble est la moyenne des quatre modèles, calculée pour chaque grille ou pour chaque pas de temps selon le graphique. </li>
+  <li>Nous présentons la <b>moyenne de l'ensemble</b> des projections climatiques au lieu de présenter la projection de chaque modèle individuellement.
+		La moyenne de l'ensemble est la moyenne des quatre modèles, calculée pour chaque cellule de la maille ou pour chaque pas de temps selon le type de graphique. </li>
   <span class=anchor id=doc_meth_disagreement></span>
-  <li> En montrant l'ensemble de la moyenne uniquement, l'information sur les différences entre les modèles et sur l'incertitude sont perdues. Dans la <a href='#doc_plot_projection'>carte de projection</a> nous montrant le <b>désaccord entre les modèles</b> pour partiellement réintroduire l'information sur l'incertitude. Nous disons qu'il y a un désaccord entre les modèles sur le changement climatique projeté si au moins deux des quatre modèles projettent un changement qui diffère de la moyenne de l'ensemble dans le signe du changement.</li>
+  <li>En affichant des cartes montrant uniquement la moyenne de tous les modèles, l'information sur les différences entre les modèles et donc sur les incertitudes associées sont perdues.
+		Dans la <a href='#doc_plot_projection'>carte de projection</a>, nous réintroduisons cependant partiellement de l'information sur ces incertitudes en colorant en gris les cellules où il y a un <b>désaccord entre les modèles</b>.
+		Nous définissons ce désaccord entre les modèles comme présent là où au moins deux des quatre modèles projettent un changement qui diffère dans le signe de la moyenne de l'ensemble des modèles.</li>
   </ul></p>
   </div>
   </div>
@@ -219,9 +228,13 @@ h4
 
   <span class=anchor id=doc_RCM></span>
   <div id="outline-container-1" class="outline-2">
-  <h3><span class="section-number-2"> Modèles Climatiques Régionaux (RCM) </span></h3>
+  <h3><span class="section-number-2"> Modèles Climatiques Régionaux (RCMs) </span></h3>
   <div class="outline-text-2" id="text-1">
-<p>L'analyse de projections climatiques sur l'échelle régionale nécessite des données en haute résolution qui ne peuvent pas être fournies par les modèles de circulation générales (GCM). Les modèles climatiques régionaux (RCM) fournissent de projections climatiques de haute résolution pour une région limitée. Les RCMs modélisent les impacts régionaux des changements globaux en concentration de gaz à effet de serre. Pour cela les RCMs nécessitent les projections des GCMs comme données d'entrée et ainsi la modélisation climatique régionale est toujours une combinaison d'un GCM avec un RCM.</p>
+<p>L'analyse de projections climatiques sur l'échelle régionale nécessite des données en haute résolution qui ne peuvent pas être fournies par les modèles de circulation générales (GCM).
+	Les modèles climatiques régionaux (RCM) fournissent des projections climatiques de haute résolution pour une région limitée.
+	Les RCMs modélisent les impacts régionaux des changements globaux de la concentration en gaz à effet de serre. 
+	Pour cela, les RCMs nécessitent les projections des GCMs comme données d'entrée, ainsi la modélisation régionale du climat futur est toujours réalisée via une combinaison d'un GCM avec un RCM.
+	Les projections de RCMs affichées dans RegioClim ont été produites dans le cadre du projet COordinated Regional Downscaling EXperiment (<a href="http://www.cordex.org">CORDEX</a>).</p>
   </div>
   </div>
 
@@ -230,7 +243,7 @@ h4
   <div id="outline-container-1" class="outline-2">
   <h3><span class="section-number-2"> Choix de l'ensemble</span></h3>
   <div class="outline-text-2" id="text-1">
-  <p>L'ensemble contients quatre combinaisons de RCMs et de GCMs. Bien que plus de combinaisons sont possibles, nous nous limitons a un petit ensemble dans lequel chaque modèle apparaît qu'une seule fois pour éviter des biais envers un des modèles.</p>
+  <p>L'ensemble contient quatre combinaisons de RCMs et de GCMs. Bien que plus de combinaisons sont possibles, nous nous limitons a un petit ensemble dans lequel chaque modèle apparaît qu'une seule fois pour éviter des biais envers un des modèles.</p>
   <div rows>
   <div id="LeftPanel" style="width: 40%; height: 100%; float: left; padding-left: 20%; padding-right: 40%;">
       <table class="table">
