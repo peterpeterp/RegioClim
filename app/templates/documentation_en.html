@@ -27,19 +27,19 @@ table#myTable td
 {
 	border: 1px solid #cccccc;
 	padding: 2px;
-	
+
 }
 
 p
 {
-    width:600px; 
+    width:600px;
     word-wrap:break-word;
     margin-left: 100px
 }
 
 ul.list
 {
-    width:600px; 
+    width:600px;
     word-wrap:break-word;
     margin-left: 100px;
     list-style-type:square;
@@ -52,21 +52,21 @@ section {
 
 h2
 {
-    width:600px; 
+    width:600px;
     word-wrap:break-word;
     margin-left: 40px
 }
- 
+
 h3
 {
-    width:600px; 
+    width:600px;
     word-wrap:break-word;
     margin-left: 60px
 }
 
 h4
 {
-    width:600px; 
+    width:600px;
     word-wrap:break-word;
     margin-left: 80px
 }
@@ -133,7 +133,7 @@ h4
 
         <li><a href="#doc_data_source">Data Sources</a></li>
         <ul>
-          <li><a href="#doc_RCM">Regional Climate Models (RCM)</a></li>
+          <li><a href="#doc_RCM">Regional Climate Models (RCMs)</a></li>
           <li><a href="#doc_ensemble">Choice of the ensemble</a></li>
           <li><a href="#doc_scenario">Choice of emission scenarios</a></li>
           <li><a href="#doc_EWEMBI">EWEMBI (observations and reanalysis)</a></li>
@@ -160,7 +160,7 @@ h4
 
 
 <div id="main-content">
-    
+
   <h1 class="title" id="doc_start">Documentation</h1>
 
   <span class=anchor id=doc_summary></span>
@@ -173,7 +173,7 @@ h4
   <div id="outline-container-1" class="outline-2">
   <h3><span class="section-number-2"> Purpose </span></h3>
   <div class="outline-text-2" id="text-1">
-  <p>We created this tool to facilitate the access to state of the art regional climate projections to a wider public. The used data is publicly available and the scripts developed for this website are based on open source code. Our contribution here is to constrain the information to some basic graphics that can easily be interpreted and reused for reports involving climate change.    
+  <p>We created this tool to facilitate the access to state of the art regional climate projections to a wider public. The used data is publicly available and the scripts developed for this website are based on open source code. Our contribution here is to constrain the information to some basic graphics that can easily be interpreted and reused for reports involving climate change.
   </p>
   </div>
   </div>
@@ -188,11 +188,11 @@ h4
   <span class=anchor id=doc_meth_period></span>
   <li><b>Period averages </b>are used in overview maps as the <a href='#doc_plot_climatology'>climatology map</a> and the <a href='#doc_plot_projection'>projection map</a>. As inter-annual variability might be larger than the climate change signal the future climate as well as the current climate have to be treated as period averages (we suggest 30 years). For each grid-cell the time average of all monthly values (of the chosen months) for the years within the chosen period is computed. </li>
   <span class=anchor id=doc_meth_area></span>
-  <li><b>Area averages </b>are used for the <a href='#doc_plot_transient'>transient plot</a> and the <a href='#doc_plot_annual_cycle'>annual cycle plot</a>. The area average is computed at each time step as the average of all grid-cells touched by the region. Grid-cells are weighted by the fraction of the area of the region covered by the grid-cell. </li> 
+  <li><b>Area averages </b>are used for the <a href='#doc_plot_transient'>transient plot</a> and the <a href='#doc_plot_annual_cycle'>annual cycle plot</a>. The area average is computed at each time step as the average of all grid-cells touched by the region. Grid-cells are weighted by the fraction of the area of the region covered by the grid-cell. </li>
   <span class=anchor id=doc_meth_ens_mean></span>
   <li>We display the <b>ensemble mean</b> of the model projections instead of showing the results separately for each model. The ensemble mean is the mean value of the 4 models computed at each grid-cell or at each time step depending on the plot. </li>
   <span class=anchor id=doc_meth_disagreement></span>
-  <li> Only showing the ensemble mean hides information about the discrepancies between models and the uncertainty of projections. In the <a href='#doc_plot_projection'>projection map</a> we therefore show <b>model-disagreement</b> to reintroduce some of the uncertainty information. Here we say that models disagree on the projected change if at least two of the four models project a change that differs in sign from the ensemble mean. </li> 
+  <li> Only showing the ensemble mean hides information about the discrepancies between models and the uncertainty of projections. In the <a href='#doc_plot_projection'>projection map</a> we therefore show <b>model-disagreement</b> to reintroduce some of the uncertainty information. Here we say that models disagree on the projected change if at least two of the four models project a change that differs in sign from the ensemble mean. </li>
   </ul></p>
   </div>
   </div>
@@ -206,7 +206,7 @@ h4
     <li><b>Small Ensemble: </b>Model projections are shown for the ensemble mean of four regional climate models. We argue that larger ensembles might not improve the projection quality due to biases resulting from reusing the same general circulation models (see <a href=#doc_ensemble>ensemble choice</a>). However, an ensemble of four models is rather small and an additional comparison of our 4-model ensemble to larger ensembles would improve the credibility of our projections. </li>
     <li><b>Precipitation Projections: </b>Although regional climate models have improved precipitation simulations over Africa, substantial biases remain. This is partly due to the sparse network of meteorological stations in most parts of Africa <a href=#ref_kim2014>(Kim 2014)</a>.</li>
     <li><b>Performance of models to reproduce extreme events: </b> <a href=#doc_bias_correction>Bias correction</a> techniques have been applied to overcome systematic biases found in model simulations. However for some regions, climate change indicators as <a href='#doc_TXx'>hot extremes (TXx)</a> or <a href='#doc_RX1'>wet extremes (RX1day)</a> are over- or under estimated by models. See <a href=#doc_bias_correction>bias correction</a> for more details. </li>
-  </ul>  
+  </ul>
   </p>
   </div></div>
 
@@ -217,14 +217,13 @@ h4
   <div class="outline-text-2" id="text-1"></div>
   </div>
 
-  <span class=anchor id=doc_RCM></span>
-  <div id="outline-container-1" class="outline-2">
-  <h3><span class="section-number-2"> Regional Climate Models </span></h3>
-  <div class="outline-text-2" id="text-1">
-  <p>Analysing climate projections on the national scale requires high resolution data, which isn't provided by <b>global circulation models (GCM)</b>. For a restricted region high resolution climate projections can be obtained from <b>regional climate models (RCM)</b>. RCMs model local impacts of changes in global greenhouse gas concentrations. Therefore RCMs require global climate simulations of GCMs as input. Thus RCM climate projections are always the result of the combination of a GCM with a RCM.</p>
-  </div>
-  </div>
-
+	<span class=anchor id=doc_RCM></span>
+	<div id="outline-container-1" class="outline-2">
+	<h3><span class="section-number-2"> Regional Climate Models (RCMs)</span></h3>
+	<div class="outline-text-2" id="text-1">
+	<p>Analysing climate projections on the national scale requires high resolution data, which isn't provided by <b>global circulation models (GCMs)</b>. For a restricted region high resolution climate projections can be obtained from <b>regional climate models (RCMs)</b>. RCMs model local impacts of changes in global greenhouse gas concentrations. Therefore RCMs require global climate simulations of GCMs as input. Thus RCM climate projections are always the result of the combination of a GCM with a RCM. The RCM simulation results shown on RegioClim were produced within the COordinated Regional Downscaling EXperiment (<a href="http://www.cordex.org">CORDEX</a>) project.</p>
+	</div>
+	</div>
 
   <span class=anchor id=doc_ensemble></span>
   <div id="outline-container-1" class="outline-2">
@@ -332,7 +331,7 @@ h4
     <span class=anchor id=doc_RX1></span>
     <li><b>Wet extremes Rx1day,</b> Monthly maximum 1-day precipitation: <br> Let RR<sub>ij</sub> be the daily precipitation amount on day i in period j. The maximum 1-day value for period j are: Rx1day<sub>j</sub> = max (RR<sub>ij</sub>) </li>
      <span class=anchor id=doc_RX5></span>
-   <li><b>5day wet extremes Rx5day,</b> Monthly maximum consecutive 5-day precipitation: <br> Let RR<sub>kj</sub> be the precipitation amount for the 5-day interval ending k, period j. Then maximum 5-day values for period j are: Rx5day<sub>j</sub> = max (RR<sub>kj</sub>) </li> 
+   <li><b>5day wet extremes Rx5day,</b> Monthly maximum consecutive 5-day precipitation: <br> Let RR<sub>kj</sub> be the precipitation amount for the 5-day interval ending k, period j. Then maximum 5-day values for period j are: Rx5day<sub>j</sub> = max (RR<sub>kj</sub>) </li>
   </ul>
   <p>
   Please find more information about these indicators on <a href='http://etccdi.pacificclimate.org'>http://etccdi.pacificclimate.org</a>.</p>
