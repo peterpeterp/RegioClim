@@ -1,2 +1,6 @@
 regioclim_promo
 regioclim_promo_
+*.DS_Store
+*.png
+*.pkl
+*.pdf

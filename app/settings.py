@@ -42,6 +42,9 @@ try:
 except:
   basepath='/home/RCM_projection/'
 
+print('importing')
+print(hasattr(sys, 'real_prefix'))
+
 sys.path.append(basepath+'country_analysis/country_analysis_scripts/')
 import country_analysis; reload(country_analysis)
 sys.path.append(basepath+'/RegioClim/')
