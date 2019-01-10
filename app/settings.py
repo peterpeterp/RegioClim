@@ -26,7 +26,7 @@
 
 import sys,glob,os,pickle,string
 import numpy as np
-from netCDF4 import Dataset,netcdftime,num2date
+from netCDF4 import Dataset,num2date
 import pandas as pd
 import pycountry
 
