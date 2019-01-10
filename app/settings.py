@@ -40,7 +40,7 @@ basepath='/Users/peterpfleiderer/Projects/'
 try:
   os.chdir(basepath)
 except:
-  basepath='/home/RCM_projection/'
+  basepath='/home/regioClim/'
 
 print('importing')
 print(hasattr(sys, 'real_prefix'))
