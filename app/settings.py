@@ -36,7 +36,7 @@ import matplotlib.pyplot as plt
 from matplotlib import rc
 rc('text', usetex=True)
 
-basepath='/Users/peterpfleiderer/Documents/Projects/'
+basepath='/Users/peterpfleiderer/Projects/'
 try:
   os.chdir(basepath)
 except:
