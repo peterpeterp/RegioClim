@@ -26,7 +26,7 @@
 
 import sys,glob,os,pickle,string
 import numpy as np
-from netCDF4 import Dataset,netcdftime,num2date
+from netCDF4 import Dataset,num2date
 import pandas as pd
 import pycountry
 
@@ -36,7 +36,7 @@ import matplotlib.pyplot as plt
 from matplotlib import rc
 rc('text', usetex=True)
 
-basepath='/Users/peterpfleiderer/Documents/Projects/'
+basepath='/Users/peterpfleiderer/Projects/'
 try:
   os.chdir(basepath)
 except:
@@ -45,7 +45,8 @@ except:
 print('importing')
 print(hasattr(sys, 'real_prefix'))
 
-sys.path.append(basepath+'country_analysis/country_analysis_scripts/')
+sys.path.append(basepath+'country_analysis/')
+os.system('ls '+basepath+'country_analysis/')
 import country_analysis; reload(country_analysis)
 sys.path.append(basepath+'/RegioClim/')
 os.chdir(basepath+'/RegioClim/')
