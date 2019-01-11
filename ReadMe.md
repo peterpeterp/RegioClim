@@ -28,8 +28,7 @@ conda install numpy netCDF4 matplotlib shapely descartes fiona flask flask-wtf g
 ```
 the two packages pycountry and dimarray are not found by conda, install them using pip
 ```
-pip install pycountry
-pip install dimarray
+pip install pycountry dimarray
 ```
 you would also need the git repositories "country_analysis_scripts" and "wlcalculator"
 clone them into the same directory where RegioClim is located or change the path in the respective files (might be tedious)

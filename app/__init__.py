@@ -1,4 +1,10 @@
 # -*- coding: utf-8 -*-
+import os
+print('importing')
+print(hasattr(sys, 'real_prefix'))
+print(sys.executable)
+
+os.system('which python')
 
 from flask import Flask
 
@@ -9,6 +15,8 @@ sys.setdefaultencoding('utf8')
 
 app = Flask(__name__)
 app.config.from_object('config')
+
+
 
 from app import views
 from app import forms
@@ -26,4 +34,3 @@ from app import forms
 
 #app = Flask(__name__)
 #app.config.from_object('config')
-
