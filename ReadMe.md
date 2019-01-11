@@ -24,7 +24,7 @@ This project requires python2.7 with the following packages:
 
 ```
 conda create --name some_name
-conda install numpy netCDF4 basemap matplotlib shapely descartes fiona flask flask-wtf gunicorn pandas scipy seaborn unidecode
+conda install numpy netCDF4 matplotlib shapely descartes fiona flask flask-wtf gunicorn pandas scipy seaborn unidecode
 ```
 the two packages pycountry and dimarray are not found by conda, install them using pip
 ```

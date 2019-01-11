@@ -44,6 +44,7 @@ except:
 
 print('importing')
 print(hasattr(sys, 'real_prefix'))
+print(sys.executable)
 
 os.system('which python')
 
