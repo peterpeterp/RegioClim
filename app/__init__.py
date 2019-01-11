@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-import os
+import os,sys
 print('importing')
 print(hasattr(sys, 'real_prefix'))
 print(sys.executable)
