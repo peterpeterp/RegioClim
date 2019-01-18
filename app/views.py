@@ -35,13 +35,13 @@ try:
   os.chdir(basepath)
   wlcalculator_path=basepath+'wlcalculator-backup/app/'
 except:
-  basepath='/home/regioClim/'
+  basepath='/home/tooli/regioClim/'
   wlcalculator_path=basepath+'wlcalculator/app/'
 
 sys.path.append(basepath+'country_analysis/country_analysis_scripts/')
 import country_analysis; reload(country_analysis)
-sys.path.append(basepath+'/RegioClim/')
-os.chdir(basepath+'/RegioClim/')
+sys.path.append(basepath+'/regioClim/')
+os.chdir(basepath+'/regioClim/')
 
 
 def flash_errors(form):

@@ -24,11 +24,11 @@ This project requires python2.7 with the following packages:
 
 ```
 conda create --name some_name
-conda install numpy netCDF4 matplotlib shapely descartes fiona flask flask-wtf gunicorn pandas scipy seaborn unidecode
+conda install numpy netCDF4 matplotlib shapely descartes fiona flask flask-wtf pandas scipy seaborn unidecode cartopy
 ```
 the two packages pycountry and dimarray are not found by conda, install them using pip
 ```
-pip install pycountry dimarray
+pip install pycountry dimarray uwsgi
 ```
 you would also need the git repositories "country_analysis_scripts" and "wlcalculator"
 clone them into the same directory where RegioClim is located or change the path in the respective files (might be tedious)
