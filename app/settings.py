@@ -48,10 +48,10 @@ print(sys.executable)
 
 os.system('which python')
 
-sys.path.append(basepath+'country_analysis/country_analysis_scripts/')
-import country_analysis; reload(country_analysis)
-sys.path.append(basepath+'/regioClim/')
-os.chdir(basepath+'/regioClim/')
+# sys.path.append(basepath+'country_analysis/country_analysis_scripts/')
+# import country_analysis; reload(country_analysis)
+# sys.path.append(basepath+'/regioClim/')
+# os.chdir(basepath+'/regioClim/')
 
 seasons={'year':range(1,13)}
 for i in range(1,13):
