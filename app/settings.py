@@ -42,11 +42,11 @@ try:
 except:
   basepath='/home/regioClim/'
 
-print('importing')
-print(hasattr(sys, 'real_prefix'))
-print(sys.executable)
-
-os.system('which python')
+# print('importing')
+# print(hasattr(sys, 'real_prefix'))
+# print(sys.executable)
+#
+# os.system('which python')
 
 # sys.path.append(basepath+'country_analysis/country_analysis_scripts/')
 # import country_analysis; reload(country_analysis)
