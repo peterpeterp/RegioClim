@@ -1,10 +1,5 @@
 # -*- coding: utf-8 -*-
 import os,sys
-print('importing')
-print(hasattr(sys, 'real_prefix'))
-print(sys.executable)
-
-os.system('which python')
 
 from flask import Flask
 
