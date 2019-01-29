@@ -79,7 +79,7 @@ def initialize():
   print COU._warming_slices
   session_cou = open(session['cou_path'], 'wb')
   cPickle.dump(COU, session_cou, protocol=2) ; session_cou.close()
-
+  gc.collect()
   return COU
 
 @app.route('/')
@@ -727,6 +727,7 @@ def country_choice():
     session_cou = open(session['cou_path'], 'rb')
     COU=cPickle.load( session_cou) ; session_cou.close()
 
+  gc.collect()
 
   session["indicator"]   = 'tas'
   index=session['indicator_avail'].index(session['indicator'])
