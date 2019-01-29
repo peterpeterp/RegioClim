@@ -66,7 +66,6 @@ languages={'en':'English','fr':'Français'}
 
 def initialize():
   print '________________initialize_____________'
-  del COU
   gc.collect()
   COU=country_analysis.country_analysis(session['country'],'../country_analysis/data/'+session['country']+'/',seasons=settings.seasons)
   COU.load_data(quiet=True,load_mask=True,load_raw=False,load_area_averages=False,load_region_polygons=True)
