@@ -146,7 +146,7 @@ def index():
 
 @app.route('/choices')
 def choices():
-  try:
+  if True:
     start_time=time.time()
 
     s=session
@@ -321,9 +321,9 @@ def choices():
     session['location']='choices'
     return render_template('choices_'+lang+'.html',**context)
 
-  except Exception,e:
-    print str(e)
-    return render_template('error.html')
+  # except Exception,e:
+  #   print str(e)
+  #   return render_template('error.html')
 
 
 
@@ -444,13 +444,13 @@ def merging_page():
 
     regions_plot='app/static/COU_images/'+s['country']+'/'+s['region']+'.png'
     if os.path.isfile(regions_plot)==False:
-      fig = plt.figure(frameon=False)
-      ax = plt.Axes(fig, [0., 0., 1., 1.])
+      # fig,ax = plt.subplots(nrows=1, frameon=False, subplot_kw={'projection': ccrs.PlateCarree()})
+      fig, ax = plt.subplots(nrows=1, ncols=1,subplot_kw={'projection': ccrs.PlateCarree()})
+      # ax = plt.Axes(fig, [0., 0., 1., 1.])
       fig.set_size_inches(6*asp,6/asp)
-      fig.add_axes(ax)
+      # fig.add_axes(ax)
 
-      # fig,ax=plt.subplots(nrows=1,ncols=1,figsize=(6*asp,6/asp+1))
-      empty_object.plot_map(to_plot='empty',
+      empty_object.plot_map(to_plot=None,
         show_region_names=True,
         color_bar=False,
         ax=ax,
