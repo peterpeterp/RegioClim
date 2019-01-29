@@ -20,7 +20,7 @@
 
 
 
-import os,glob,sys,time,random,cPickle,string
+import os,glob,sys,time,random,cPickle,string,gc
 from app import app
 from flask import redirect, render_template, url_for, request, flash, get_flashed_messages, g, session, jsonify, Flask, send_from_directory
 from collections import OrderedDict
@@ -30,7 +30,7 @@ import forms
 import matplotlib.pylab as plt
 from plotting import *
 
-basepath='/Users/peterpfleiderer/Documents/Projects/'
+basepath='/Users/peterpfleiderer/Projects/'
 try:
   os.chdir(basepath)
   wlcalculator_path=basepath+'wlcalculator-backup/app/'
@@ -39,6 +39,7 @@ except:
   wlcalculator_path=basepath+'wlcalculator/app/'
 
 sys.path.append(basepath+'country_analysis/country_analysis_scripts/')
+os.system('ls '+basepath+'country_analysis/country_analysis_scripts/')
 import country_analysis; reload(country_analysis)
 sys.path.append(basepath+'/regioClim/')
 os.chdir(basepath+'/regioClim/')
@@ -65,6 +66,8 @@ languages={'en':'English','fr':'Français'}
 
 def initialize():
   print '________________initialize_____________'
+  del COU
+  gc.collect()
   COU=country_analysis.country_analysis(session['country'],'../country_analysis/data/'+session['country']+'/',seasons=settings.seasons)
   COU.load_data(quiet=True,load_mask=True,load_raw=False,load_area_averages=False,load_region_polygons=True)
   COU.load_data(quiet=True,filename_filter='RX1',load_mask=False,load_raw=True,load_area_averages=True,load_region_polygons=False)
