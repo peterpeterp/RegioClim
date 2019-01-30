@@ -168,7 +168,7 @@ def choices():
 
     form_region = forms.regionForm(request.form)
     sorted_regions = [reg for reg in [COU._region_names.keys()[COU._region_names.values().index(name)] for name in sorted(COU._region_names.values())] if reg in s['region_avail']]
-    sorted_regions=[s['region']]+[reg for reg in sorted_regions if (reg != s['region']) & ('+' in reg)]+[reg for reg in sorted_regions if (reg != s['region']) & ('+' not in reg)]
+    sorted_regions=[u''+s['region']]+[u''+reg for reg in sorted_regions if (reg != s['region']) & ('+' in reg)]+[reg for reg in sorted_regions if (reg != s['region']) & ('+' not in reg)]
     form_region.regions.choices = zip(sorted_regions,[COU._region_names[reg].replace('_',' ') for reg in sorted_regions])
 
     form_scenario = forms.scenarioForm(request.form)

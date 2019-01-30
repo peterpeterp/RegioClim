@@ -110,9 +110,9 @@ def transient_plot_func(s,COU,refP,refP_clim,proP,refP_longname,refP_clim_longna
       #leg = plt.legend(loc='best',fancybox=True,fontsize=10)
       #leg.get_frame().set_alpha(0.3)
       if s['season']=='year':
-        plt.title(COU._region_names[s['region']].replace('**','').replace('_',' ')+' RCP4.5',fontsize=12)
+        plt.title(u''+COU._region_names[s['region']].replace('**','').replace('_',' ')+' RCP4.5',fontsize=12)
       if s['season']!='year':
-        plt.title(COU._region_names[s['region']].replace('**','').replace('_',' ')+' '+season_dict[lang][s['season']]+' RCP4.5',fontsize=12)
+        plt.title(u''+COU._region_names[s['region']].replace('**','').replace('_',' ')+' '+season_dict[lang][s['season']]+' RCP4.5',fontsize=12)
       #plt.text(2100,60,'Climate Analytics',horizontalalignment='right',fontsize=7)
       #plt.text(-0.1, 0.,'climate anaylics',horizontalalignment='left',verticalalignment='bottom',transform = ax.transAxes)
       fig.tight_layout()
@@ -150,7 +150,11 @@ def annual_cycle_plot_func(s,COU,refP,refP_clim,proP,refP_longname,refP_clim_lon
       leg = ax[0].legend(loc='best',fancybox=True,fontsize=10)
       leg.get_frame().set_alpha(0.3)
 
-      ax[0].set_title(COU._region_names[s['region']].replace('**','').replace('_',' ')+' '+refP_clim_longname,fontsize=12)
+      print(COU._region_names[s['region']])
+      print(COU._region_names[s['region']].encode('utf8'))
+      print(COU._region_names[s['region']].decode('utf8'))
+      print(s['region'])
+      ax[0].set_title(u''+COU._region_names[s['region']].replace('**','').replace('_',' ')+' '+refP_clim_longname,fontsize=12)
 
       ens_mean.plot_annual_cycle(period='diff_'+proP+'-'+refP,region=region,ax=ax[1],title='',ylabel='  ',label='projected change',color='green',shading_range=[0,100])
       ax[1].plot([0,1],[0,0],color='k')
