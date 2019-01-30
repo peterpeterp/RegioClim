@@ -18,8 +18,6 @@
 # along with regioclim; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-
-
 import os,glob,sys,time,random,cPickle,string,gc
 from app import app
 from flask import redirect, render_template, url_for, request, flash, get_flashed_messages, g, session, jsonify, Flask, send_from_directory
@@ -27,6 +25,7 @@ from collections import OrderedDict
 from werkzeug.routing import BuildError
 import settings
 import forms
+from shapely.ops import cascaded_union, unary_union
 import matplotlib.pylab as plt
 from plotting import *
 
@@ -432,7 +431,7 @@ def merging_page():
   not working if full country is actual region
   '''
 
-  try:
+  if True:
     s=session
 
     session_cou = open(s['cou_path'], 'rb')
@@ -522,9 +521,9 @@ def merging_page():
     session['location']='merging_page'
     return render_template('merging_page_'+s['language']+'.html',**context)
 
-  except Exception,e:
-    print str(e)
-    return render_template('error.html')
+  # except Exception,e:
+  #   print str(e)
+  #   return render_template('error.html')
 
 @app.route('/given_region_name',  methods=("POST", ))
 def given_region_name():
