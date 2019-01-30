@@ -444,8 +444,9 @@ def merging_page():
 
     regions_plot='app/static/COU_images/'+s['country']+'/'+s['region']+'.png'
     if os.path.isfile(regions_plot)==False:
-      # fig,ax = plt.subplots(nrows=1, frameon=False, subplot_kw={'projection': ccrs.PlateCarree()})
-      fig, ax = plt.subplots(nrows=1, ncols=1,subplot_kw={'projection': ccrs.PlateCarree()})
+      fig,ax = plt.subplots(nrows=1, frameon=False, subplot_kw={'projection': ccrs.PlateCarree()})
+      # fig, ax = plt.subplots(nrows=1, ncols=1,subplot_kw={'projection': ccrs.PlateCarree()})
+      # fig = plt.figure(frameon=False)
       # ax = plt.Axes(fig, [0., 0., 1., 1.])
       fig.set_size_inches(6*asp,6/asp)
       # fig.add_axes(ax)
@@ -462,7 +463,7 @@ def merging_page():
         patch = PolygonPatch(COU._adm_polygons[s['region']], facecolor='orange', edgecolor=[0,0,0], alpha=0.7, zorder=2)
         ax.add_patch(patch)
         ax.set_axis_off()
-
+      plt.subplots_adjust(left=0, right=1, top=1, bottom=0)
       plt.savefig(regions_plot,dpi=300)
 
     choosable_regions=[reg for reg in s['region_avail'][:] if reg!=s['country'] and len(reg.split('+'))<2]
