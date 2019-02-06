@@ -844,7 +844,7 @@ def prepare_for_download(plot_request):
     return send_from_directory(directory=settings.basepath+'country_analysis/data/', filename=filename.replace('app/',''),as_attachment=True)
 
   if 'plot' in request_type.split('_'):
-    return send_from_directory(directory=settings.basepath+'RegioClim/app/', filename=filename.replace('app/',''),as_attachment=True)
+    return send_from_directory(directory=settings.basepath+'regioClim/app/', filename=filename.replace('app/',''),as_attachment=True)
 
 
 ###############################
