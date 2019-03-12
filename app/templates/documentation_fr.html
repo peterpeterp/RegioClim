@@ -115,87 +115,76 @@ h4
 
 <!-- End HEAD content -->
 <div id="loading"><div id="overlay"></div><div id='overlay_text'><h1>Loading ... </h1></div></div>
-
 <div id="content">
-
 <div id="sidebar">
   <div id="table-of-contents">
     <div id="text-table-of-contents">
     <a href="#doc_start">Documentation</a>
       <ul>
-
         <li><a href="#doc_summary">Résumé</a></li>
         <ul>
           <li><a href="#doc_purpose">Objectif</a></li>
           <li><a href="#doc_key_functionalities">Méthodes</a></li>
           <li><a href="#doc_limitations">Limitations</a></li>
         </ul>
-
-        <li><a href="#doc_data_source">Sources de Données</a></li>
+        <li><a href="#doc_data_source">Sources des données</a></li>
         <ul>
-          <li><a href="#doc_RCM">Modèles Climatiques Régionaux (RCM)</a></li>
+          <li><a href="#doc_RCM">Modèles Climatiques Régionaux (RCMs)</a></li>
           <li><a href="#doc_ensemble">Choix de l'ensemble</a></li>
           <li><a href="#doc_scenario">Choix du scénario d'émission</a></li>
           <li><a href="#doc_EWEMBI">EWEMBI (observations et réanalyses)</a></li>
           <li><a href="#doc_bias_correction">Correction de biais</a></li>
-          <li><a href="#doc_shapefiles">Regional Shapefiles</a></li>
+          <li><a href="#doc_shapefiles">Shapefiles régionaux</a></li>
         </ul>
-
-        <li><a href="#doc_indicators">Indicateurs Climatiques</a></li>
-
+        <li><a href="#doc_indicators">Indicateurs climatiques</a></li>
         <li><a href="#doc_plot_explanation">Présentation des projections climatiques</a></li>
         <ul>
-          <li><a href="#doc_plot_climatology">Carte de la période de référence</a></li>
-          <li><a href="#doc_plot_projection">Carte de la projection</a></li>
+          <li><a href="#doc_plot_climatology">Carte pour la période de référence</a></li>
+          <li><a href="#doc_plot_projection">Carte pour la période de projection</a></li>
           <li><a href="#doc_plot_transient">Trajectoire de la moyenne régionale</a></li>
           <li><a href="#doc_plot_annual_cycle">Cycle annuel de la moyenne régionale</a></li>
         </ul>
         <li><a href="#doc_tool">Outil pour l'analyse de données climatiques (Python)</a></li>
-        <li><a href="#doc_acknowledgements">Remerciments</a></li>
+        <li><a href="#doc_acknowledgements">Remerciements</a></li>
         <li><a href="#doc_references">Références</a></li>
       </ul>
     </div>
   </div>
 </div>
-
-
 <div id="main-content">
-
   <h1 class="title" id="doc_start">Documentation</h1>
-
   <span class=anchor id=doc_summary></span>
   <div id="outline-container-1" class="outline-2">
   <h2><span class="section-number-2"> Résumé </span></h2>
   <div class="outline-text-2" id="text-1"></div>
   </div>
-
   <span class=anchor id=doc_purpose></span>
   <div id="outline-container-1" class="outline-2">
   <h3><span class="section-number-2"> Objectif </span></h3>
   <div class="outline-text-2" id="text-1">
-  <p>Cet outil a été créé pour faciliter l'accès aux projections climatiques régionales de pointe au grand public. Les données climatiques utilisées sont en accès libre et les scripts Python développés pour ce site sont basés sur du code en source ouvert. Notre approche se concentre sur des graphiques de bases facilement interpretables qui peuvent être réutilisés dans des rapports sur les changements climatiques.
+  <p>Cet outil a été créé pour faciliter l'accès aux projections climatiques régionales de pointe au grand public. Les données climatiques utilisées sont en accès libre et les scripts Python développés pour ce site sont basés sur un code en libre accès. Notre approche se concentre sur des graphiques facilement interprétables qui peuvent être réutilisés dans des rapports sur les impacts des changements climatiques.
   </p>
   </div>
   </div>
-
   <span class=anchor id=doc_key_functionalities></span>
   <div id="outline-container-1" class="outline-2">
   <h3><span class="section-number-2"> Méthodes </span></h3>
   <div class="outline-text-2" id="text-1">
   <p>
-  Les graphiques obtenus sont basé	s sur quatre fonctionnalités basiques:
+  Les graphiques obtenus sont calculés grâce à quatre fonctionnalités basiques :
   <ul class=list>
   <span class=anchor id=doc_meth_period></span>
-  <li>Les <b>moyennes de périodes </b>sont utilisées pour la <a href='#doc_plot_climatology'>carte de la période de référence</a> et la <a href='#doc_plot_projection'>carte de la projection</a>. Parce que la variabilité inter-annuelle peut dominer le signal du changement climatique, le climat future comme le climat de la période de référence doivent être traités comme moyennes de périodes (nous suggérons 30 années). Pour chaque grille la moyenne temporelle de toutes les valeurs mensuelles (de la saison choisie) pour les années comprises dans la période est calculée. </li>
+  <li>Les <b>moyennes de périodes </b>sont utilisées pour la <a href='#doc_plot_climatology'>carte pour la période de référence</a> et la <a href='#doc_plot_projection'>carte pour la période de projection</a>. Puisque la variabilité inter-annuelle peut dominer le signal du changement climatique, le climat futur comme le climat de la période de référence doivent être calculés sur une période longue (nous suggérons de considérer 30 ans). Pour chaque cellule de grille, la moyenne temporelle de toutes les valeurs mensuelles (de la saison choisie) pour les années comprises dans la période est calculée. </li>
   <span class=anchor id=doc_meth_area></span>
-  <li>Les <b>moyennes régionales </b>sont utilisées pour la <a href='#doc_plot_transient'>trajectoire de la moyenne régionale</a> et pour le <a href='#doc_plot_annual_cycle'>cycle annuel de la moyenne régionale</a>. La moyenne régionale est calculée pour chaque pas de temps en tant que moyenne de toutes les grilles touchées par la région. Les grilles sont pondérées par la fraction de la surface de la région recouverte par la grille.</li>
+  <li>Les <b>moyennes régionales </b>sont utilisées pour la <a href='#doc_plot_transient'>trajectoire de la moyenne régionale</a> et pour le <a href='#doc_plot_annual_cycle'>cycle annuel de la moyenne régionale</a>. La moyenne régionale est calculée pour chaque pas de temps en tant que moyenne de toutes les cellules de grille incluses au moins en partie dans la région. Les valeurs de chacune de ces cellules sont pondérées par la fraction de la surface de la région recouverte par la cellule.</li>
   <span class=anchor id=doc_meth_ens_mean></span>
-  <li>Nous présentons la <b>moyenne de l'ensemble</b> des projections climatiques au lieu de présenter la projection de chaque modèle individuellement. La moyenne de l'ensemble est la moyenne des quatre modèles, calculée pour chaque grille ou pour chaque pas de temps selon le graphique. </li>
+  <li>Nous présentons la <b>moyenne de l'ensemble</b> des projections climatiques au lieu de présenter la projection de chaque modèle individuellement. La moyenne de l'ensemble est la moyenne des quatre modèles, calculée pour chaque cellule de grille ou pour chaque pas de temps selon le graphique. </li>
   <span class=anchor id=doc_meth_disagreement></span>
-  <li> En montrant l'ensemble de la moyenne uniquement, l'information sur les différences entre les modèles et sur l'incertitude sont perdues. Dans la <a href='#doc_plot_projection'>carte de projection</a> nous montrant le <b>désaccord entre les modèles</b> pour partiellement réintroduire l'information sur l'incertitude. Nous disons qu'il y a un désaccord entre les modèles sur le changement climatique projeté si au moins deux des quatre modèles projettent un changement qui diffère de la moyenne de l'ensemble dans le signe du changement.</li>
+  <li> Si uniquement la moyenne d'ensemble était montrée, l'information sur les différences entre les modèles et sur l'incertitude seraient perdues. Dans la <a href='#doc_plot_projection'>carte pour la période de projection</a> nous montrons donc le <b>désaccord entre les modèles</b> pour partiellement réintroduire l'information sur l'incertitude. Nous considérons qu'il existe un désaccord entre les quatre modèles considérés si pour au moins deux d'entre eux le signe du changement projeté diffère du signe du changement projeté par la moyenne de l'ensemble.</li>
   </ul></p>
   </div>
   </div>
+
 
   <span class=anchor id=doc_limitations></span>
   <div id="outline-container-1" class="outline-2">
