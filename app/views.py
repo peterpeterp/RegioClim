@@ -226,6 +226,11 @@ def choices():
 
     indicator_label=indicator_dict[lang][s['indicator']]+' ['+ind_dict[s['indicator']]['unit']+']'
 
+    if s['indicator'] == 'pr':
+        method = 'year_sum'
+    else:
+        method = 'mean'
+        
     plot_context={
       's':s,
       'COU':COU,
@@ -242,7 +247,8 @@ def choices():
       'indicator_label':indicator_label[0].upper()+indicator_label[1:],
       'season_dict':season_dict,
       'highlight_region':region,
-      'out_format':'_small.png'
+      'out_format':'_small.png',
+      'method':method
     }
 
     plt.close('all')
