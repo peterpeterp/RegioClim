@@ -813,6 +813,11 @@ def prepare_for_download(plot_request):
 
   indicator_label=indicator_dict[lang][s['indicator']]+' ['+ind_dict[s['indicator']]['unit']+']'
 
+    if s['indicator'] == 'pr':
+        method = 'year_sum'
+    else:
+        method = 'mean'
+
   plot_context={
     's':s,
     'COU':COU,
