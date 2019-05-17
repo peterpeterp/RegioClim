@@ -230,7 +230,7 @@ def choices():
         method = 'year_sum'
     else:
         method = 'mean'
-        
+
     plot_context={
       's':s,
       'COU':COU,
@@ -826,16 +826,19 @@ def prepare_for_download(plot_request):
     'proP_longname':proP_longname,
     'region':region,
     'lang':lang,
-    'indicator_label':indicator_label,
+    'indicator_label':indicator_label[0].upper()+indicator_label[1:],
     'season_dict':season_dict,
     'highlight_region':region,
-    'out_format':plot_format
+    'out_format':'_small.png',
+    'method':method
   }
 
+  plt.close('all')
   if request_type=='EWEMBI_plot':  filename=EWEMBI_plot_func(**plot_context)
   if request_type=='Projection_plot':  filename=Projection_plot_func(**plot_context)
   if request_type=='transient_plot':  filename=transient_plot_func(**plot_context)
   if request_type=='annual_cycle_plot':  filename=annual_cycle_plot=annual_cycle_plot_func(**plot_context)
+  plt.clf()
 
   print(plot_request)
   if request_type=='get_data':
