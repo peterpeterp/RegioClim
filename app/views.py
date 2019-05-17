@@ -755,110 +755,106 @@ def country_choice():
 
 @app.route('/prepare_for_download/<plot_request>',  methods=('GET',"POST", ))
 def prepare_for_download(plot_request):
-  print plot_request
-  request_type=plot_request.split('**')[0]
-  plot_format=plot_request.split('**')[-1]
+    print plot_request
+    request_type=plot_request.split('**')[0]
+    plot_format=plot_request.split('**')[-1]
 
-  s=session
+    s=session
 
-  lang=s['language']
+    lang=s['language']
 
-  region=s['region']
-  if region.split('(')[-1]=='full country)': region=s['country']
+    region=s['region']
+    if region.split('(')[-1]=='full country)': region=s['country']
 
-  session_cou = open(s['cou_path'], 'rb')
-  COU=cPickle.load( session_cou) ; session_cou.close()
-  COU.load_data(quiet=True,filename_filter=s['indicator'],load_mask=False,load_raw=True,load_area_averages=True,load_region_polygons=False)
-  COU.unit_conversions()
+    session_cou = open(s['cou_path'], 'rb')
+    COU=cPickle.load( session_cou) ; session_cou.close()
+    COU.load_data(quiet=True,filename_filter=s['indicator'],load_mask=False,load_raw=True,load_area_averages=True,load_region_polygons=False)
+    COU.unit_conversions()
 
-  if s['use_periods']:
-    refP = "to".join(str(t) for t in s["ref_period"])
-    proP = "to".join(str(t) for t in s["proj_period"])
-    periods={refP:s["ref_period"],proP:s["proj_period"]}
-    periods_ewembi={refP:s["ref_period"]}
-    refP_longname=refP.replace('to','-')
-    proP_longname=proP.replace('to','-')
+    if s['use_periods']:
+        refP = "to".join(str(t) for t in s["ref_period"])
+        proP = "to".join(str(t) for t in s["proj_period"])
+        periods={refP:s["ref_period"],proP:s["proj_period"]}
+        periods_ewembi={refP:s["ref_period"]}
+        refP_longname=refP.replace('to','-')
+        proP_longname=proP.replace('to','-')
 
-  else:
-    refP = s['warming_lvl_ref']
-    proP = s['warming_lvl']
-    periods=COU._warming_slices
-    periods_ewembi={'1.5':[2200,2220],'ref':[1986,2006]}
-    refP_longname=warming_lvl_dict[lang][refP]
-    proP_longname=warming_lvl_dict[lang][proP]
+    else:
+        refP = s['warming_lvl_ref']
+        proP = s['warming_lvl']
+        periods=COU._warming_slices
+        periods_ewembi={'1.5':[2200,2220],'ref':[1986,2006]}
+        refP_longname=warming_lvl_dict[lang][refP]
+        proP_longname=warming_lvl_dict[lang][proP]
 
+    if s['use_periods']:
+        refP = str(s["ref_period"][0])+'to'+str(s["ref_period"][1]-1)
+        refP_longname=str(s["ref_period"][0])+'-'+str(s["ref_period"][1]-1)
+        refP_clim=refP
+        refP_clim_longname=refP_longname
+        proP=str(s["proj_period"][0])+'to'+str(s["proj_period"][1]-1)
+        proP_longname=str(s["proj_period"][0])+'-'+str(s["proj_period"][1]-1)
+        periods={refP:s["ref_period"],proP:s["proj_period"]}
+        periods_ewembi={refP:s["ref_period"]}
 
+    else:
+        refP = s['warming_lvl_ref']
+        refP_longname=warming_lvl_dict[lang][refP]
+        refP_clim = 'ref'
+        refP_clim_longname=warming_lvl_dict[lang]['ref']
+        proP = s['warming_lvl']
+        proP_longname=warming_lvl_dict[lang][proP]
+        periods=COU._warming_slices
+        periods_ewembi={'ref':[1986,2006]}
 
-
-  if s['use_periods']:
-    refP = str(s["ref_period"][0])+'to'+str(s["ref_period"][1]-1)
-    refP_longname=str(s["ref_period"][0])+'-'+str(s["ref_period"][1]-1)
-    refP_clim=refP
-    refP_clim_longname=refP_longname
-    proP=str(s["proj_period"][0])+'to'+str(s["proj_period"][1]-1)
-    proP_longname=str(s["proj_period"][0])+'-'+str(s["proj_period"][1]-1)
-    periods={refP:s["ref_period"],proP:s["proj_period"]}
-    periods_ewembi={refP:s["ref_period"]}
-
-  else:
-    refP = s['warming_lvl_ref']
-    refP_longname=warming_lvl_dict[lang][refP]
-    refP_clim = 'ref'
-    refP_clim_longname=warming_lvl_dict[lang]['ref']
-    proP = s['warming_lvl']
-    proP_longname=warming_lvl_dict[lang][proP]
-    periods=COU._warming_slices
-    periods_ewembi={'ref':[1986,2006]}
-
-
-  indicator_label=indicator_dict[lang][s['indicator']]+' ['+ind_dict[s['indicator']]['unit']+']'
+    indicator_label=indicator_dict[lang][s['indicator']]+' ['+ind_dict[s['indicator']]['unit']+']'
 
     if s['indicator'] == 'pr':
         method = 'year_sum'
     else:
         method = 'mean'
 
-  plot_context={
-    's':s,
-    'COU':COU,
-    'periods':periods,
-    'periods_ewembi':periods_ewembi,
-    'refP':refP,
-    'refP_clim':refP_clim,
-    'proP':proP,
-    'refP_longname':refP_longname,
-    'refP_clim_longname':refP_clim_longname,
-    'proP_longname':proP_longname,
-    'region':region,
-    'lang':lang,
-    'indicator_label':indicator_label[0].upper()+indicator_label[1:],
-    'season_dict':season_dict,
-    'highlight_region':region,
-    'out_format':'_small.png',
-    'method':method
-  }
+    plot_context={
+        's':s,
+        'COU':COU,
+        'periods':periods,
+        'periods_ewembi':periods_ewembi,
+        'refP':refP,
+        'refP_clim':refP_clim,
+        'proP':proP,
+        'refP_longname':refP_longname,
+        'refP_clim_longname':refP_clim_longname,
+        'proP_longname':proP_longname,
+        'region':region,
+        'lang':lang,
+        'indicator_label':indicator_label[0].upper()+indicator_label[1:],
+        'season_dict':season_dict,
+        'highlight_region':region,
+        'out_format':'_small.png',
+        'method':method
+    }
 
-  plt.close('all')
-  if request_type=='EWEMBI_plot':  filename=EWEMBI_plot_func(**plot_context)
-  if request_type=='Projection_plot':  filename=Projection_plot_func(**plot_context)
-  if request_type=='transient_plot':  filename=transient_plot_func(**plot_context)
-  if request_type=='annual_cycle_plot':  filename=annual_cycle_plot=annual_cycle_plot_func(**plot_context)
-  plt.clf()
+    plt.close('all')
+    if request_type=='EWEMBI_plot':  filename=EWEMBI_plot_func(**plot_context)
+    if request_type=='Projection_plot':  filename=Projection_plot_func(**plot_context)
+    if request_type=='transient_plot':  filename=transient_plot_func(**plot_context)
+    if request_type=='annual_cycle_plot':  filename=annual_cycle_plot=annual_cycle_plot_func(**plot_context)
+    plt.clf()
 
-  print(plot_request)
-  if request_type=='get_data':
-    curretn_path=os.getcwd()
-    os.chdir('../country_analysis/data/'+s['country']+'/')
-    os.system('tar -vzcf ../'+s['country']+'_'+s['indicator']+'.tar.gz area_average/*-'+s['indicator']+'_* raw/*_'+s['indicator']+'_*')
-    os.chdir(curretn_path)
-    filename=s['country']+'_'+s['indicator']+'.tar.gz'
+    print(plot_request)
+    if request_type=='get_data':
+        curretn_path=os.getcwd()
+        os.chdir('../country_analysis/data/'+s['country']+'/')
+        os.system('tar -vzcf ../'+s['country']+'_'+s['indicator']+'.tar.gz area_average/*-'+s['indicator']+'_* raw/*_'+s['indicator']+'_*')
+        os.chdir(curretn_path)
+        filename=s['country']+'_'+s['indicator']+'.tar.gz'
 
 
-  if 'get_data' in request_type.split('**'):
-    return send_from_directory(directory=settings.basepath+'country_analysis/data/', filename=filename.replace('app/',''),as_attachment=True)
+    if 'get_data' in request_type.split('**'):
+        return send_from_directory(directory=settings.basepath+'country_analysis/data/', filename=filename.replace('app/',''),as_attachment=True)
 
-  if 'plot' in request_type.split('_'):
-    return send_from_directory(directory=settings.basepath+'regioClim/app/', filename=filename.replace('app/',''),as_attachment=True)
+    if 'plot' in request_type.split('_'):
+        return send_from_directory(directory=settings.basepath+'regioClim/app/', filename=filename.replace('app/',''),as_attachment=True)
 
 
 ###############################
