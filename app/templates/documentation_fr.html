@@ -185,16 +185,15 @@ h4
   </div>
   </div>
 
-
   <span class=anchor id=doc_limitations></span>
   <div id="outline-container-1" class="outline-2">
   <h3><span class="section-number-2"> Limitations </span></h3>
   <div class="outline-text-2" id="text-1">
   <p>
   <ul class=list>
-    <li><b>Petit Ensemble: </b>Les projections sont présentées pour un ensemble de quatre modèles climatiques régionaux. Nous soutenons qu'un plus grand ensemble n'améliorerait pas forcement la qualité des projections en raison des biais provenant de l'utilisation répétée des mêmes modèles de circulation générale (voir <a href=#doc_ensemble>choix de l'ensemble</a>). Cependant, une comparaison de notre ensemble de quatre modèles avec un plus vaste ensemble augmenterait la crédibilité des projections.</li>
-    <li><b>Projections de Précipitation: </b>L'incertitude des projections de précipitations est particulièrement élevée pour une grande part de l'Afrique. Cela s'explique en partie par le manque d'un réseau de stations météorologiques dense dans beaucoup de régions africaines <a href=#ref_kim2014>(Kim 2014)</a>. </li>
-    <li><b>Capacité des modèles de reproduire les événements extrêmes: </b>Bien que des techniques de <a href=#doc_bias_correction>correction de biais</a> ont été appliquées pour corriger des biais systématiques, pour certaines régions les indicateurs de changement climatique comme les <a href='#doc_TXx'>extrêmes de chaleur (TXx)</a> ou les <a href='#doc_RX1'>extrêmes humides (RX1day)</a> sont surestimés ou sous-estimés par les modèles. Veuillez voir <a href=#doc_bias_correction>correction de biais</a> pour plus d'informations. </li>
+    <li><b>Taille de l'ensemble : </b>Les projections sont présentées pour un ensemble de quatre modèles climatiques régionaux. Comparer ses résultats avec ceux d'un ensemble plus grand pourrait augmenter la crédibilité des projections, nous considérons néanmoins qu'il n'est pas sûr que leur qualité soit améliorée si les modèles supplémentaires étaient forcés par les mêmes modèles de circulation générale, c'est-à-dire sujets aux mêmes biais se répercutant sur la qualité des simulations régionales (voir <a href=#doc_ensemble>choix de l'ensemble</a>).</li>
+    <li><b>Projections de précipitation : </b>Même si les modèles climatiques régionaux ont amélioré la représentation des précipitations sur l'Afrique, des biais substantiels subsistent. L'incertitude sur les projections des précipitations est particulièrement élevée pour une grande partie de l'Afrique. Cela s'explique partiellement par un réseau de stations météorologiques moins dense que dans le reste du monde <a href=#ref_kim2014>(Kim 2014)</a>. </li>
+    <li><b>Capacité des modèles à reproduire les événements extrêmes: </b>Bien que des techniques de <a href=#doc_bias_correction>correction de biais</a> aient été appliquées pour corriger les biais systématiques des simulations utilisées, pour certaines régions les indicateurs de changements climatiques comme les <a href='#doc_TXx'>extrêmes de chaleur (TXx)</a> ou les <a href='#doc_RX1'>précipitations extrêmes (RX1day)</a> sont surestimés ou sous-estimés par les modèles. Veuillez consulter la rubrique <a href=#doc_bias_correction>correction de biais</a> pour plus d'informations. </li>
   </ul>
   </p>
   </div></div>
@@ -210,7 +209,7 @@ h4
   <div id="outline-container-1" class="outline-2">
   <h3><span class="section-number-2"> Modèles Climatiques Régionaux (RCM) </span></h3>
   <div class="outline-text-2" id="text-1">
-<p>L'analyse de projections climatiques sur l'échelle régionale nécessite des données en haute résolution qui ne peuvent pas être fournies par les modèles de circulation générales (GCM). Les modèles climatiques régionaux (RCM) fournissent de projections climatiques de haute résolution pour une région limitée. Les RCMs modélisent les impacts régionaux des changements globaux en concentration de gaz à effet de serre. Pour cela les RCMs nécessitent les projections des GCMs comme données d'entrée et ainsi la modélisation climatique régionale est toujours une combinaison d'un GCM avec un RCM.</p>
+<p>L'analyse de projections climatiques à l'échelle nationale nécessite des données de haute résolution, qui ne peuvent pas être fournies par les modèles de circulation générales (GCM). Les modèles climatiques régionaux (RCM) fournissent de projections climatiques de haute résolution pour une région plus petite. Les RCMs modélisent les impacts régionaux des changements globaux de la concentration en gaz à effet de serre. Pour cela, les RCMs nécessitent les projections des GCMs comme données d'entrée. La modélisation climatique régionale résulte ainsi toujours d'une combinaison entre un GCM et un RCM.</p>
   </div>
   </div>
 
@@ -219,7 +218,7 @@ h4
   <div id="outline-container-1" class="outline-2">
   <h3><span class="section-number-2"> Choix de l'ensemble</span></h3>
   <div class="outline-text-2" id="text-1">
-  <p>L'ensemble contients quatre combinaisons de RCMs et de GCMs. Bien que plus de combinaisons sont possibles, nous nous limitons a un petit ensemble dans lequel chaque modèle apparaît qu'une seule fois pour éviter des biais envers un des modèles.</p>
+  <p>L'ensemble inclut quatre combinaisons RCM-GCM, chaque RCM et GCM étant utilisé dans une seule combinaison. Bien que plus de combinaisons soient possibles, nous nous limitons ici à un ensemble plus limité dans lequel chaque modèle n'apparaît qu'une seule fois pour éviter que la moyenne des modèles ne soit biaisée par la surreprésentation d'un modèle individuel.</p>
   <div rows>
   <div id="LeftPanel" style="width: 40%; height: 100%; float: left; padding-left: 20%; padding-right: 40%;">
       <table class="table">
@@ -230,9 +229,9 @@ h4
         </tr>
       </thead>
       <tbody>
-        <tr><td>MPIESM</td><td>REMO</td></tr>
+        <tr><td>MPI-ESM</td><td>REMO</td></tr>
         <tr><td>HADGEM2</td><td>CCLM4</td></tr>
-        <tr><td>ECEARTH</td><td>RACMO</td></tr>
+        <tr><td>EC-EARTH</td><td>RACMO</td></tr>
         <tr><td>IPSL</td><td>RCA</td></tr>
       </tbody>
       </table>
@@ -244,10 +243,10 @@ h4
 
   <span class=anchor id=doc_scenario></span>
   <div id="outline-container-1" class="outline-2">
-  <h3><span class="section-number-2">Choix du scénario</span></h3>
+  <h3><span class="section-number-2">Choix du scénario d'émission</span></h3>
   <div class="outline-text-2" id="text-1">
-  <p>Les projections climatiques sont présentées pour le scénario d'émission RCP4.5, qui est entre le scénario d'émission atteignant 2°C de réchauffement global au-dessus du niveau préindustriel (RCP2.6) et le scenario sans efforts d'atténuation du changement climatique (RCP8.5).<br>
-  Au lieu d'utiliser des <b>périodes fixes</b> et différents scénarios d'émission, on peut analyser des périodes pour lesquelles un certain <b>niveau de réchauffement global au-dessus du niveau préindustriel</b> est atteint. Pour chaque modèle nous estimons les périodes de vingt années pour lesquelles un certain niveau de réchauffement global est atteint. Quand les projections de la moyenne de l'ensemble sont présentées pour différents niveaux de réchauffement, différentes périodes sont utilisées pour les différents modèles: </p>
+  <p>Les projections climatiques sont présentées pour le scénario d'émission RCP4.5, qui se situe entre un scénario atteignant 2°C de réchauffement global au-dessus du niveau préindustriel (RCP2.6) en 2100, et un scénario ne considérant pas d'efforts d'atténuation du changement climatique (RCP8.5).<br>
+  Au lieu d'utiliser des <b>périodes fixes</b> et différents scénarios d'émission, il est possible d'obtenir les résultats moyennés sur des périodes de vingt ans au cours desquelles un certain <b>niveau de réchauffement global au-dessus du niveau préindustriel</b> est atteint. Cela signifie que lorsque cette option est sélectionnée, différentes périodes sont utilisées pour chacun des différents modèles : </p>
   <div id="LeftPanel" style="width: 40%; height: 100%; float: left; padding-left: 20%; padding-right: 40%;">
       <table class="table">
       <thead>
@@ -259,16 +258,16 @@ h4
         </tr>
       </thead>
       <tbody>
-        <tr><td>MPIESM-REMO</td><td>2023-2042</td><td>2054-2073</td><td>1986-2006</td></tr>
+        <tr><td>MPI-ESM-REMO</td><td>2023-2042</td><td>2054-2073</td><td>1986-2006</td></tr>
         <tr><td>HADGEM2-CCLM4</td><td>2013-2032</td><td>2028-2047</td><td>1986-2006</td></tr>
-        <tr><td>ECEARTH-RACMO</td><td>2024-2043</td><td>2046-2065</td><td>1986-2006</td></tr>
+        <tr><td>EC-EARTH-RACMO</td><td>2024-2043</td><td>2046-2065</td><td>1986-2006</td></tr>
         <tr><td>IPSL-RCA</td><td>2019-2038</td><td>2034-2053</td><td>1986-2006</td></tr>
       </tbody>
       </table>
   </div>
   </div>
 
-  <p>Les niveaux de réchauffement sont calculés avec le <a href="http://wlcalc.climateanalytics.org">Warming Attribution Calculator</a></p>
+  <p>Les niveaux de réchauffement sont calculés à l'aide du <a href="http://wlcalc.climateanalytics.org">Warming Attribution Calculator</a></p>
   </div>
 
 
@@ -276,8 +275,12 @@ h4
   <div id="outline-container-1" class="outline-2">
   <h3><span class="section-number-2">EWEMBI (observations et réanalyses)</span></h3>
   <div class="outline-text-2" id="text-1">
-  <p>EWEMBI est un produit de données de réanalyse et d'observations <a href=#ref_lange2016>(Lange 2016)</a>. EWEMBI couvre le globe avec une résolution de grille de 0.5°x0.5°. Les données EWEMBI sont utilisées pour la correction de biais et pour la présentation du <a href=#doc_plot_climatology>climat de référence</a>. Pour plus d'informations veuillez consulter <a href=https://www.isimip.org/gettingstarted/details/27>https://www.isimip.org/gettingstarted/details/27/</a></p>
+  <p>EWEMBI est un produit issu de la combinaison de données de réanalyse et d'observations <a href=#ref_lange2016>(Lange 2016)</a>. EWEMBI a une couverture globale, avec une résolution de grille de 0.5°x0.5°. Les données EWEMBI sont utilisées à la fois pour la correction de biais et pour la représentation du <a href=#doc_plot_climatology>climat de référence</a>. Pour plus d'informations, veuillez consulter <a href=https://www.isimip.org/gettingstarted/details/27>https://www.isimip.org/gettingstarted/details/27/</a></p>
   </div></div>
+
+
+	<!-- Start working on translation here again. -->
+
 
   <span class=anchor id=doc_bias_correction></span>
   <div id="outline-container-1" class="outline-2">
