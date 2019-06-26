@@ -846,8 +846,8 @@ def prepare_for_download(plot_request):
         curretn_path=os.getcwd()
         os.chdir('../country_analysis/data/'+s['country']+'/')
         print('_________________________')
-        os.system('ls')
-        os.system('tar -vzcf ../'+s['country']+'_'+s['indicator']+'.tar.gz area_average/*-'+s['indicator']+'_* raw/*_'+s['indicator']+'_*')
+        os.system("/bin/bash -c 'ls'")
+        os.system("/bin/bash -c 'tar -vzcf ../'+s['country']+'_'+s['indicator']+'.tar.gz area_average/*-'+s['indicator']+'_* raw/*_'+s['indicator']+'_*'")
         os.chdir(curretn_path)
         filename=s['country']+'_'+s['indicator']+'.tar.gz'
 
