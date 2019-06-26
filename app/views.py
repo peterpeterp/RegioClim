@@ -18,7 +18,7 @@
 # along with regioclim; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-import os,glob,sys,time,random,cPickle,string,gc
+import os,glob,sys,time,random,cPickle,string,gc,subprocess
 from app import app
 from flask import redirect, render_template, url_for, request, flash, get_flashed_messages, g, session, jsonify, Flask, send_from_directory
 from collections import OrderedDict
@@ -846,8 +846,9 @@ def prepare_for_download(plot_request):
         curretn_path=os.getcwd()
         os.chdir('../country_analysis/data/'+s['country']+'/')
         print('_________________________')
-        os.system("/bin/bash -c 'ls'")
-        os.system("/bin/bash -c 'tar -vzcf ../'+s['country']+'_'+s['indicator']+'.tar.gz area_average/*-'+s['indicator']+'_* raw/*_'+s['indicator']+'_*'")
+        process = subprocess.Popen("ls", stdout=subprocess.PIPE)
+        process = subprocess.Popen('tar -vzcf ../'+s['country']+'_'+s['indicator']+'.tar.gz area_average/*-'+s['indicator']+'_* raw/*_'+s['indicator']+'_*', stdout=subprocess.PIPE)
+
         os.chdir(curretn_path)
         filename=s['country']+'_'+s['indicator']+'.tar.gz'
 
