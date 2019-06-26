@@ -845,13 +845,16 @@ def prepare_for_download(plot_request):
     if request_type=='get_data':
         curretn_path=os.getcwd()
         os.chdir('../country_analysis/data/'+s['country']+'/')
-        print('_________________________')
-        subprocess.call('ls', shell=True)
-        subprocess.call('tar -vzcf ../'+s['country']+'_'+s['indicator']+'.tar.gz area_average/*-'+s['indicator']+'_* raw/*_'+s['indicator']+'_*', shell=True)
+        # THIS is not working!!!!!!!
 
+        # print('_________________________')
+        # subprocess.call('ls', shell=True)
+        # subprocess.call('tar -vzcf ../'+s['country']+'_'+s['indicator']+'.tar.gz area_average/*-'+s['indicator']+'_* raw/*_'+s['indicator']+'_*', shell=True)
+        #
 
         os.chdir(curretn_path)
-        filename=s['country']+'_'+s['indicator']+'.tar.gz'
+        filename=s['country']+'.tar.gz'
+        # filename=s['country']+'_'+s['indicator']+'.tar.gz'
 
 
     if 'get_data' in request_type.split('**'):
