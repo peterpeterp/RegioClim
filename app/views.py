@@ -847,8 +847,12 @@ def prepare_for_download(plot_request):
         os.chdir('../country_analysis/data/'+s['country']+'/')
         print('_________________________')
         process = subprocess.Popen("ls", stdout=subprocess.PIPE)
+        stdoutdata, _ = process.communicate()
+        print(stdoutdata)
         process = subprocess.Popen('tar -vzcf ../'+s['country']+'_'+s['indicator']+'.tar.gz area_average/*-'+s['indicator']+'_* raw/*_'+s['indicator']+'_*', stdout=subprocess.PIPE)
-
+        stdoutdata, _ = process.communicate()
+        print(stdoutdata)
+        
         os.chdir(curretn_path)
         filename=s['country']+'_'+s['indicator']+'.tar.gz'
 
