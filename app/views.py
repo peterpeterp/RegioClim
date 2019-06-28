@@ -850,7 +850,8 @@ def prepare_for_download(plot_request):
 
         print('_________________________')
         subprocess.call('/bin/ls', shell=True)
-        subprocess.call('/bin/tar -cf '+settings.basepath+'regioClim/app/static/for_download/'+s['country']+'_'+s['indicator']+'.tar area_average/*-'+s['indicator']+'_* '+s['country']+'raw/*_'+s['indicator']+'_*', shell=True)
+        # subprocess.call('/bin/tar -cf '+settings.basepath+'regioClim/app/static/for_download/'+s['country']+'_'+s['indicator']+'.tar area_average/*-'+s['indicator']+'_* '+s['country']+'raw/*_'+s['indicator']+'_*', shell=True)
+        subprocess.call('/bin/bash -c " -cf '+settings.basepath+'regioClim/app/static/for_download/'+s['country']+'_'+s['indicator']+'.tar area_average/*-'+s['indicator']+'_* '+s['country']+'raw/*_'+s['indicator']+'_*"', shell=True)
 
         os.chdir(curretn_path)
 
