@@ -845,15 +845,21 @@ def prepare_for_download(plot_request):
 
     print(plot_request)
     if request_type=='get_data':
+        curretn_path=os.getcwd()
+        os.chdir('../country_analysis/data/'+s['country']+'/')
 
         print('_________________________')
-        subprocess.call('/bin/tar -vzcf app/static/for_download/'+s['country']+'_'+s['indicator']+'.tar.gz ../country_analysis/data/'+s['country']+'/area_average/*-'+s['indicator']+'_* ../country_analysis/data/'+s['country']+'/raw/*_'+s['indicator']+'_*', shell=True)
+        subprocess.call('ls', shell=True)
+        subprocess.call('/bin/tar -vzcf '+settings.basepath+'regioClim/app/static/for_download/'+s['country']+'_'+s['indicator']+'.tar.gz area_average/*-'+s['indicator']+'_* '+s['country']+'/raw/*_'+s['indicator']+'_*', shell=True)
+
+        os.chdir(curretn_path)
 
         filename=s['country']+'_'+s['indicator']+'.tar.gz'
 
 
     if 'get_data' in request_type.split('**'):
         return send_from_directory(directory=settings.basepath+'regioClim/app/static/for_download/', filename=filename,as_attachment=True)
+        # return send_from_directory(directory=settings.basepath+'regioClim/app/static/for_download/', filename=filename,as_attachment=True)
 
     if 'plot' in request_type.split('_'):
         return send_from_directory(directory=settings.basepath+'regioClim/app/', filename=filename.replace('app/',''),as_attachment=True)
