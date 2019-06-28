@@ -28,7 +28,7 @@ import forms
 from shapely.ops import cascaded_union, unary_union
 import matplotlib.pylab as plt
 from plotting import *
-from zipfile import ZipFile
+import zipfile as zipfile
 
 basepath='/Users/peterpfleiderer/Projects/regioClim/'
 try:
@@ -854,7 +854,7 @@ def prepare_for_download(plot_request):
         filename=s['country']+'_'+s['indicator']+'.tar'
 
         # create a ZipFile object
-        zipObj = ZipFile(settings.basepath+'regioClim/app/static/for_download/'+filename, 'w')
+        zipObj = zipfile.ZipFile(settings.basepath+'regioClim/app/static/for_download/'+filename, 'w', zipfile.ZIP_DEFLATED)
 
         # Add multiple files to the zip
         for file in glob.glob('area_average/*-'+s['indicator']+'_*'):
