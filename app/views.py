@@ -847,7 +847,7 @@ def prepare_for_download(plot_request):
     if request_type=='get_data':
 
         print('_________________________')
-        subprocess.call('tar -vzcf app/static/for_download/'+s['country']+'_'+s['indicator']+'.tar.gz ../country_analysis/data/'+s['country']+'/area_average/*-'+s['indicator']+'_* ../country_analysis/data/'+s['country']+'/raw/*_'+s['indicator']+'_*', shell=True)
+        subprocess.call('/bin/tar -vzcf app/static/for_download/'+s['country']+'_'+s['indicator']+'.tar.gz ../country_analysis/data/'+s['country']+'/area_average/*-'+s['indicator']+'_* ../country_analysis/data/'+s['country']+'/raw/*_'+s['indicator']+'_*', shell=True)
 
         filename=s['country']+'_'+s['indicator']+'.tar.gz'
 
