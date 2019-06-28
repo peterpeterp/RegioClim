@@ -29,7 +29,7 @@ from shapely.ops import cascaded_union, unary_union
 import matplotlib.pylab as plt
 from plotting import *
 
-basepath='/Users/peterpfleiderer/Projects/'
+basepath='/Users/peterpfleiderer/Projects/regioClim/'
 try:
   os.chdir(basepath)
   wlcalculator_path=basepath+'wlcalculator-backup/app/'
@@ -42,6 +42,8 @@ os.system('ls '+basepath+'country_analysis/country_analysis_scripts/')
 import country_analysis; reload(country_analysis)
 sys.path.append(basepath+'/regioClim/')
 os.chdir(basepath+'/regioClim/')
+
+os.system('ls')
 
 
 def flash_errors(form):
@@ -843,22 +845,15 @@ def prepare_for_download(plot_request):
 
     print(plot_request)
     if request_type=='get_data':
-        curretn_path=os.getcwd()
-        os.chdir('../country_analysis/data/'+s['country']+'/')
-        # THIS is not working!!!!!!!
 
-        # print('_________________________')
-        # subprocess.call('ls', shell=True)
-        # subprocess.call('tar -vzcf ../'+s['country']+'_'+s['indicator']+'.tar.gz area_average/*-'+s['indicator']+'_* raw/*_'+s['indicator']+'_*', shell=True)
-        #
+        print('_________________________')
+        subprocess.call('tar -vzcf app/static/for_download/'+s['country']+'_'+s['indicator']+'.tar.gz ../country_analysis/data/'+s['country']+'/area_average/*-'+s['indicator']+'_* ../country_analysis/data/'+s['country']+'/raw/*_'+s['indicator']+'_*', shell=True)
 
-        os.chdir(curretn_path)
-        filename=s['country']+'.tar.gz'
-        # filename=s['country']+'_'+s['indicator']+'.tar.gz'
+        filename=s['country']+'_'+s['indicator']+'.tar.gz'
 
 
     if 'get_data' in request_type.split('**'):
-        return send_from_directory(directory=settings.basepath+'country_analysis/data/', filename=filename.replace('app/',''),as_attachment=True)
+        return send_from_directory(directory=settings.basepath+'regioClim/app/static/for_download/', filename=filename,as_attachment=True)
 
     if 'plot' in request_type.split('_'):
         return send_from_directory(directory=settings.basepath+'regioClim/app/', filename=filename.replace('app/',''),as_attachment=True)

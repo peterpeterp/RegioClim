@@ -36,11 +36,14 @@ import matplotlib.pyplot as plt
 from matplotlib import rc
 rc('text', usetex=True)
 
-basepath='/Users/peterpfleiderer/Projects/RegioClim'
+basepath='/Users/peterpfleiderer/Projects/regioClim/'
 try:
   os.chdir(basepath)
+  os.chdir('regioClim/')
 except:
   basepath='/home/tooli/regioClim/'
+
+
 
 # print('importing')
 # print(hasattr(sys, 'real_prefix'))

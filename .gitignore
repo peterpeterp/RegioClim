@@ -2,7 +2,8 @@
 
 app/settings.pyc
 app/views.pyc
-app/static/COU_images
-app/static/COU_sessions
+app/static/COU_images/*
+app/static/COU_sessions/*
 regioclim_promo_
 .pyc
+app/static/for_download/*
