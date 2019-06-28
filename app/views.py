@@ -850,11 +850,11 @@ def prepare_for_download(plot_request):
 
         print('_________________________')
         subprocess.call('/bin/ls', shell=True)
-        subprocess.call('/bin/tar -vzcf '+settings.basepath+'regioClim/app/static/for_download/'+s['country']+'_'+s['indicator']+'.tar.gz area_average/*-'+s['indicator']+'_* '+s['country']+'raw/*_'+s['indicator']+'_*', shell=True)
+        subprocess.call('/bin/tar -cf '+settings.basepath+'regioClim/app/static/for_download/'+s['country']+'_'+s['indicator']+'.tar area_average/*-'+s['indicator']+'_* '+s['country']+'raw/*_'+s['indicator']+'_*', shell=True)
 
         os.chdir(curretn_path)
 
-        filename=s['country']+'_'+s['indicator']+'.tar.gz'
+        filename=s['country']+'_'+s['indicator']+'.tar'
 
 
     if 'get_data' in request_type.split('**'):
