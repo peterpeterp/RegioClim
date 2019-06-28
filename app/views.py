@@ -849,7 +849,7 @@ def prepare_for_download(plot_request):
         os.chdir('../country_analysis/data/'+s['country']+'/')
 
         print('_________________________')
-        subprocess.call('ls', shell=True)
+        subprocess.call('/bin/ls', shell=True)
         subprocess.call('/bin/tar -vzcf '+settings.basepath+'regioClim/app/static/for_download/'+s['country']+'_'+s['indicator']+'.tar.gz area_average/*-'+s['indicator']+'_* '+s['country']+'/raw/*_'+s['indicator']+'_*', shell=True)
 
         os.chdir(curretn_path)
