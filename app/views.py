@@ -28,6 +28,7 @@ import forms
 from shapely.ops import cascaded_union, unary_union
 import matplotlib.pylab as plt
 from plotting import *
+from zipfile import ZipFile
 
 basepath='/Users/peterpfleiderer/Projects/regioClim/'
 try:
@@ -849,14 +850,22 @@ def prepare_for_download(plot_request):
         os.chdir('../country_analysis/data/'+s['country']+'/')
 
         print('_________________________')
-        subprocess.call('/bin/ls', shell=True)
-        # subprocess.call('/bin/tar -cf '+settings.basepath+'regioClim/app/static/for_download/'+s['country']+'_'+s['indicator']+'.tar area_average/*-'+s['indicator']+'_* '+s['country']+'raw/*_'+s['indicator']+'_*', shell=True)
-        subprocess.call('/bin/bash -c " -cf '+settings.basepath+'regioClim/app/static/for_download/'+s['country']+'_'+s['indicator']+'.tar area_average/*-'+s['indicator']+'_* '+s['country']+'raw/*_'+s['indicator']+'_*"', shell=True)
-
-        os.chdir(curretn_path)
 
         filename=s['country']+'_'+s['indicator']+'.tar'
 
+        # create a ZipFile object
+        zipObj = ZipFile(settings.basepath+'regioClim/app/static/for_download/'+filename, 'w')
+
+        # Add multiple files to the zip
+        for file in glob.glob('area_average/*-'+s['indicator']+'_*'):
+            zipObj.write(file)
+        for file in glob.glob('raw/*_'+s['indicator']+'_*'):
+            zipObj.write(file)
+
+        # close the Zip File
+        zipObj.close()
+
+        os.chdir(curretn_path)
 
     if 'get_data' in request_type.split('**'):
         return send_from_directory(directory=settings.basepath+'regioClim/app/static/for_download/', filename=filename,as_attachment=True)

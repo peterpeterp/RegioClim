@@ -5,6 +5,7 @@ app/views.pyc
 app/static/COU_images/*
 app/static/COU_sessions/*
 regioclim_promo_
-app/*.pyc
+app/views.pyc
+*pyc
 config.pyc
 app/static/for_download/*
