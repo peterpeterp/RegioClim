@@ -280,6 +280,17 @@
       {% block content %}
       {% endblock %}
 
+      <p id="cookie"></p>
+
+      <script>
+      if ({{language}} == 'fr') {
+        document.getElementById("cookie").innerHTML = "Nous utilisons des cookies pour suivre et analyser certaines des actions que vous effectuez sur ce site Web, dans le but d'améliorer l'utilisation que vous en faites et celle de ses autres visiteurs. Vous pouvez néanmoins choisir de désactiver les cookies lors de votre navigation sur le site en cliquant ci-dessous.";
+      }
+      else {
+        document.getElementById("cookie").innerHTML = "We use cookies to track and analyse some of the actions you take on this website, with the aim of improving the user experience for you and others. You can choose to unsubscribe from the use of cookies by clicking below. ";
+      }
+      </script>
+
     </div> <!-- /container -->
 
     <!-- Le javascript
