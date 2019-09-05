@@ -232,6 +232,26 @@
                     <link rel="apple-touch-icon-precomposed" href="static/assets/ico/apple-touch-icon-57-precomposed.png">
                                    <link rel="shortcut icon" href="static/assets/ico/favicon.png">
 
+
+
+
+   <!-- Matomo -->
+   <!-- http://regioclim.climateanalytics.org/ -->
+   <script type="text/javascript">
+       var _paq = window._paq || [];
+       /* tracker methods like "setCustomDimension" should be called before "trackPageView" */
+       _paq.push(['trackPageView']);
+       _paq.push(['enableLinkTracking']);
+       (function() {
+           var u="//climateanalytics.org/stats/";
+           _paq.push(['setTrackerUrl', u+'matomo.php']);
+           _paq.push(['setSiteId', '7']);
+           var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
+           g.type='text/javascript'; g.async=true; g.defer=true; g.src=u+'matomo.js'; s.parentNode.insertBefore(g,s);
+       })();
+   </script>
+   <!-- End Matomo Code -->
+
   </head>
 
   <body>
@@ -262,6 +282,7 @@
     <div class="container">
 
 
+
 <!--
       <h1>Bootstrap starter template</h1>
 -->
@@ -280,16 +301,22 @@
       {% block content %}
       {% endblock %}
 
-      <p id="cookie"></p>
 
+      <div id="LeftPanel" style="padding-top:100%;">
+        <div id="LeftPanel" style="height:5%; background:gray;">
+          <br>
+        </div>
+        <p id="cookie_id">asdas</p>
+      </div>
       <script>
-      if ({{language}} == 'fr') {
-        document.getElementById("cookie").innerHTML = "Nous utilisons des cookies pour suivre et analyser certaines des actions que vous effectuez sur ce site Web, dans le but d'améliorer l'utilisation que vous en faites et celle de ses autres visiteurs. Vous pouvez néanmoins choisir de désactiver les cookies lors de votre navigation sur le site en cliquant ci-dessous.";
+      if ("{{lan}}" == 'fr') {
+        document.getElementById("cookie_id").innerHTML = "Nous utilisons des cookies pour suivre et analyser certaines des actions que vous effectuez sur ce site Web, dans le but d'améliorer l'utilisation que vous en faites et celle de ses autres visiteurs. Vous pouvez néanmoins choisir de désactiver les cookies lors de votre navigation sur le site en cliquant <a href=https://climateanalytics.org/stats/index.php?module=CoreAdminHome&action=optOut&language=fr&backgroundColor=ffffff&fontColor=&fontSize=14px&fontFamily=Helvetica%2C%20Arial>ici</a>.";
       }
       else {
-        document.getElementById("cookie").innerHTML = "We use cookies to track and analyse some of the actions you take on this website, with the aim of improving the user experience for you and others. You can choose to unsubscribe from the use of cookies by clicking below. ";
+        document.getElementById("cookie_id").innerHTML = "We use cookies to track and analyse some of the actions you take on this website, with the aim of improving the user experience for you and others. You can choose to unsubscribe from the use of cookies by clicking <a href=https://climateanalytics.org/stats/index.php?module=CoreAdminHome&action=optOut&language=en&backgroundColor=ffffff&fontColor=&fontSize=14px&fontFamily=Helvetica%2C%20Arial>here</a>.";
       }
       </script>
+
 
     </div> <!-- /container -->
 

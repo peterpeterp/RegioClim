@@ -305,6 +305,7 @@ def choices():
       'ref_period_warning':s['ref_period_warning'],
       'proj_period_warning':s['proj_period_warning'],
       'language_flag':languages[s['language']],
+      'lan':s['language'],
     }
 
     form_dict = {
