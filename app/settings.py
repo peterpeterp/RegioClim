@@ -81,10 +81,10 @@ for iso in all_isos:
 datasets=['CORDEX_BC','CMIP5_BC']
 
 ind_dict={
-	'tas':{'unit':'$^\circ C$','time_step':'monthly'},
+	'tas':{'unit':'$^\circ$C','time_step':'monthly'},
 	'pr':{'unit':'mm','time_step':'monthly'},
 	'RX1':{'unit':'mm','time_step':'monthly'},
-	'TXx':{'unit':'$^\circ C$','time_step':'monthly'},
+	'TXx':{'unit':'$^\circ$C','time_step':'monthly'},
 	'year_RX5':{'unit':'mm','time_step':'yearly'},
 }
 
