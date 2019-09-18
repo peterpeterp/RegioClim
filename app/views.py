@@ -219,11 +219,11 @@ def choices():
 
     else:
       refP = s['warming_lvl_ref']
-      refP_longname=warming_lvl_dict[lang][refP].replace('°','$^\circ$')
+      refP_longname=warming_lvl_dict[lang][refP]
       refP_clim = 'ref'
-      refP_clim_longname=warming_lvl_dict[lang]['ref'].replace('°','$^\circ$')
+      refP_clim_longname=warming_lvl_dict[lang]['ref']
       proP = s['warming_lvl']
-      proP_longname=warming_lvl_dict[lang][proP].replace('°','$^\circ$')
+      proP_longname=warming_lvl_dict[lang][proP]
       periods=COU._warming_slices
       periods_ewembi={'ref':[1986,2006]}
 

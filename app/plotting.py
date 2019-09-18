@@ -164,7 +164,7 @@ def annual_cycle_plot_func(s,COU,refP,refP_clim,proP,refP_longname,refP_clim_lon
       leg = ax[1].legend(loc='best',fancybox=True,fontsize=10)
       leg.get_frame().set_alpha(0.3)
 
-      ax[1].set_title(proP_longname+' vs '+refP_longname+' RCP4.5',fontsize=12)
+      ax[1].set_title(u''+proP_longname+' vs '+refP_longname+' RCP4.5',fontsize=12)
 
       ylab_ax=fig.add_axes([0.0,0.0,1,1])
       ylab_ax.axis([0, 1, 0, 1])
