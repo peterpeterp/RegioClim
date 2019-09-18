@@ -50,10 +50,11 @@ def EWEMBI_plot_func(s,COU,refP,refP_clim,proP,refP_longname,refP_clim_longname,
         season=s['season'],
         color_label=indicator_label,
         )
+
       if s['season']=='year':
-        plt.title(refP_clim_longname,fontsize=10)
+        plt.title(refP_clim_longname.replace('°','$^\circ$'),fontsize=10)
       if s['season']!='year':
-        plt.title(refP_clim_longname+' '+season_dict[lang][s['season']],fontsize=10)
+        plt.title(refP_clim_longname.replace('°','$^\circ$')+' '+season_dict[lang][s['season']],fontsize=10)
 
       plt.savefig(EWEMBI_plot)
       if out_format=='_small.png':plt.savefig(EWEMBI_plot)
