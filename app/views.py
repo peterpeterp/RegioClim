@@ -291,6 +291,7 @@ def choices():
       'country':s['indicator'],
       'indicator':indicator_dict[lang][s['indicator']],
       'season_add_on':season_add_on,
+      'indicator_add_on':{'fr':{'year_sum':'cumulée', 'mean':'moyenne'}, 'en':{'year_sum':'sum', 'mean':'average'}}[lang][method],
       'refP_longname':refP_longname,
       'proP_longname':proP_longname,
       'refP_clim_longname':refP_clim_longname,

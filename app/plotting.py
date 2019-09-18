@@ -108,7 +108,8 @@ def transient_plot_func(s,COU,refP,refP_clim,proP,refP_longname,refP_clim_longna
     #message=ewembi[0].plot_transients(season=s['season'],region=region,running_mean_years=20,ax=ax,title='',ylabel=None,label='observations (EWEMBI)',color='black',x_range=[1960,2090])
     print message,s['season']
     if message==1:
-      ax.set_ylabel(indicator_label)
+      ax.set_ylabel(u''+indicator_label)
+      print(indicator_label)
       #leg = plt.legend(loc='best',fancybox=True,fontsize=10)
       #leg.get_frame().set_alpha(0.3)
       if s['season']=='year':
@@ -168,7 +169,7 @@ def annual_cycle_plot_func(s,COU,refP,refP_clim,proP,refP_longname,refP_clim_lon
       ylab_ax=fig.add_axes([0.0,0.0,1,1])
       ylab_ax.axis([0, 1, 0, 1])
       ylab_ax.axis('off')
-      ylab_ax.text(0.05,0.5,indicator_label,rotation=90,verticalalignment='center')
+      ylab_ax.text(0.05,0.5,u''+indicator_label,rotation=90,verticalalignment='center')
       fig.subplots_adjust(left=0.175, bottom=0.125, right=0.95, top=0.90, wspace=0, hspace=0.2)
 
       if out_format=='_small.png':plt.savefig(annual_cycle_plot)

@@ -81,7 +81,7 @@
           <form method="POST" action="/prepare_for_download/EWEMBI_plot**.pdf" style="float: right;"><button type="submit" class="label label-primary" style="margin-right: 5px;">pdf</button></form> </h3>
         </caption>
         <IMG SRC={{ EWEMBI_plot }} ALT=' ' WIDTH=100%></IMG>
-        <figcaption class=small>{{indicator[0].upper()+indicator[1:]}}{{season_add_on}} averaged over the reference period {{refP_clim_longname}}. This map is based on the <a href=documentation#doc_EWEMBI>EWEMBI</a> dataset.</figcaption>
+        <figcaption class=small>{{indicator[0].upper()+indicator[1:]}} {{indicator_add_on}}{{season_add_on}} over the reference period {{refP_clim_longname}}. This map is based on the <a href=documentation#doc_EWEMBI>EWEMBI</a> dataset.</figcaption>
         {{EWEMBI_plot_text}}
       </figure>
     {% endif %}
