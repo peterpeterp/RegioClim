@@ -79,10 +79,13 @@ def Projection_plot_func(s,COU,refP,refP_clim,proP,refP_longname,refP_clim_longn
       season=s['season'],
       color_label=indicator_label,
       )
+
+
+    title = u'' + proP_longname+' vs '+refP_longname
     if s['season']=='year':
-      plt.title(proP_longname+' vs '+refP_longname+' RCP4.5',fontsize=10)
+      plt.title(title.replace('°','$^\circ$')+' RCP4.5',fontsize=10)
     if s['season']!='year':
-      plt.title(proP_longname+' vs '+refP_longname+' '+season_dict[lang][s['season']]+' RCP4.5',fontsize=10)
+      plt.title(title.replace('°','$^\circ$')+' '+season_dict[lang][s['season']]+' RCP4.5',fontsize=10)
 
     if out_format=='_small.png':plt.savefig(Projection_plot)
     if out_format=='_large.png':plt.savefig(Projection_plot,dpi=300)
@@ -164,7 +167,8 @@ def annual_cycle_plot_func(s,COU,refP,refP_clim,proP,refP_longname,refP_clim_lon
       leg = ax[1].legend(loc='best',fancybox=True,fontsize=10)
       leg.get_frame().set_alpha(0.3)
 
-      ax[1].set_title(u''+proP_longname+' vs '+refP_longname+' RCP4.5',fontsize=12)
+      title = u''+proP_longname+' vs '+refP_longname+' RCP4.5'
+      ax[1].set_title(title.replace('°','$^\circ$'),fontsize=12)
 
       ylab_ax=fig.add_axes([0.0,0.0,1,1])
       ylab_ax.axis([0, 1, 0, 1])
