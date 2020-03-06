@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+  <meta charset="utf-8"/>
+
+  <link href="//code.jquery.com/ui/1.10.2/themes/smoothness/jquery-ui.css" rel="Stylesheet"></link>
+  <script src="//code.jquery.com/jquery-2.2.0.min.js"></script>
+  <script src="//code.jquery.com/ui/1.10.2/jquery-ui.js" ></script>
+
+
+  <script type="text/javascript">
+
+   function change_indicator() {
+    $("#loading").show();
+    document.getElementById("indicator_id").submit();
+   }
+
+   function change_scenario() {
+    $("#loading").show();
+    document.getElementById("scenario_id").submit();
+   }
+
+   function change_dataset() {
+    $("#loading").show();
+    document.getElementById("dataset_id").submit();
+   }
+
+   function change_warming_lvl() {
+    $("#loading").show();
+    document.getElementById("warming_lvl_id").submit();
+   }
+
+  function change_country() {
+    $("#loading").show();
+    document.getElementById("country_id").submit();
+   }
+
+  function change_region() {
+    $("#loading").show();
+    document.getElementById("region_id").submit();
+   }
+
+  function change_period() {
+    $("#loading").show();
+    document.getElementById("period_id").submit();
+   }
+
+  function change_season() {
+    $("#loading").show();
+    document.getElementById("season_id").submit();
+   }
+
+  function month_to_new_season() {
+    $("#loading").show();
+    document.getElementById("month_id").submit();
+   }
+
+  function change_country_nav() {
+    $("#loading").show();
+    document.getElementById("country_nav").submit();
+   }
+
+  function period_change() {
+    $("#loading").show();
+    document.getElementById("period_id").submit();
+   }
+
+  function back_to_choices() {
+    $("#loading").show();
+    document.getElementById("done_id").submit();
+   }
+
+  function merging_page() {
+    $("#loading").show();
+    document.getElementById("clear_id").submit();
+   }
+
+  function give_region_name() {
+    $("#loading").show();
+    document.getElementById("region_name_id").submit();
+   }
+
+  function save_this_season() {
+    $("#loading").show();
+    document.getElementById("save_season_id").submit();
+   }
+
+  function save_this_region() {
+    $("#loading").show();
+    document.getElementById("save_region_id").submit();
+   }
+
+  </script>
+<script type="text/javascript">// <![CDATA[
+
+// ]]></script>
+
+    <meta charset="utf-8">
+    <title>RegioClim</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link href="static/assets/css/bootstrap.css" rel="stylesheet">
+
+    <style type="text/css">
+
+    body {
+      padding-top: 60px; /* 60px to make the container go all the way to the bottom of the topbar */
+      padding-bottom: 150px;
+    }
+
+    #nav_bar_button {
+      background-color: Transparent;
+      border: Transparent;
+      line-height: 2.8;
+      margin:2;
+      color: gray;
+    }
+    #nav_bar_button:hover {
+      border: none;
+      color: white;
+    }
+
+    #link_button {
+      background:none;
+      border:none;
+      margin:0.2;
+      padding:0;
+      line-height: 1.3;
+      color: blue;
+      font-size: 12px;
+    }
+    #link_button:hover {
+      border: none;
+      background: pink;
+    }
+
+    .logo {
+        display: inline-block;
+        vertical-align: top;
+        width: 50px;
+        height: 50px;
+        margin-right: 20px;
+        margin-top: 15px;    /* if you want it vertically middle of the navbar. */
+    }
+
+    h6 {
+      color: red;
+      font-size: 14px;
+      line-height: 1;
+    }
+
+    h3 {
+      font-size: 14px;
+      line-height: 1;
+    }
+
+    figcaption.small {
+      font-size: 12px;
+      line-height: 1.3;
+    }
+
+    p.warn_txt {
+      color: red;
+      font-size: 12px;
+      line-height: 1.3;
+    }
+
+    p.small {
+      font-size: 12px;
+      line-height: 1.3;
+    }
+
+    p.white {
+      color: white;
+      font-size: 10px;
+      line-height: 1;
+    }
+
+    div#loading {
+      width: 100%;
+      height: 100%;
+      display: none;
+      opacity : 1;
+      cursor: wait;
+    }
+
+    div#overlay {
+        position: fixed;
+        width: 100%;
+        height: 100%;
+        background: white;
+        /*background: white url(/static/images/ajax-loader.gif) center center no-repeat;*/
+        opacity: 0.5;
+    }
+
+    div#overlay_text {
+      position: fixed;
+      padding-left: 25%;
+      padding-top: 200px;
+      width: 50%;
+      background: transparent;
+      opacity: 1;
+    }
+
+    div#overlay_image {
+      position: fixed;
+      width: 60%;
+      height: 70%;
+      background: transparent url(/static/images/creating_graphics.png) center center no-repeat;
+      /*background: white url(/static/images/ajax-loader.gif) center center no-repeat;*/
+      opacity: 1;
+      cursor: wait;
+    }
+
+    </style>
+
+
+
+
+    <link href="static/assets/css/bootstrap-responsive.css" rel="stylesheet">
+
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="static/assets/js/html5shiv.js"></script>
+    <![endif]-->
+
+    <!-- Fav and touch icons -->
+    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="static/assets/ico/apple-touch-icon-144-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="static/assets/ico/apple-touch-icon-114-precomposed.png">
+      <link rel="apple-touch-icon-precomposed" sizes="72x72" href="static/assets/ico/apple-touch-icon-72-precomposed.png">
+                    <link rel="apple-touch-icon-precomposed" href="static/assets/ico/apple-touch-icon-57-precomposed.png">
+                                   <link rel="shortcut icon" href="static/assets/ico/favicon.png">
+
+
+
+
+   <!-- Matomo -->
+   <!-- http://regioclim.climateanalytics.org/ -->
+   <script type="text/javascript">
+       var _paq = window._paq || [];
+       /* tracker methods like "setCustomDimension" should be called before "trackPageView" */
+       _paq.push(['trackPageView']);
+       _paq.push(['enableLinkTracking']);
+       (function() {
+           var u="//climateanalytics.org/stats/";
+           _paq.push(['setTrackerUrl', u+'matomo.php']);
+           _paq.push(['setSiteId', '4']);
+           var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
+           g.type='text/javascript'; g.async=true; g.defer=true; g.src=u+'matomo.js'; s.parentNode.insertBefore(g,s);
+       })();
+   </script>
+   <!-- End Matomo Code -->
+
+  </head>
+
+  <body>
+
+
+    <div class="navbar navbar-inverse navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container">
+          <div class="nav-collapse collapse">
+            <ul class="nav navbar-nav">
+              <a class="brand" href="choices"><IMG SRC='static/images/RegioClim-Logo-280x98.png' ALT=' ' WIDTH=120></a>
+              <li><a href="documentation">Documentation</a></li>
+              <li><a href="about">About</a></li>
+              <li>
+                </form>
+                <form method="POST" action="/language_choice">
+                <button type="submit" id="nav_bar_button">{{language}}</button>
+                </form>
+              </li>
+           </ul>
+           <div align="right">
+             <a href="http://climateanalytics.org/"><IMG SRC='static/images/CA_Logo-final.png' ALT=' ' WIDTH=110></IMG></a>
+         </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="container">
+
+
+
+<!--
+      <h1>Bootstrap starter template</h1>
+-->
+      {% from "_formhelpers.html" import render_field %}
+
+      {% with messages = get_flashed_messages() %}
+      {% if messages %}
+      <ul>
+      {% for message in messages %}
+          <li>{{ message }} </li>
+      {% endfor %}
+      </ul>
+      {% endif %}
+      {% endwith %}
+
+      {% block content %}
+      {% endblock %}
+
+
+      <div id="LeftPanel" style="padding-top:100%;">
+        <div id="LeftPanel" style="height:5%; background:gray;">
+          <br>
+        </div>
+        <p id="cookie_id">asdas</p>
+      </div>
+      <script>
+      if ("{{lan}}" == 'fr') {
+        document.getElementById("cookie_id").innerHTML = "Nous utilisons des cookies pour suivre et analyser certaines des actions que vous effectuez sur ce site Web, dans le but d'améliorer l'utilisation que vous en faites et celle de ses autres visiteurs. Vous pouvez néanmoins choisir de désactiver les cookies lors de votre navigation sur le site en cliquant <a href=https://climateanalytics.org/stats/index.php?module=CoreAdminHome&action=optOut&language=fr&backgroundColor=ffffff&fontColor=&fontSize=14px&fontFamily=Helvetica%2C%20Arial>ici</a>.";
+      }
+      else {
+        document.getElementById("cookie_id").innerHTML = "We use cookies to track and analyse some of the actions you take on this website, with the aim of improving the user experience for you and others. You can choose to unsubscribe from the use of cookies by clicking <a href=https://climateanalytics.org/stats/index.php?module=CoreAdminHome&action=optOut&language=en&backgroundColor=ffffff&fontColor=&fontSize=14px&fontFamily=Helvetica%2C%20Arial>here</a>.";
+      }
+      </script>
+
+
+    </div> <!-- /container -->
+
+    <!-- Le javascript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="static/assets/js/jquery.js"></script>
+    <script src="static/assets/js/bootstrap-transition.js"></script>
+    <script src="static/assets/js/bootstrap-alert.js"></script>
+    <script src="static/assets/js/bootstrap-modal.js"></script>
+    <script src="static/assets/js/bootstrap-dropdown.js"></script>
+    <script src="static/assets/js/bootstrap-scrollspy.js"></script>
+    <script src="static/assets/js/bootstrap-tab.js"></script>
+    <script src="static/assets/js/bootstrap-tooltip.js"></script>
+    <script src="static/assets/js/bootstrap-popover.js"></script>
+    <script src="static/assets/js/bootstrap-button.js"></script>
+    <script src="static/assets/js/bootstrap-collapse.js"></script>
+    <script src="static/assets/js/bootstrap-carousel.js"></script>
+    <script src="static/assets/js/bootstrap-typeahead.js"></script>
+    <script src="static/assets/js/submit_javascript.js"></script>
+
+
+<script type="text/javascript"
+  src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
+<script type="text/javascript">
+  var $SCRIPT_ROOT = {{ request.script_root|tojson|safe }};
+</script>
+
+
+
+
+  </body>
+
+</html>

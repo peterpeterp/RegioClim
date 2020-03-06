@@ -1,0 +1,56 @@
+{% extends "index.html" %}
+{% block content %}
+
+<div id="loading"><div id="overlay"></div><div id='overlay_text'><h1>Loading ... </h1></div></div>
+
+<div id="content">
+
+<div id="LeftPanel" style="width: 20%; height: 100%; float: left;">
+      <h3>Ajoutez une région</h3>
+  	<p class=small>Choisissez une des régions si-dessous ou cliquer sur la carte pour ajouter une région.</p>
+	  <form method="POST" action="/merge_with_region_from_form" id="region_id">
+	  {{ form_region.regions(onchange="change_region();") }}
+	  </form>
+
+{% if small_region_warning==True %}
+  <h6>Attention: </h6>
+  <p class=warn_txt>La région est plus petite que 5 cellules de la grille. Veuillez regrouper votre régions avec d'autres régions.</p>
+{% endif %}
+
+<form method="POST" action="/clear_selection"  onsubmit="clear_selection()" id="clear_id">
+  <button type="submit" class="btn">Effacer la sélection</button>
+</form>
+
+  <form method="POST" action="/given_region_name">
+    Nom {{ form_NewRegion.region_name(size=10) }}
+    <button type="submit" class="btn">Garder ce nom</button>
+  </form>
+
+<form method="POST" action="/save_this_region"  onsubmit="save_this_region()" id="done_id">
+  <button type="submit" class="btn">Garder cette région</button>
+</form>
+
+
+
+</div>
+
+<div id="LeftPanel" style="width: 80%; height: 100%; float: left;">
+
+  <img src={{ regions_plot }} width="{{x_width}}" height="{{y_height}}" alt="Planets" usemap="#countrymap">
+
+  <map name="countrymap">
+    {% for dict_item in regions %}
+        <area shape="poly" coords="{{dict_item['poly']}}" alt="Sun" href="/merge_with_region_click/{{dict_item['name']}}">
+    {% endfor %}
+  </map>
+
+</div>
+
+</div>
+
+{% endblock %}
+
+
+
+
+
