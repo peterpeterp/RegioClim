@@ -24,8 +24,9 @@
   	{{mon}}<br>
   	{% endfor %}
   	<br><br>
-    Name {{ form_NewSeason.season_name(size=10) }}<br>
-   <button type="submit" class="btn">Save Name</button>
+    Current name: {{new_season_name}}  <br><br>
+    New name: {{form_NewSeason.season_name(size=10)}}<br>
+   <button type="submit" class="btn">Change name</button>
  </form>
 </div>
 
@@ -33,8 +34,3 @@
 
 
 {% endblock %}
-
-
-
-
-

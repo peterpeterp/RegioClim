@@ -20,12 +20,13 @@
 
 <div id="LeftPanel" style="width: 50%; height: 100%; float: left; padding-left: 10%; padding-top: 80px;">
   <form method="POST" action="/given_season_name">
-  	{% for mon in months %}
+    {% for mon in months %}
   	{{mon}}<br>
   	{% endfor %}
   	<br><br>
-    Nom {{ form_NewSeason.season_name(size=10) }}<br>
-   <button type="submit" class="btn">Garder ce nom</button>
+    Nom actuel: {{new_season_name}}  <br><br>
+    Nouvel nom: {{form_NewSeason.season_name(size=10)}}<br>
+   <button type="submit" class="btn">Changer le nom</button>
  </form>
 </div>
 
@@ -33,8 +34,3 @@
 
 
 {% endblock %}
-
-
-
-
-

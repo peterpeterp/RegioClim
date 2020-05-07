@@ -44,6 +44,13 @@ os.chdir(basepath+'/regioClim/')
 
 os.system('ls')
 
+def save_pkl(obj, name ):
+	with open(name, 'wb') as f:
+		pickle.dump(obj, f, pickle.HIGHEST_PROTOCOL)
+
+def load_pkl(name ):
+	with open( name, 'rb') as f:
+		return pickle.load(f)
 
 def flash_errors(form):
 		for field, errors in form.errors.items():
@@ -143,6 +150,8 @@ def index():
 @app.route('/choices')
 def choices():
 	print(session)
+
+	print(season_dict)
 	if True:
 		start_time=time.time()
 
@@ -250,9 +259,6 @@ def choices():
 			'method':method
 		}
 
-		print(s)
-
-
 		EWEMBI_plot,Projection_plot,transient_plot,annual_cycle_plot,overview_plot=create_new_plots(**plot_context)
 
 
@@ -330,6 +336,7 @@ def choices():
 		context.update(button_dict[lang])
 
 		session['location']='choices'
+
 		return render_template('choices_'+lang+'.html',**context)
 
 	# except Exception,e:
@@ -347,20 +354,23 @@ def season_page():
 	if True:
 		s=session
 
-		if s['new_season_name']=='' and s['new_season_name_auto']: s['new_season']=[]
+		if s['new_season_name']=='':
+			s['new_season']=[]
 
 		form_season = forms.seasonForm(request.form)
-		form_season.seasons.choices = zip([str(sea) for sea in range(1,13)],[season_dict[s['language']][str(sea)] for sea in range(1,13)])
+		form_season.seasons.choices = zip([str(sea) for sea in range(1,13)],[season_dict[str(sea)]['name'][s['language']] for sea in range(1,13)])
 
 		form_NewSeason = forms.NewSeasonForm(request.form)
-		form_NewSeason = forms.NewSeasonForm(request.form, season_name=session['new_season_name'])
+		form_NewSeason = forms.NewSeasonForm(request.form, season_name='')
 
+		print(session['new_season'])
+		print([int(sea) for sea in session['new_season']])
 		context = {
 			'form_season':form_season,
 			'form_NewSeason':form_NewSeason,
 			'new_season_name':s['new_season_name'],
 			'language':get_language_tag(),
-			'months':[season_dict[s['language']][str(sea)] for sea in range(1,13) if str(sea) in session['new_season']],
+			'months':[season_dict[str(sea)]['name'][s['language']] for sea in session['new_season']],
 		}
 		context.update(text_dict[s['language']])
 		context.update(button_dict[s['language']])
@@ -376,18 +386,11 @@ def season_page():
 #         print(str(e))
 #         return render_template('error.html')
 
-@app.route('/given_season_name',    methods=("POST", ))
-def given_season_name():
-	form_NewSeason = forms.NewSeasonForm(request.form)
-	session['new_season_name']=form_NewSeason.season_name.data
-	form_NewSeason = forms.NewSeasonForm(request.form, season_name=session['new_season_name'])
-	session['new_season_name_auto']=False
-
-	return redirect(url_for("season_page"))
 
 @app.route('/go_to_season_page')
 def go_to_season_page():
 	session['new_season']=[]
+	session['new_season_name']==''
 	return redirect(url_for("season_page"))
 
 @app.route('/add_month',    methods=('POST', ))
@@ -396,37 +399,28 @@ def add_month():
 	session['new_season']+=[form_season.seasons.data]
 	session['new_season']=sorted(set(session['new_season']))
 
-	if session['new_season_name_auto']: session['new_season_name']='+'.join([season_dict[session['language']][str(sea)] for sea in range(1,13) if str(sea) in session['new_season']])
+	session['new_season_name'] += season_dict[form_season.seasons.data]['name'][session['language']]
 
 	return redirect(url_for('season_page'))
+
+@app.route('/given_season_name',  methods=("POST", ))
+def given_season_name():
+  form_NewSeason = forms.NewSeasonForm(request.form)
+  session['new_season_name']=form_NewSeason.season_name.data
+
+  return redirect(url_for("season_page"))
 
 @app.route('/save_this_season',    methods=("POST", ))
 def save_this_season():
 	season_name='+'.join([str(sea) for sea in sorted(session['new_season'])])
 
-	# for COU in COUs.values():
-	#     COU._seasons[season_name]=[int(sea) for sea in sorted(session['new_season'])]
 	settings.seasons[season_name]=[int(sea) for sea in sorted(session['new_season'])]
-
-	for lang in ['en','fr']:
-		season_dict[lang][season_name]='+'.join([season_dict[lang][str(sea)] for sea in session['new_season']])
-
+	season_dict[season_name] = dict(months=[int(mnth) for mnth in session['new_season']], name=dict(fr=session['new_season_name'], en=session['new_season_name']))
 	session['season_avail']+=[season_name]
-
-	session_cou = open(session['cou_path'], 'rb')
-	COU=cPickle.load(session_cou) ; session_cou.close()
-	COU._seasons[season_name]=[int(sea) for sea in sorted(session['new_season'])]
-	session_cou = open(session['cou_path'], 'wb')
-	cPickle.dump(COU, session_cou, protocol=2) ; session_cou.close()
 
 	session['season']=season_name
 	index=session['season_avail'].index(session['season'])
 	session['season_avail'][index],session['season_avail'][0]=session['season_avail'][0],session['season_avail'][index]
-
-	season_dict['en'][session['season']]=session['new_season_name']
-	season_dict['fr'][session['season']]=session['new_season_name']
-
-	session['new_season_name_auto']=True
 	session['new_season_name']=''
 
 	return redirect(url_for("choices"))
@@ -446,34 +440,39 @@ def merging_page():
 	if True:
 		s=session
 
-		session_cou = open(s['cou_path'], 'rb')
-		COU=cPickle.load( session_cou) ; session_cou.close()
-		COU.load_data(quiet=True,filename_filter=s['indicator'],load_mask=False,load_raw=True,load_area_averages=False,load_region_polygons=False)
+		COU=shaped_analysis.country_analysis(iso=s['country'], working_directory='/Users/peterpfleiderer/Projects/regioClim_2020/cou_data/'+s['country'])
+		COU.load_shapefile()
+		COU.load_mask()
+		COU.load_data()
+		empty_object = COU.select_data_gridded(time_format='monthly',tags={'scenario':'historical','experiment':'CORDEX','var_name':s['indicator']})
 
-		empty_object=COU.selection([s['indicator'],s['dataset'],'ensemble_mean'])[0]
 		asp=(float(len(empty_object.lon))/float(len(empty_object.lat)))**0.5
 
 		regions_plot='app/static/COU_images/'+s['country']+'/'+s['region']+'.png'
 		if os.path.isfile(regions_plot)==False:
-			fig,ax = plt.subplots(nrows=1, frameon=False, subplot_kw={'projection': ccrs.PlateCarree()})
-			# fig, ax = plt.subplots(nrows=1, ncols=1,subplot_kw={'projection': ccrs.PlateCarree()})
-			# fig = plt.figure(frameon=False)
-			# ax = plt.Axes(fig, [0., 0., 1., 1.])
-			fig.set_size_inches(6*asp,6/asp)
-			# fig.add_axes(ax)
 
-			empty_object.plot_map(to_plot=None,
-				show_region_names=True,
-				color_bar=False,
-				ax=ax,
-				show_all_adm_polygons=True)
-				#title=COU._region_names[s['region']])
+			x,y=empty_object.lon.copy(),empty_object.lat.copy()
+			fig,ax = plt.subplots(nrows=1, figsize=(6*asp,6/asp),subplot_kw={'projection': ccrs.PlateCarree()})
+			ax.coastlines(resolution='10m');
+			x-=np.diff(x,1)[0]/2.
+			y-=np.diff(y,1)[0]/2.
+			x=np.append(x,[x[-1]+np.diff(x,1)[0]])
+			y=np.append(y,[y[-1]+np.diff(y,1)[0]])
+			x,y=np.meshgrid(x,y)
 
-			if s['region']!=s['country']:
-				print(COU._adm_polygons[s['region']])
-				patch = PolygonPatch(COU._adm_polygons[s['region']], facecolor='orange', edgecolor=[0,0,0], alpha=0.7, zorder=2)
-				ax.add_patch(patch)
-				ax.set_axis_off()
+			im = ax.pcolormesh(x,y,empty_object[0,0,:,:], alpha=0,  transform=ccrs.PlateCarree())
+
+			for name,shape in COU._region_polygons.items():
+				if name!=s['country']:
+					if name != s['region']:
+						ax.add_geometries(shape, ccrs.PlateCarree(), edgecolor='k',alpha=1,facecolor='none',linewidth=0.5,zorder=50)
+					if name == s['region'] or name in s['region'].split('+'):
+						ax.add_geometries(shape, ccrs.PlateCarree(), edgecolor='k',alpha=1,facecolor='orange',linewidth=0.5,zorder=50)
+
+					centroid = shape.centroid.xy
+					ax.annotate(COU._region_names[name], xy=(centroid[0][0],centroid[1][0]),ha='center',va='center',fontsize=8, zorder = 51)
+
+			ax.set_axis_off()
 			plt.subplots_adjust(left=0, right=1, top=1, bottom=0)
 			plt.savefig(regions_plot,dpi=300)
 
@@ -487,8 +486,8 @@ def merging_page():
 		half_lon_step=abs(np.diff(empty_object.lon.copy(),1)[0]/2)
 		half_lat_step=abs(np.diff(empty_object.lat.copy(),1)[0]/2)
 
-		xmin,xmax=min(empty_object.lon)-half_lon_step,max(empty_object.lon)+half_lon_step
-		ymin,ymax=min(empty_object.lat)-half_lat_step,max(empty_object.lat)+half_lat_step
+		xmin,xmax=min(empty_object.lon.values)-half_lon_step,max(empty_object.lon.values)+half_lon_step
+		ymin,ymax=min(empty_object.lat.values)-half_lat_step,max(empty_object.lat.values)+half_lat_step
 
 		x_w=500*asp
 		y_h=500/asp
@@ -496,7 +495,7 @@ def merging_page():
 		clickable=[]
 
 		for region in choosable_regions:
-			poly=COU._adm_polygons[region]
+			poly=COU._region_polygons[region]
 			if poly.geom_type == 'MultiPolygon':
 				area=[]
 				for subpoly in poly:
@@ -512,7 +511,6 @@ def merging_page():
 				point_list+=str(y_h-(yy-ymin)/(ymax-ymin)*y_h)+', '
 
 			clickable.append({'poly':point_list[:-2],'name':region})
-
 
 		context = {
 			'form_region':form_region,
@@ -559,25 +557,34 @@ def clear_selection():
 def merge_with_region(to_merge):
 	s=session
 
-	session_cou = open(s['cou_path'], 'rb')
-	COU=cPickle.load( session_cou) ; session_cou.close()
+	COU=shaped_analysis.country_analysis(iso=s['country'], working_directory='/Users/peterpfleiderer/Projects/regioClim_2020/cou_data/'+s['country'])
+	COU.load_shapefile()
 
 	if s['region']!=s['country']:
-		s['region']=COU.merge_adm_regions([s['region'],to_merge])
+		region_names = s['region'].split('+')+[to_merge]
+		single_regions=[]
+		for region in region_names:
+			for split in region.split('+'):
+				single_regions.append(split)
+		new_region_name='+'.join(sorted(single_regions))
+		COU._region_names[new_region_name]='+'.join([COU._region_names[reg] for reg in sorted(single_regions)])
+		COU._region_polygons[new_region_name]=COU._region_polygons[region_names[0]]
+		for region in region_names[1:]:
+			COU._region_polygons[new_region_name] = \
+			COU._region_polygons[new_region_name].symmetric_difference(COU._region_polygons[region])
 
-		session_cou = open(s['cou_path'], 'wb')
-		cPickle.dump(COU, session_cou, protocol=2) ; session_cou.close()
+		s['region'] = new_region_name
 	else:
 		s['region']=to_merge
 
-	area=COU.get_region_area(s['region'])['latxlon']*4
-	if area<4:
-		s['small_region_warning']=True
+	poly=COU._region_polygons[session['region']]
+	lat=poly.centroid.xy[1][0]
+	if poly.area*4 < 4:
+		session['small_region_warning']=True
 	else:
 		s['small_region_warning']=False
 
 	if s['new_region_name_auto']:s['new_region_name']=s['region']
-
 
 @app.route('/merge_with_region_from_form',    methods=('POST', ))
 def merge_with_region_from_form():
@@ -593,8 +600,10 @@ def merge_with_region_click(region):
 @app.route('/save_this_region',    methods=("POST", ))
 def save_this_region():
 
-	session_cou = open(session['cou_path'], 'rb')
-	COU=cPickle.load( session_cou) ; session_cou.close()
+	COU=shaped_analysis.country_analysis(iso=session['country'], working_directory='/Users/peterpfleiderer/Projects/regioClim_2020/cou_data/'+session['country'])
+	COU.load_shapefile()
+	COU.load_mask()
+	COU.load_data()
 
 	COU._region_names[session['region']]=session['new_region_name']
 
@@ -603,11 +612,29 @@ def save_this_region():
 		index=session['region_avail'].index(session['region'])
 		session['region_avail'][index],session['region_avail'][0]=session['region_avail'][0],session['region_avail'][index]
 
-	session_cou = open(session['cou_path'], 'wb')
-	cPickle.dump(COU, session_cou, protocol=2) ; session_cou.close()
-
 	session['new_region_name_auto']=True
 	session['new_region_name']=''
+
+	print(session['region'])
+
+	for grid,tmp1 in COU._masks.items():
+		for mask_style,tmp2 in tmp1.items():
+			tmp = tmp2[[0]] * 0
+			tmp.region.values = [session['region']]
+			for reg in session['region'].split('+'):
+				ttmp = tmp2.loc[reg]
+				ttmp.values[np.isnan(ttmp.values)] = 0
+				tmp.values += ttmp.values
+			tmp.values /= tmp.sum().values
+
+			COU._masks[grid][mask_style] = xr.concat((tmp2,tmp), dim='region')
+
+	COU.area_average(regions=[session['region']])
+
+	save_pkl(COU._region_names, COU._working_dir+'region_names.pkl')
+	save_pkl(COU._region_polygons, COU._working_dir+'region_polygons.pkl')
+
+	print(COU._region_names)
 
 	return redirect(url_for("choices"))
 
@@ -911,66 +938,8 @@ def documentation():
 	return render_template('documentation_'+session['language']+'.html',language=get_language_tag())
 
 
-# @app.route('/user_type_choice',    methods=('POST', ))
-# def user_type_choice():
-#     if session['user_type']=='beginner': usr=0
-#     if session['user_type']=='advanced': usr=1
-#     usr*=-1
-#     session['user_type']=['beginner','advanced'][usr+1]
-#     if session['user_type']=='advanced':
-#         print('asdasdasd ------- asdas')
-#         session['period_avail']=settings.periods_advanced
-#     if session['user_type']=='beginner':
-#         session['period_avail']=settings.periods_beginner
-#         session['dataset']='CORDEX_BC'
-#     return redirect(url_for('choices'))
 
-# @app.route('/go_to_model_agreement',    methods=("POST", ))
-# def go_to_model_agreement():
-#     return redirect(url_for("model_agreement"))
 
-# @app.route('/go_to_bias_correction',    methods=("POST", ))
-# def go_to_bias_correction():
-#     return redirect(url_for("bias_correction"))
 
-# @app.route('/model_agreement')
-# def model_agreement():
-	# try:
-#         country=session['country']
 
-#         form_period = forms.periodForm(request.form)
-#         form_period.periods.choices = zip(session['period_avail'],session['period_avail'])
-
-#         refP = "-".join(str(t) for t in session["ref_period"])
-#         proP = session['period']
-#         periods={'ref':session["ref_period"],'projection':session["proj_period"]}
-#         CORDEX_BC_plot_detail='static/images/'+country+'/'+session["indicator"]+'_'+session["scenario"]+'_'+session['dataset']+'_'+session['season']+'_details.png'
-
-#         context = {
-#             'CORDEX_BC_plot_detail':CORDEX_BC_plot_detail,
-#         }
-#         return render_template('model_agreement.html',**context)
-
-#     except KeyError:
-#         return redirect(url_for("index"))
-
-# @app.route('/bias_correction')
-# def bias_correction():
-	# try:
-#         country=session['country']
-
-#         form_period = forms.PeriodField(request.form)
-#         form_period.periods.choices = zip(session['period_avail'],session['period_avail'])
-
-#         refP = "-".join(str(t) for t in session["ref_period"])
-#         proP = session['period']
-#         periods={'ref':session["ref_period"],'projection':session["proj_period"]}
-#         bias_corretion_check='static/images/'+country+'/'+session["indicator"]+'_BC_check_'+session['season']+'.png'
-
-#         context = {
-#             'bias_corretion_check':bias_corretion_check
-#         }
-#         return render_template('bias_correction.html',**context)
-
-#     except KeyError:
-#         return redirect(url_for("index"))
+#
